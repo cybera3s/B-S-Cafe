@@ -69,6 +69,14 @@ class order():
         self.paid = paid
 
     @classmethod
+    def define_order(cls):
+        pass
+
+    @classmethod
+    def change_order(cls):
+        pass
+
+    @classmethod
     def calculate_total_price_order(cls):
         pass
 
@@ -91,3 +99,47 @@ class order():
     @classmethod
     def is_paid_order(cls):
         pass
+
+
+# need progress
+class Status():
+    def __init__(self, _id, name):
+        self._id = _id
+        self.name = name
+
+    @classmethod
+    def get_name(cls):
+        pass
+
+
+class Customer():
+    def __init__(self, cookie, count):
+        self.cookie = cookie
+        self.count = count
+
+    @classmethod
+    def get_cookie_customer(cls):
+        pass
+
+    @classmethod
+    def get_count_customer(cls):
+        pass
+
+#progess !!!!!
+class Cashier():
+    def __init__(self, _id, user_name, password, phone_number, email, first_name, last_name):
+        self._id = _id
+        self.user_name = user_name
+        self.password = password
+        self.phone_number = phone_number
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+
+    @classmethod
+    def login(cls):
+        pass
+    @classmethod
+    def register(cls):
+        pass
+
