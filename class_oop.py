@@ -59,3 +59,35 @@ class desk():
         pass
 
 
+class order():
+    def __init__(self, _id, foods_counts, status, total_price, final_price, paid):
+        self._id = _id
+        self.foods_counts = foods_counts
+        self.status = status
+        self.total_price = total_price
+        self.final_price = final_price
+        self.paid = paid
+
+    @classmethod
+    def calculate_total_price_order(cls):
+        pass
+
+    @classmethod
+    def calculate_final_price_order(cls):
+        pass
+
+    @classmethod
+    def get_status_order(cls):
+        pass
+
+    @classmethod
+    def change_status_price_order(cls):
+        pass
+
+    @classmethod
+    def get_paid_order(cls):
+        pass
+
+    @classmethod
+    def is_paid_order(cls):
+        pass
