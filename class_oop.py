@@ -11,7 +11,7 @@ class food:
         pass
 
     @classmethod
-    def food_price(cls):
+    def get_food_price(cls):
         pass
 
     @classmethod
@@ -31,7 +31,7 @@ class food:
         pass
 
     @classmethod
-    def price_food(cls):
+    def change_price_food(cls):
         pass
 
     @classmethod
@@ -40,10 +40,10 @@ class food:
 
 
 class desk():
-    def __init__(self, _id, status, order, customer):
+    def __init__(self, _id, status, cart, customer):
         self._id = _id
         self.status = status
-        self.order = order
+        self.cart = cart
         self.customer = customer
 
     @classmethod
@@ -51,11 +51,31 @@ class desk():
         pass
 
     @classmethod
-    def order_desk(cls):
+    def cart_desk(cls):
         pass
 
     @classmethod
-    def customer_desk(cls):
+    def set_customer_desk(cls):
+        pass
+
+    @classmethod
+    def get_customer_desk(cls):
+        pass
+
+
+class cart():
+    def __init__(self, _id, orders_list, final_price, Date):
+        self._id = _id
+        self.orders_list = orders_list
+        self.final_price = final_price
+        self.Date = Date
+
+    @classmethod
+    def final_price(cls):
+        pass
+
+    @classmethod
+    def get_order_list(cls):
         pass
 
 
@@ -65,7 +85,6 @@ class order():
         self.foods_counts = foods_counts
         self.status = status
         self.total_price = total_price
-        self.final_price = final_price
         self.paid = paid
 
     @classmethod
@@ -125,7 +144,8 @@ class Customer():
     def get_count_customer(cls):
         pass
 
-#progess !!!!!
+
+# progess !!!!!
 class Cashier():
     def __init__(self, _id, user_name, password, phone_number, email, first_name, last_name):
         self._id = _id
@@ -139,7 +159,7 @@ class Cashier():
     @classmethod
     def login(cls):
         pass
+
     @classmethod
     def register(cls):
         pass
-
