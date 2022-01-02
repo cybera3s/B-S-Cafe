@@ -54,3 +54,18 @@ class Order:
 
     def __repr__(self):
         return f'<Order_Class {self.id}:{self.menu_item}>'
+
+
+class Receipt:
+    TABLE = 'receipts'
+    PK = 'id'
+
+    def __init__(self, orders: list, total_price: int, id: int = None):
+        self.orders = orders
+        self.total_price = total_price
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.total_price}>"
+    
