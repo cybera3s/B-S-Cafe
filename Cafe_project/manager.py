@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2._psycopg import connection, cursor
-from models import DBModel
+from models import *
 
 
 class DBManager:
@@ -75,3 +75,12 @@ class DBManager:
                 curs.execute(f"""DELETE FROM {model_instance.TABLE} WHERE {model_instance.PK} = {model_pk_value};""")
                 delattr(model_instance, 'id')  # deleting attribute 'id' from the deleted instance
 
+    def read_all(self, model_class: type) -> list:
+        assert issubclass(model_class, DBModel)
+        with self.conn:
+            curs = self.__get_cursor()
+            with curs:
+                curs.execute(f"""SELECT * FROM {model_class.TABLE};""")
+                res = list(map(dict, curs.fetchall()))
+                res = [model_class(**item) for item in res]
+                return res
