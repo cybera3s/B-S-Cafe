@@ -1,4 +1,5 @@
 from abc import ABC
+import datetime as dt
 
 
 class DBModel(ABC):  # abstract base Database model
@@ -37,3 +38,19 @@ class Status(DBModel):
 
     def __repr__(self):
         return f"<Status_class {self.id}:{self.status}>"
+
+
+class Order:
+    TABLE = 'orders'
+    PK = 'id'
+
+    def __init__(self, table_id: int, menu_item: int, count: int = 1, id: int = None):
+        self.table_id = table_id
+        self.menu_item = menu_item
+        self.count = count
+
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f'<Order_Class {self.id}:{self.menu_item}>'
