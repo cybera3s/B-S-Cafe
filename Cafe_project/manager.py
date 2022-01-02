@@ -84,3 +84,8 @@ class DBManager:
                 res = list(map(dict, curs.fetchall()))
                 res = [model_class(**item) for item in res]
                 return res
+
+#
+# db = DBManager()
+# p = Table(2, 'top_left')
+# db.create(p)
