@@ -53,3 +53,17 @@ class Table(DBModel):
 
     def __repr__(self):
         return f"<Table_class {self.id}:{self.capacity},{self.position},{self.status}>"
+
+
+class Category(DBModel):
+    TABLE = 'category'
+    PK = 'id'
+
+    def __init__(self, category: str, id: int = None):
+        self.category = category
+
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f"<Category_class {self.id}:{self.category}>"
