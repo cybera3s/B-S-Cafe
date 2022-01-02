@@ -37,3 +37,19 @@ class Status(DBModel):
 
     def __repr__(self):
         return f"<Status_class {self.id}:{self.status}>"
+
+
+class Table(DBModel):
+    TABLE = 'tables'
+    PK = 'id'
+
+    def __init__(self, capacity: int, position: str, status: bool = False, id: int = None):
+        self.capacity = capacity
+        self.position = position
+        self.status = status
+
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f"<Table_class {self.id}:{self.capacity},{self.position},{self.status}>"
