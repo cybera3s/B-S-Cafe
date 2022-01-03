@@ -1,5 +1,7 @@
 from abc import ABC
 
+import datetime as dt
+
 
 class DBModel(ABC):  # abstract base Database model
     TABLE: str  # table name
@@ -47,7 +49,6 @@ class Table(DBModel):
         self.capacity = capacity
         self.position = position
         self.status = status
-
         if id:
             self.id = id
 
@@ -61,9 +62,38 @@ class Category(DBModel):
 
     def __init__(self, category: str, id: int = None):
         self.category = category
-
         if id:
             self.id = id
 
     def __repr__(self):
         return f"<Category_class {self.id}:{self.category}>"
+
+
+class Order:
+    TABLE = 'orders'
+    PK = 'id'
+
+    def __init__(self, table_id: int, menu_item: int, count: int = 1, id: int = None):
+        self.table_id = table_id
+        self.menu_item = menu_item
+        self.count = count
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f'<Order_Class {self.id}:{self.menu_item}>'
+
+
+class Receipt:
+    TABLE = 'receipts'
+    PK = 'id'
+
+    def __init__(self, orders: list, total_price: int, id: int = None):
+        self.orders = orders
+        self.total_price = total_price
+
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.total_price}>"
