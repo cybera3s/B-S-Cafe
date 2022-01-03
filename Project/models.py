@@ -40,6 +40,33 @@ class Status(DBModel):
         return f"<Status_class {self.id}:{self.status}>"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Order:
     TABLE = 'orders'
     PK = 'id'
@@ -68,4 +95,3 @@ class Receipt:
 
     def __repr__(self):
         return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.total_price}>"
-    
