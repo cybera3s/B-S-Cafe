@@ -14,7 +14,7 @@
     <style>
         body {
             background-color: #4158D0;
-            background-image: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+        {#background-image: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);#}
         }
 
         .container {
@@ -26,15 +26,17 @@
             background-color: white !important;
             color: black !important;
             height: auto;
+            box-shadow: 3px 2px 13px black;
+
         }
 
         @media only screen and (max-width: 992px) {
 
-         .cl_2 {
-            margin-left: 0vw;
-             margin-top: 5vw;
-            height: auto;
-        }
+            .cl_2 {
+                margin-left: 0vw;
+                margin-top: 5vw;
+                height: auto;
+            }
         }
     </style>
 </head>
@@ -45,16 +47,16 @@
 
         <div class="cl_1 col-11 col-lg-5">
 
-            <form class="bg-block rounded text-light p-4 d-primary" style="box-shadow: 3px 2px 13px black;">
+            <form class="rounded text-light p-4" style="box-shadow: 3px 2px 13px black;">
                 <h1 class="text-center my-3"></h1>
 
                 <div class="mb-3">
                     <label for="text" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="text" name="text">
+                    <input type="text" class="form-control" id="text" name="firstname">
                 </div>
                 <div class="mb-3">
                     <label for="text" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="text" name="text">
+                    <input type="text" class="form-control" id="text" name="lastname">
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
@@ -62,9 +64,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="text" class="form-label">Message</label>
-                    <textarea class="form-control" id="TextArea" rows="4"></textarea>
+                    <textarea class="form-control" id="TextArea" rows="17" name="Message"></textarea>
                 </div>
-                <input type="submit" class="btn w-100 btn-success" value="SENDMessage">
+                <input type="submit" class="btn w-100 btn-success" value="SEND">
 
             </form>
         </div>
@@ -90,11 +92,11 @@
 </div>
 
 <script>
-var mapCanvas = document.getElementById("map");
-var mapOptions = {
-    center: new google.maps.LatLng(51.508742,-0.120850), zoom: 15
-}
-var map = new google.maps.Map(mapCanvas, mapOptions);
+    var mapCanvas = document.getElementById("map");
+    var mapOptions = {
+        center: new google.maps.LatLng(51.508742, -0.120850), zoom: 15
+    }
+    var map = new google.maps.Map(mapCanvas, mapOptions);
 </script>
 </body>
 </html>
