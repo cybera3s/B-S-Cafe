@@ -6,7 +6,7 @@ base_variables = {
         "lang": 'en-US',
         "title": ''
     },
-    "links": ["home", "menu", "orders"]
+    "links": ["home", "menu", "orders", "about_us", "contact_us"]
 }
 
 
