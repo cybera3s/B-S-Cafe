@@ -5,6 +5,7 @@
     <title>login</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,10 +22,19 @@
         }
 
         .cl_2 {
-            margin-left: 10vw;
+            margin-left: 5vw;
             background-color: white !important;
             color: black !important;
             height: auto;
+        }
+
+        @media only screen and (max-width: 992px) {
+
+         .cl_2 {
+            margin-left: 0vw;
+             margin-top: 5vw;
+            height: auto;
+        }
         }
     </style>
 </head>
@@ -33,7 +43,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="cl_1 col-11 col-md-5">
+        <div class="cl_1 col-11 col-lg-5">
 
             <form class="bg-block rounded text-light p-4 d-primary" style="box-shadow: 3px 2px 13px black;">
                 <h1 class="text-center my-3"></h1>
@@ -59,14 +69,13 @@
             </form>
         </div>
 
-        <div class="cl_2 bg-block rounded text-light p-4 d-primary col-11 col-md-5">
+        <div class="cl_2 bg-block rounded text-light p-4 d-primary col-11 col-lg-5">
             <h5>Hi welcome to cafe</h5>
             <h1>Contact Us</h1>
             <h5>Working Hours</h5>
             <p>Saturday-Thursday
                 10:00 am - 6:00 pm
                 Friday Closed</p>
-
 
             <h5>Support</h5>
             <p> call us for enquiry: 04152234566</p>
@@ -75,10 +84,19 @@
 
             <h5>Address</h5>
             <p> Zanjan,Engelab,cafe Torange</p>
+            <div id="map" style="width:100%;height:400px"></div>
+
         </div>
     </div>
 </div>
 </div>
 
+<script>
+var mapCanvas = document.getElementById("map");
+var mapOptions = {
+    center: new google.maps.LatLng(51.508742,-0.120850), zoom: 15
+}
+var map = new google.maps.Map(mapCanvas, mapOptions);
+</script>
 </body>
 </html>
