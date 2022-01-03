@@ -12,7 +12,7 @@ base_variables = {
 
 def index():
     data = base_variables
-    data['page']['title'] = ['Home']
+    data['page']['title'] = 'Home'
     if request.method == 'GET':
         data["title"] = 'home'
         return render_template("index.html", data=data)
