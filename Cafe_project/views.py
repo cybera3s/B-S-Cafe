@@ -1,4 +1,6 @@
 from flask import url_for, request, redirect, render_template
+from manager import DBManager
+from models import *
 
 base_variables = {
     "page": {
@@ -6,13 +8,14 @@ base_variables = {
         "lang": 'en-US',
         "title": ''
     },
-    "links": ["home", "menu", "orders", "about_us", "contact_us"]
+    "links": ["home", "menu", "about_us", "contact_us"]
 }
+db = DBManager()
 
 
 def index():
     data = base_variables
-    data['page']['title'] = 'Home'
+    data['page']['title'] = 'home'
     if request.method == 'GET':
         data["title"] = 'home'
         return render_template("index.html", data=data)
@@ -20,15 +23,16 @@ def index():
 
 def menu():
     data = base_variables
-    data['page']['title'] = 'Menu'
+    data["page"]["title"] = "menu"
+    items = db.read_all(MenuItems)
     if request.method == 'GET':
         data["title"] = 'menu'
-        return ' Menu Page ! '
+        return render_template('menu.html', items=items, data=data)
 
 
 def order(table_id):
     data = base_variables
-    data['page']["title"] = 'Order'
+    data['page']["title"] = 'order'
     if request.method == 'GET':
         return f'GET/Order Page !{table_id} '
     elif request.method == 'POST':
@@ -42,3 +46,6 @@ def about_us():
     data['page']['title'] = 'About Us'
     if request.method == 'GET':
         return render_template('about_us.html', data=data)
+
+def contact_us():
+    return 'this is contact us page'
