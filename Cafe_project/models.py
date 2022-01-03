@@ -97,3 +97,17 @@ class Receipt:
 
     def __repr__(self):
         return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.total_price}>"
+
+
+class Cashier(DBModel):
+    TABLE = 'cashier'
+    PK = "id"
+
+    def __init__(self, password, phone_number, email, first_name, last_name, id=None):
+        self.password = password
+        self.phone_number = phone_number
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        if id:
+            self.id = id
