@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
     {% include "fonts.html" %}
     {% include "bootstrap.html" %}
-    <title>{{ data.page.title }}</title>
+    <title>{{ data.page.title}}</title>
 </head>
 <body  style="background-color: #b0b0b0;">
     {% include "banner.html" %}
-    {% block CONTENTS %}{% endblock %}
+    <div class="container-fluid" style="border: 2px solid black;">
+        <div class="row mt-2 justify-content-center">
+            <div class="col-11 text-center" style="border:2px solid black;">
+                {% block CONTENTS %}{% endblock %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>
