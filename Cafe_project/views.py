@@ -12,7 +12,7 @@ base_variables = {
 
 def index():
     data = base_variables
-    data['title'] = ['Home']
+    data['page']['title'] = ['Home']
     if request.method == 'GET':
         data["title"] = 'home'
         return render_template("index.html", data=data)
@@ -20,7 +20,7 @@ def index():
 
 def menu():
     data = base_variables
-    data['title'] = 'Menu'
+    data['page']['title'] = 'Menu'
     if request.method == 'GET':
         data["title"] = 'menu'
         return ' Menu Page ! '
@@ -28,7 +28,7 @@ def menu():
 
 def order(table_id):
     data = base_variables
-    data["title"] = 'Order'
+    data['page']["title"] = 'Order'
     if request.method == 'GET':
         return f'GET/Order Page !{table_id} '
     elif request.method == 'POST':
@@ -39,6 +39,6 @@ def order(table_id):
 
 def about_us():
     data = base_variables
-    data['title'] = 'About Us'
+    data['page']['title'] = 'About Us'
     if request.method == 'GET':
         return render_template('about_us.html', data=data)
