@@ -84,3 +84,14 @@ class DBManager:
                 res = list(map(dict, curs.fetchall()))
                 res = [model_class(**item) for item in res]
                 return res
+
+    def read_by(self, model_class: type, column: tuple) -> list:
+        assert issubclass(model_class, DBModel)
+        key, value = column
+        with self.conn:
+            curs = self.__get_cursor()
+            with curs:
+                curs.execute(f"""SELECT * FROM {model_class.TABLE} WHERE {key} = {value};""")
+                res = list(map(dict, curs.fetchall()))
+                res = [model_class(**item) for item in res]
+                return res
