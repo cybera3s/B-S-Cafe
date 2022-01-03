@@ -5,6 +5,24 @@ body{
 }
 
 #banner{
-    height: 80vh;
+    height: 50vh;
     overflow: hidden;
+}
+
+.items{
+    background-color: rgba(28, 28, 28, 0.68);
+    box-shadow: 1px 1px 7px black;
+    color: rgb(215, 215, 215)
+}
+.order{
+    position:fixed;
+    display : block;
+    top: 26vh;
+    cursor: pointer;
+    border-radius: 50%;
+    padding:2em;
+    height:6em;
+    width:6em;
+    background-color:white;
+    color: #00a66d;
 }
