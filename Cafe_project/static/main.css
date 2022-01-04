@@ -19,12 +19,14 @@ body{
     display : block;
     top: 26vh;
     cursor: pointer;
-    border-radius: 50%;
     padding:2em;
     height:6em;
+    opacity: 85%;
     width:6em;
-    background-color:white;
-    color: #00a66d;
+    box-shadow:1px 1px 5px black;
+}
+.order:hover{
+    opacity: 100% !important;
 }
 
 .tables{
