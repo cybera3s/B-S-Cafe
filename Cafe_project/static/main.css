@@ -1,0 +1,44 @@
+body{
+    margin:0; !important;
+    padding:0; !important;
+
+}
+
+#banner{
+    height: 50vh;
+    overflow: hidden;
+}
+
+.items{
+    background-color: rgba(28, 28, 28, 0.68);
+    box-shadow: 1px 1px 7px black;
+    color: rgb(215, 215, 215)
+}
+.order{
+    position:fixed;
+    display : block;
+    top: 26vh;
+    cursor: pointer;
+    padding:2em;
+    height:6em;
+    opacity: 85%;
+    width:6em;
+    box-shadow:1px 1px 5px black;
+}
+.order:hover{
+    opacity: 100% !important;
+}
+
+.tables{
+    background-color: rgb(169, 53, 0);
+    color: rgb(255, 223, 147);
+    text-align: center;
+    cursor: pointer;
+}
+.tables:hover{
+    background-color: rgb(91, 28, 0);
+}
+.customize-modal{
+    background-color: rgba(7, 7, 7, 0.68) !important;
+    color: white !important;
+}
