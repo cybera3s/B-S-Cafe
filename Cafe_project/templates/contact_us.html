@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #4158D0;
+        {#background-image: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);#}
+        }
+
+        .container {
+            margin: 10vw 5vw 10vw auto;
+        }
+
+        .cl_2 {
+            margin-left: 5vw;
+            {#background-color: white !important;#}
+            {#color: black !important;#}
+            height: auto;
+            box-shadow: 3px 2px 13px black;
+
+        }
+
+        @media only screen and (max-width: 992px) {
+
+            .cl_2 {
+                margin-left: 0vw;
+                margin-top: 5vw;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+
+        <div class="cl_1 col-11 col-lg-5">
+
+            <form class="rounded text-light p-4" style="box-shadow: 3px 2px 13px black;">
+                <h1 class="text-center my-3"></h1>
+
+                <div class="mb-3">
+                    <label for="text" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="text" name="firstname">
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="text" name="lastname">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Message</label>
+                    <textarea class="form-control" id="TextArea" rows="17" name="Message"></textarea>
+                </div>
+                <input type="submit" class="btn w-100 btn-success" value="SEND">
+
+            </form>
+        </div>
+
+        <div class="cl_2 bg-block rounded text-light p-4 d-primary col-11 col-lg-5">
+            <h5>Hi welcome to cafe</h5>
+            <h1>Contact Us</h1>
+            <h5>Working Hours</h5>
+            <p>Saturday-Thursday
+                10:00 am - 6:00 pm
+                Friday Closed</p>
+
+            <h5>Support</h5>
+            <p> call us for enquiry: 04152234566</p>
+            <p> call us for technical support: 09305161131</p>
+            <p> Mail us:cofe_torange@gmail.com</p>
+
+            <h5>Address</h5>
+            <p> Zanjan,Engelab,cafe Torange</p>
+            <div id="map" style="width:100%;height:400px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var mapCanvas = document.getElementById("map");
+    var mapOptions = {
+        center: new google.maps.LatLng(51.508742, -0.120850), zoom: 15
+    }
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+</script>
+</body>
+</html>
