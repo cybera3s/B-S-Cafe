@@ -15,10 +15,11 @@ db = DBManager()
 
 def index():
     data = base_variables
+    tables = db.read_all(Table)
     data['page']['title'] = 'home'
     if request.method == 'GET':
         data["title"] = 'home'
-        return render_template("index.html", data=data)
+        return render_template("index.html", data=data, tables=tables)
 
 
 def menu():
@@ -32,9 +33,16 @@ def menu():
 
 def order(table_id):
     data = base_variables
+    items = db.read_all(MenuItems)
+    table = db.read(Table, table_id)
     data['page']["title"] = 'order'
     if request.method == 'GET':
-        return f'GET/Order Page !{table_id} '
+        if table.status:
+            table.status = False
+        else:
+            table.status = True
+        db.update(table)
+        return render_template('order.html', data=data, items=items)
     elif request.method == 'POST':
         return f'POST/Order Page !{table_id} '
     elif request.method == 'DELETE':
