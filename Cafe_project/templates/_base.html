@@ -11,8 +11,35 @@
 </head>
 <body  style="background-color: #b0b0b0;">
     {% include "banner.html" %}
-    <div class="container-fluid">
+    <div class="container-fluid text-dark" id="page-loader">
         {% block CONTENTS %}{% endblock %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script> <!-- table select (modal Ajax) -->
+        function table_select(table_id){
+            let target_url = 'http://127.0.0.1:5000/order'
+            $.ajax({
+                url : `${target_url}/${table_id}`,
+                type: "GET",
+                success: function (response){
+                    $("#page-loader").append(`<h1 class='text-center text-primary'>${response}</h1>`)
+                }
+             })
+        }
+    </script>
+    <script> <!-- Page Loading (ajax)  -->
+        function load_page(endPoint){
+        let target_url = `http://127.0.0.1:5000/${endPoint}`
+        $.ajax({
+                url : `${target_url}`,
+                type: "GET",
+                success: function (response) {
+                    $("#page-loader").append(response)
+                }
+             })
+        }
+    </script>
 </body>
+
 </html>
