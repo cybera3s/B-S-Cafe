@@ -60,3 +60,4 @@ def contact_us():
     data = base_variables
     data['page']['title'] = 'About Us'
     if request.method == 'GET':
+        return render_template('contact_us.html', data=data)
