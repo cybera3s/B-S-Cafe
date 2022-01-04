@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
     {% include "fonts.html" %}
     {% include "bootstrap.html" %}
-    <title>{{ data.page.title}}</title>
+    <title>{{ data.page.title }}</title>
 </head>
 <body  style="background-color: #b0b0b0;">
 {% include "banner.html" %}
@@ -18,6 +18,7 @@
 <script> <!-- table select (modal Ajax) -->
 function table_select(table_id){
     let target_url = 'http://127.0.0.1:5000/order'
+    $("#page-loader").empty()
     $.ajax({
         url : `${target_url}/${table_id}`,
         type: "GET",
@@ -29,6 +30,7 @@ function table_select(table_id){
 </script>
 <script> <!-- Page Loading (ajax)  -->
 function load_page(endPoint){
+    $("#page-loader").empty()
     let target_url = `http://127.0.0.1:5000/${endPoint}`
     $.ajax({
         url : `${target_url}`,
