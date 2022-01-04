@@ -26,3 +26,17 @@ body{
     background-color:white;
     color: #00a66d;
 }
+
+.tables{
+    background-color: rgb(169, 53, 0);
+    color: rgb(255, 223, 147);
+    text-align: center;
+    cursor: pointer;
+}
+.tables:hover{
+    background-color: rgb(91, 28, 0);
+}
+.customize-modal{
+    background-color: rgba(7, 7, 7, 0.68) !important;
+    color: white !important;
+}
