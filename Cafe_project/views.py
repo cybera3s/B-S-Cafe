@@ -55,5 +55,8 @@ def about_us():
     if request.method == 'GET':
         return render_template('about_us.html', data=data)
 
+
 def contact_us():
-    return 'this is contact us page'
+    data = base_variables
+    data['page']['title'] = 'About Us'
+    if request.method == 'GET':
