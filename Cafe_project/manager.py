@@ -80,7 +80,7 @@ class DBManager:
         with self.conn:
             curs = self.__get_cursor()
             with curs:
-                curs.execute(f"""SELECT * FROM {model_class.TABLE};""")
+                curs.execute(f"""SELECT * FROM {model_class.TABLE} ORDER BY id;""")
                 res = list(map(dict, curs.fetchall()))
                 res = [model_class(**item) for item in res]
                 return res
