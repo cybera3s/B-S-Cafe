@@ -119,3 +119,16 @@ class Cashier(DBModel):
         self.last_name = last_name
         if id:
             self.id = id
+
+class Discount(DBModel):
+    TABLE = 'discount'
+    PK = 'id'
+
+    def __init__(self, value: int, root_id: int, id: int = None):
+        self.value = value
+        self.root_id = root_id
+        if id:
+            self.id = id
+
+    def __repr__(self):
+        return f"<Class_Discount id_{self.id}||Value: {self.value}||Root: {self.root_id}>"
