@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row justify-content-between">
                 {% for table in tables %}
-                    {% if table.status %}
+                    {% if not table.status %}
                         <div class="col-3 m-1 tables p-2" onclick="table_select(this.id)" id={{ table.id }}>
                         <h6 class="text-dark">Table: {{ table.id }}</h6>
                         <h6>Capacity: {{ table.capacity }}</h6>
