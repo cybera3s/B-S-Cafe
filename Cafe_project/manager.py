@@ -5,10 +5,10 @@ from models import *
 
 
 class DBManager:
-    DEFAULT_HOST = "castor.db.elephantsql.com"
-    DEFAULT_USER = "emuobeum"
-    DEFAULT_PASSWORD = 'sPxAPxjlHoFajruESmVmv7UN8x0-a4ST'
-    DEFAULT_DATABASE_NAME = 'emuobeum'
+    DEFAULT_HOST = "194.39.205.167"
+    DEFAULT_USER = "maktab"
+    DEFAULT_PASSWORD = 'maktab'
+    DEFAULT_DATABASE_NAME = 'group3_db'
     DEFAULT_PORT = 5432
 
     def __init__(self, database=DEFAULT_DATABASE_NAME, user=DEFAULT_USER, host=DEFAULT_HOST, port=DEFAULT_PORT,
