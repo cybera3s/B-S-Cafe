@@ -1,5 +1,5 @@
 from abc import ABC
-
+import json
 import datetime as dt
 
 
@@ -75,7 +75,7 @@ class Category(DBModel):
         return f"<Category_class {self.id}:{self.category}>"
 
 
-class Order:
+class Order(DBModel):
     TABLE = 'orders'
     PK = 'id'
 
@@ -91,12 +91,12 @@ class Order:
         return f'<Order_Class {self.id}:{self.menu_item}>'
 
 
-class Receipt:
+class Receipt(DBModel):
     TABLE = 'receipts'
     PK = 'id'
 
-    def __init__(self, orders: list, total_price: int = 0, final_price: int = 0, is_paid: bool = False, id: int = None):
-        self.orders = orders
+    def __init__(self, orders: dict, total_price: int = 0, final_price: int = 0, is_paid: bool = False, id: int = None):
+        self.orders = json.dumps(orders)
         self.total_price = total_price
         self.final_price = final_price
         self.is_paid = is_paid
