@@ -124,11 +124,10 @@ class Discount(DBModel):
     TABLE = 'discount'
     PK = 'id'
 
-    def __init__(self, value: int, root_id: int, id: int = None):
+    def __init__(self, value: int, id: int = None):
         self.value = value
-        self.root_id = root_id
         if id:
             self.id = id
 
     def __repr__(self):
-        return f"<Class_Discount id_{self.id}||Value: {self.value}||Root: {self.root_id}>"
+        return f"<Class_Discount id_{self.id}||Value: {self.value}>"

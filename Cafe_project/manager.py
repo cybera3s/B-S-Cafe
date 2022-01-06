@@ -3,11 +3,12 @@ import psycopg2.extras
 from psycopg2._psycopg import connection, cursor
 from models import *
 
+
 class DBManager:
-    DEFAULT_HOST = "tyke.db.elephantsql.com"
-    DEFAULT_USER = "tcxwbzkx"
-    DEFAULT_PASSWORD = 'bC4sKNXZglr_FJxAaL3eBrR_VhjRKx-H'
-    DEFAULT_DATABASE_NAME = 'tcxwbzkx'
+    DEFAULT_HOST = "194.39.205.167"
+    DEFAULT_USER = "maktab"
+    DEFAULT_PASSWORD = 'maktab'
+    DEFAULT_DATABASE_NAME = 'group3_db'
     DEFAULT_PORT = 5432
 
     def __init__(self, database=DEFAULT_DATABASE_NAME, user=DEFAULT_USER, host=DEFAULT_HOST, port=DEFAULT_PORT,
