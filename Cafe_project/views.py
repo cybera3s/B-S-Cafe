@@ -4,7 +4,6 @@ from models import *
 
 base_variables = {
     "page": {
-        "base_title": "Cafe Maktab",
         "lang": 'en-US',
         "title": ''
     },
@@ -37,11 +36,6 @@ def order(table_id):
     table = db.read(Table, table_id)
     data['page']["title"] = 'order'
     if request.method == 'GET':
-        if table.status:
-            table.status = False
-        else:
-            table.status = True
-        db.update(table)
         return render_template('order.html', data=data, items=items)
     elif request.method == 'POST':
         return f'POST/Order Page !{table_id} '
