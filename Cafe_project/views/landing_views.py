@@ -13,12 +13,12 @@ base_variables = {
 
 def index():
     data = base_variables
-    # tables = db.read_all(Table)
+    tables = db.read_all(models.Table)
     data['page']['title'] = 'home'
     if request.method == 'GET':
         data["title"] = 'home'
-        return "<h1>Test Runing...</h1>"
-        # return render_template("index.html", data=data, tables=tables)
+        # return "<h1>Test Runing...</h1>"
+        return render_template("index.html", data=data, tables=tables)
 
 
 def menu():
