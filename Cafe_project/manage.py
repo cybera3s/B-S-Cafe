@@ -6,7 +6,7 @@ from utility.utils import Validator
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(dest='createcashier', help='create a new cashier')
+    parser.add_argument(dest='createcashier', help='create a new cashier_panel')
     args = parser.parse_args()
 
     if args.createcashier == 'createcashier':
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
             cashier = Cashier(firstname, lastname, phone_number, email, password)
             db.create(cashier)
-            print('new cashier created !')
+            print('new cashier_panel created !')
 
         except Exception as e:
             print(e)

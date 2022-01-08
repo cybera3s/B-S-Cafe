@@ -113,7 +113,7 @@ class Receipt(DBModel):
 
 
 class Cashier(DBModel):
-    TABLE = 'cashier'
+    TABLE = 'cashier_panel'
     PK = "id"
 
     def __init__(self, first_name: str, last_name: str, phone_number: str, email: str, password: str, id: int = None):
