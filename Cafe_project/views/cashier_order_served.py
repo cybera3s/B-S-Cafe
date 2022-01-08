@@ -8,7 +8,7 @@ from views.landing_views import base_variables
 def cashier_order_served():
     data = base_variables
     data["page"]["title"] = "served"
-    items = db.read_by(Order, ('status_code', 3))
+    items = db.read_by(Order, ('status_id', 1))
     if request.method == 'GET':
         data["title"] = 'served'
-        return render_template('Cashier/Cashier_order_served.html', items=items, data=data)
+        return render_template('cashier/Cashier_order_served.html', items=items, data=data)
