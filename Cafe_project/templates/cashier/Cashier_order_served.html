@@ -1,0 +1,61 @@
+{#{% extends "layout/_base.html" %}#}
+{#{% block title %}#}
+{#    data.page.title#}
+{#{% endblock %}#}
+{#{% block extra_head %}#}
+{#    <style>#}
+{##}
+{#    </style>#}
+{#{% endblock %}#}
+{#{% block body %}#}
+{##}
+{#<body style="background-color: whitesmoke">#}
+{#<div class="container-fluid">#}
+{#    <div class="row">#}
+{#        <h1 class="title" style="text-align: center"> واژه های در حال اموزش </h1>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#<div class="container-fluid">#}
+{#    <div class="row" style="justify-content: center">#}
+{#        {% for card in card_list %}#}
+{#            <div class="box">#}
+{#                <h1 class="text"> {{ items.menuItems }}</h1>#}
+{#                <h3 class="text"> {{ card.mean }}</h3>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#</div>#}
+{##}
+{##}
+{#</body>#}
+{#{% endblock %}#}
+{#{% block extra_footer %}{% endblock %}#}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ data.page.title }}</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <h1 class="title" style="text-align: center"> واژه های در حال اموزش </h1>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row" style="justify-content: center">
+        {% for item in items %}
+            <div class="box">
+                <h1 class="text"> {{ item }}</h1>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
+
