@@ -113,7 +113,7 @@ class Receipt(DBModel):
 
 
 class Cashier(DBModel):
-    TABLE = 'cashier_panel'
+    TABLE = 'cashier'
     PK = "id"
 
     def __init__(self, first_name: str, last_name: str, phone_number: str, email: str, password: str, id: int = None):
@@ -124,6 +124,9 @@ class Cashier(DBModel):
         self.password = password
         if id:
             self.id = id
+
+    def __repr__(self):
+        return f"<Class Cashier id: {self.id} | first name: {self.first_name} | email: {self.email}>"
 
 
 class Discount(DBModel):
