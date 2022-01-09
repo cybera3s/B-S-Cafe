@@ -7,38 +7,48 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
     {% include "fonts.html" %}
     {% include "bootstrap.html" %}
-    <title>{{ data.page.title }}</title>
+    <title>خانه</title>
 </head>
-<body  style="background-color: #b0b0b0;">
+<body class="bg-dark"  >
+{% include "navbar.html" %}
 {% include "banner.html" %}
-<div class="container-fluid text-dark" id="page-loader">
+<div class="container-fluid p-0 m-0 text-dark" id="page-loader">
+    {% include "home.html" %}
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../../static/js/landing/jquery-cookie.js"></script>
 <script> <!-- table select (modal Ajax) -->
-function table_select(table_id){
-    let target_url = 'http://127.0.0.1:5000/order'
-    $("#page-loader").empty()
-    $.ajax({
-        url : `${target_url}/${table_id}`,
-        type: "GET",
-        success: function (response){
-            $("#page-loader").append(`<h1 class='text-center text-primary'>${response}</h1>`)
-        }
-    })
+    function table_select(table_id){
+        let target_url = 'http://127.0.0.1:5000/order'
+        $("#page-loader").empty()
+        $.ajax({
+            url : `${target_url}/${table_id}`,
+            type: "GET",
+            success: function (response){
+                $("#page-loader").append(`<h1 class='text-center text-primary'>${response}</h1>`)
+            }
+        })
 }
 </script>
 <script> <!-- Page Loading (ajax)  -->
-function load_page(endPoint){
-    $("#page-loader").empty()
-    let target_url = `http://127.0.0.1:5000/${endPoint}`
-    $.ajax({
-        url : `${target_url}`,
-        type: "GET",
-        success: function (response) {
-            $("#page-loader").append(response)
-        }
-    })
+    function load_page(endPoint, title){
+        $("#page-loader").empty()
+        let target_url = `http://127.0.0.1:5000/${endPoint}`
+        $.ajax({
+            url : `${target_url}`,
+            type: "GET",
+            success: function (response) {
+                $("#page-loader").append(response)
+                $(document).attr("title", title);
+            }
+        })
 }
+</script>
+<script>  <!-- add FoodItem to Order (ajax)  -->
+    function order(food_id){
+        let target_url = 'http://127.0.0.1:5000/order'
+        let table_id = $.cookie("table_id")
+    }
 </script>
 </body>
 </html>
