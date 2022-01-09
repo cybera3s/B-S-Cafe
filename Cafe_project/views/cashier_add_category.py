@@ -22,7 +22,7 @@ def cashier_add_category():
         root = request.form.get('root')
         discount = request.form.get('discount')
         print(name, root, discount)
-        # category = models.Category(name, root)
-        # db.create(category)
+        category = models.Category(name, root)
+        db.create(category)
         resp = make_response(redirect(url_for('cashier_add_category')))
         return resp
