@@ -12,7 +12,7 @@ def cashier_add_category():
     data = base_variables
     data["page"]["title"] = "category"
     items_category = db.read_all(models.Category)
-    items_discount = db.read_all(models.Category)
+    items_discount = db.read_all(models.Discount)
     if request.method == 'GET':
         data["title"] = 'category'
         return render_template('cashier/cashier_add_category.html', items_category=items_category, data=data,
