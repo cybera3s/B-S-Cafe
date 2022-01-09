@@ -14,11 +14,11 @@
 
 </head>
 
-<body>
+<body class="justify-content-center">
 <div class=" container-fluid
     ">
     <div class="row">
-        <h1 class="title text-center">Order-served </h1>
+        <h1 class="title text-center display-1">Served orders </h1>
     </div>
     </div>
 
@@ -28,11 +28,10 @@
                 <thead>
                 <tr>
                     <th class="text-center black">ID</th>
-                    <th class="text-center black">menu_item</th>
+                    <th class="text-center black">menuitem</th>
                     <th class="text-center black">count</th>
-                    <th class="text-center black">receipt_id</th>
-                    <th class="text-center black">status_id</th>
-                    <th class="text-center black">create_time</th>
+                    <th class="text-center black">receipt</th>
+                    <th class="text-center black">create time</th>
                 </tr>
                 </thead>
                 <tbody id="row">
@@ -42,7 +41,6 @@
                         <td class="text-center">{{ item.menu_item }}</td>
                         <td class="text-center">{{ item.count }}</td>
                         <td class="text-center">{{ item.receipt_id }}</td>
-                        <td class="text-center">{{ item.status_id }}</td>
                         <td class="text-center">{{ item.create_time }}</td>
                     </tr>
                 {% endfor %}
