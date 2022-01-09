@@ -2,27 +2,57 @@
     <div class="col-12 m-0 p-0">
         <nav class="navbar navbar-expand-lg navbar-dark" style="width:100%; position: sticky; top:0;padding-left:25px; background-color: #1b1e21">
             <div class="container-fluid">
-                <a class="navbar-brand" style="text-shadow: 1px 0px 9px;color: #ff872d ;font-family: 'Russo One', sans-serif;" href="#">Cafe Maktab</a>
+                <a class="navbar-brand nav-logo" href="#">کافه تلخ و شیرین</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
-                        {% for item in data['links'] %}
-                            {% if item == data.title %}
+                        {% for item in data['pages'].values() %}
+                            {% if item['endpoint'] == data['current_page'] %}
                                 <li class="nav-item mx-4 active" style="cursor:pointer">
-                                    <a class="nav-link" onclick="load_page(this.id)" id="{{ item }}">{{ item.replace("_"," ") }} <span class="sr-only"></span></a>
+                                    <a class="nav-link" onclick="load_page('{{ item['endpoint'] }}','{{ item['title'] }}')" id="{{ item['endpoint'] }}">{{ item['title'] }} <span class="sr-only"></span></a>
                                 </li>
                             {% else %}
                                 <li class="nav-item mx-4" style="cursor:pointer">
-                                    <a class="nav-link" onclick="load_page(this.id)" id="{{ item }}">{{ item.replace("_"," ") }} <span class="sr-only"></span></a>
+                                    <a class="nav-link" onclick="load_page('{{ item['endpoint'] }}','{{ item['title'] }}')" id="{{ item['endpoint'] }}">{{ item['title'] }} <span class="sr-only"></span></a>
                                 </li>
                             {% endif %}
                         {% endfor %}
+                        <li class="nav-item mx-4">
+                            <a class='nav-link' type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                سفارش
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content customize-modal">
+      <div class="modal-header text-center">
+        <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="row justify-content-between">
+                {% for table in tables %}
+                    {% if not table.status %}
+                        <div class="col-3 m-1 tables p-2" onclick="table_select(this.id)" id={{ table.id }}>
+                        <h6 class="text-dark">Table: {{ table.id }}</h6>
+                        <h6>Capacity: {{ table.capacity }}</h6>
+                        <h6>Status: Free</h6>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
