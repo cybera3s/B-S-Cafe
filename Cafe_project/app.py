@@ -1,6 +1,6 @@
 from flask import Flask
 
-from views import cashier_order_served
+from views import cashier_order_served, cashier_add_category
 from views.landing_views import *
 from views import *
 
@@ -22,7 +22,7 @@ app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'D
 # # app.add_url_rule('/cashier_panel/order', cashier_order.cashier_order, methods=['GET']) # --------> () (mamreza)
 app.add_url_rule('/cashier_panel/order/served', 'cashier_order_served', cashier_order_served.cashier_order_served,methods=['GET'])  ##--------> (mamad nasimi)
 # # app.add_url_rule('/cashier_panel/new_menu_item', cashier_add_item.cashier_add_item, methods=['POST']) --------> (mamreza)
-# # app.add_url_rule('/cashier_panel/add_category', cashier_add_category.ashier_add_category, methods=['GET', 'POST']) --------> (mamad nasimi)
+app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category',cashier_add_category.cashier_add_category, methods=['GET', 'POST']) ##--------> (mamad nasimi)
 # # app.add_url_rule('/cashier_panel/add_discount', cashier_add_discount.cashier_add_discount, methods=['GET', 'POST']) --------> (meisam)
 
 # # for now optional
