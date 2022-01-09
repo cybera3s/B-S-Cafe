@@ -1,7 +1,7 @@
 from flask import Flask
 from views.landing_views import *
 from views import *
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 #  -----------  Landing Pages----------------------
 
@@ -11,7 +11,7 @@ app.add_url_rule('/about_us', 'about_us', about_us, methods=['GET'])
 app.add_url_rule('/contact_us', 'contact_us', contact_us, methods=['GET', 'POST'])
 app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'DELETE'])
 
-# #  -----------  Cashier Panel---------------------- #
+# #  -----------  Cashier Panel ---------------------- #
 
 # # app.add_url_rule('/cashier_panel', login.login, methods=['GET', 'POST']) # --------> (safa)
 # # app.add_url_rule('/cashier_panel/dashboard', cashier_dashboard.cashier_dashboard, methods=['GET']) # --------> (safa)
