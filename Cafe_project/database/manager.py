@@ -92,7 +92,7 @@ class DBManager:
         with self.conn:
             curs = self.__get_cursor()
             with curs:
-                curs.execute(f"""SELECT * FROM {model_class.TABLE} WHERE {key} = {value};""")
+                curs.execute(f"""SELECT * FROM {model_class.TABLE} WHERE {key} = '{value}';""")
                 res = list(map(dict, curs.fetchall()))
                 res = [model_class(**item) for item in res]
                 return res
