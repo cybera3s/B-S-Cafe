@@ -9,86 +9,58 @@
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
     <title>{{ data.page.title }}</title>
-    <style>
-        body {
-            background-color: #fffbfb;
-            padding-left: 10vw;
-            padding-right: 10vw;
-        }
+    <link rel="stylesheet" href="../../static/css/cashier/Cashier_order_served_css.css">
+    <script src="{{ url_for('static' , filename = "") }}" ></script>
 
-        #customers {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        #customers tr {
-            border: 10px solid #fffbfb;
-            padding: 15px;
-
-        }
-
-        #customers thead {
-            background-color: #f52121;
-            color: #fff8f8;
-        }
-
-        #customers tbody {
-            background-color: #faf2f2;
-        }
-
-        #row tr:hover {
-            background-color: #a1a0a0;
-        }
-
-
-    </style>
 </head>
 
 <body>
-<div class="container-fluid">
+<div class=" container-fluid
+    ">
     <div class="row">
         <h1 class="title text-center">Order-served </h1>
     </div>
-</div>
-
-<div class="container-fluid">
-    <div class="row" style="justify-content: center">
-        <table class="table" id="customers">
-            <thead>
-            <tr>
-                <th class="text-center black">ID</th>
-                <th class="text-center black">menu_item</th>
-                <th class="text-center black">count</th>
-                <th class="text-center black">receipt_id</th>
-                <th class="text-center black">status_id</th>
-                <th class="text-center black">create_time</th>
-            </tr>
-            </thead>
-            <tbody id="row">
-            {% for item in items %}
-                <tr>
-                    <td class="text-center">{{ item.id }}</td>
-                    <td class="text-center">{{ item.menu_item }}</td>
-                    <td class="text-center">{{ item.count }}</td>
-                    <td class="text-center">{{ item.receipt_id }}</td>
-                    <td class="text-center">{{ item.status_id }}</td>
-                    <td class="text-center">{{ item.create_time }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <form class="text-center" action="#">
-            <input id="submit" class="btn btn-danger text-muted" type="submit" value="update">
-        </form>
     </div>
-</div>
-<script>
-    $("#submit").on('click', function () {
-        $.get({{url_for('cashier_order_served')}}, function () {
-            console.log('13')
 
+    <div class="container-fluid">
+        <div class="row" style="justify-content: center">
+            <table class="table" id="customers">
+                <thead>
+                <tr>
+                    <th class="text-center black">ID</th>
+                    <th class="text-center black">menu_item</th>
+                    <th class="text-center black">count</th>
+                    <th class="text-center black">receipt_id</th>
+                    <th class="text-center black">status_id</th>
+                    <th class="text-center black">create_time</th>
+                </tr>
+                </thead>
+                <tbody id="row">
+                {% for item in items %}
+                    <tr>
+                        <td class="text-center">{{ item.id }}</td>
+                        <td class="text-center">{{ item.menu_item }}</td>
+                        <td class="text-center">{{ item.count }}</td>
+                        <td class="text-center">{{ item.receipt_id }}</td>
+                        <td class="text-center">{{ item.status_id }}</td>
+                        <td class="text-center">{{ item.create_time }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <form class="text-center" action="#">
+                <input id="submit" class="btn btn-danger text-muted" type="submit" value="update">
+            </form>
+        </div>
+    </div>
+    <script>
+        $("#submit").on('click', function () {
+            $.get({{url_for('cashier_order_served')}}, function () {
+                console.log('13')
+
+            });
         });
-    });
-</script>
-</body>
+    </script>
+    </body>
 </html>
 
