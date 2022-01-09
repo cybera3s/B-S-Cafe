@@ -1,7 +1,7 @@
 from flask import Flask
 from views.landing_views import *
 from views import *
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 
 #  -----------  Landing Pages----------------------
 
