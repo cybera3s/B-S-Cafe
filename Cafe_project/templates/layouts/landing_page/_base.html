@@ -46,8 +46,14 @@
 </script>
 <script>  <!-- add FoodItem to Order (ajax)  -->
     function order(food_id){
-        let target_url = 'http://127.0.0.1:5000/order'
         let table_id = $.cookie("table_id")
+        let target_url = `http://127.0.0.1:5000/order/${table_id}`
+        $.ajax({
+            url : `${target_url}`,
+            type: "POST",
+            success: function (response) {
+            }
+        })
     }
 </script>
 </body>
