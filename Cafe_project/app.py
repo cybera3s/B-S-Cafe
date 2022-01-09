@@ -2,8 +2,12 @@ from flask import Flask
 from views.landing_views import *
 from views import cashier_add_category, cashier_add_discount, cashier_add_item, cashier_dashboard, cashier_order, \
     cashier_order_served, cashier_table, login
+from os import urandom
+
 
 app = Flask(__name__, template_folder='templates')
+app.secret_key = urandom(24)
+
 
 #  -----------  Landing Pages----------------------
 
@@ -16,6 +20,7 @@ app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'D
 # #  -----------  Cashier Panel---------------------- #
 
 # # app.add_url_rule('/cashier_panel', 'login',login.login, methods=['GET', 'POST']) # --------> (safa)
+# app.add_url_rule('/logout', 'logout',logout.logout, methods=['GET', 'POST'])  # --------> (safa)
 # # app.add_url_rule('/cashier_panel/dashboard', 'cashier_dashboard', cashier_dashboard.cashier_dashboard, methods=['GET']) # --------> (safa)
 # # app.add_url_rule('/cashier_panel/table', 'cashier_table', cashier_table.cashier_table, methods=['GET']) # --------> (amirali)
 # # app.add_url_rule('/cashier_panel/order', 'cashier_order', cashier_order.cashier_order, methods=['GET']) # --------> () (mamreza)
