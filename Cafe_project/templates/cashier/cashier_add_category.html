@@ -9,6 +9,20 @@
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 </head>
 <style>
+    body {
+        width: 75vw;
+        padding-left: 30vw;
+    }
+
+    @media only screen and (max-width: 600px) {
+
+        body {
+            width: 100vw !important;
+            padding-left:1vw!important;
+
+        }
+    }
+
     input[type=text], select {
         width: 100%;
         padding: 12px 20px;
@@ -33,15 +47,15 @@
 <body>
 
 <div class="container mt-3">
-    <h1 class="text-center"> Category </h1>
+    <h1 class="text-center"> Add new category </h1>
     <form class="bg-dark rounded text-light p-4 d-block" style="box-shadow: 3px 2px 13px black;"
           action="{{ url_for("cashier_add_category") }}" method="post">
         <div class="mb-3 mt-3">
             <label for="name">name category:</label>
-            <input type="text" class="form-control" id="name" placeholder="name category" name="name" required>
+            <input type="text" class="form-control" id="name" placeholder="category name here ..." name="name" required>
         </div>
         <div class="mb-3" id="root-category">
-            <label for="root">subcategory:</label>
+            <label for="root">root main:</label>
             <select id="root" name="root">
                 {% for cat in items_category %}
                     <option value="{{ cat.id }}">{{ cat.category }}</option>
@@ -57,7 +71,7 @@
             </select>
         </div>
         <input type="checkbox" id="category_root" name="category_root" value="category_root">
-        <label for="category_root"> origin category </label><br>
+        <label for="category_root"> consider it as root </label><br>
         <button type="submit" class="btn btn-primary">Add category</button>
     </form>
 </div>
