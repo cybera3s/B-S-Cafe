@@ -15,4 +15,5 @@ def cashier_order_served():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
+        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template('cashier/Cashier_order_served.html', items=items, data=data)
