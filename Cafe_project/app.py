@@ -16,6 +16,7 @@ app.add_url_rule('/menu', 'menu', menu, methods=['GET'])
 app.add_url_rule('/about_us', 'about_us', about_us, methods=['GET'])
 app.add_url_rule('/contact_us', 'contact_us', contact_us, methods=['GET', 'POST'])
 app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'DELETE'])
+app.add_url_rule('/cart', 'cart', cart, methods=['GET', 'POST', 'DELETE'])
 
 # #  -----------  Cashier Panel---------------------- #
 # app.add_url_rule('/logout', 'logout',logout.logout, methods=['GET', 'POST'])  # --------> (safa)
@@ -30,7 +31,6 @@ app.add_url_rule('/cashier_panel', 'login',login.login, methods=['GET', 'POST'])
 
 # # for now optional
 # # app.add_url_rule('/cashier_panel/edit_menu', cashier_edit_menu.cashier_edit_menu, methods=['GET', 'POST']) --------> (safa and alireza)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
