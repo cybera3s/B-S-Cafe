@@ -18,7 +18,7 @@
 
         body {
             width: 100vw !important;
-            padding-left:1vw!important;
+            padding-left: 1vw !important;
 
         }
     }
@@ -42,6 +42,93 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
+    }
+
+    .onoffswitch2 {
+        position: relative;
+        width: 90px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .onoffswitch2-checkbox {
+        display: none;
+    }
+
+    .onoffswitch2-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 5px;
+    }
+
+    .onoffswitch2-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        -moz-transition: margin 0.3s ease-in 0s;
+        -webkit-transition: margin 0.3s ease-in 0s;
+        -o-transition: margin 0.3s ease-in 0s;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch2-inner:before, .onoffswitch2-inner:after {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 30px;
+        padding: 0;
+        line-height: 30px;
+        font-size: 14px;
+        color: white;
+        font-family: Trebuchet, Arial, sans-serif;
+        font-weight: bold;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .onoffswitch2-inner:before {
+        content: "root";
+        padding-left: 10px;
+        background-color: #4CAF50;
+        color: #FFFFFF;
+    }
+
+    .onoffswitch2-inner:after {
+        content: "unroot";
+        padding-right: 10px;
+        background-color: #EEEEEE;
+        color: #999999;
+        text-align: right;
+    }
+
+    .onoffswitch2-switch {
+        display: block;
+        width: 18px;
+        margin: 0px;
+        background: #FFFFFF;
+        border: 2px solid #999999;
+        border-radius: 5px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 68px;
+        -moz-transition: all 0.3s ease-in 0s;
+        -webkit-transition: all 0.3s ease-in 0s;
+        -o-transition: all 0.3s ease-in 0s;
+        transition: all 0.3s ease-in 0s;
+
+    }
+
+    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-switch {
+        right: 0px;
     }
 </style>
 <body>
@@ -70,13 +157,25 @@
                 {% endfor %}
             </select>
         </div>
-        <input type="checkbox" id="category_root" name="category_root" value="category_root">
-        <label for="category_root"> consider it as root </label><br>
+
+        <div class="col-md-2">
+
+
+            <div class="onoffswitch2">
+                <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="myonoffswitch2" checked>
+                <label class="onoffswitch2-label" for="myonoffswitch2">
+                    <span class="onoffswitch2-inner"></span>
+                    <span class="onoffswitch2-switch"></span>
+                </label>
+            </div>
+
+        </div>
         <button type="submit" class="btn btn-primary">Add category</button>
+
     </form>
 </div>
 <script>
-    $('#category_root').on('click', function () {
+    $('#myonoffswitch2').on('click', function () {
         $('#root-category').toggle()
     })
 </script>
