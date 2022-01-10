@@ -41,7 +41,7 @@
             <input type="text" class="form-control" id="name" placeholder="name category" name="name" required>
         </div>
         <div class="mb-3" id="root-category">
-            <label for="root">Add category:</label>
+            <label for="root">subcategory:</label>
             <select id="root" name="root">
                 {% for cat in items_category %}
                     <option value="{{ cat.id }}">{{ cat.category }}</option>
@@ -57,8 +57,8 @@
             </select>
         </div>
         <input type="checkbox" id="category_root" name="category_root" value="category_root">
-        <label for="category_root"> category </label><br>
-        <button type="submit" class="btn btn-primary">add category</button>
+        <label for="category_root"> origin category </label><br>
+        <button type="submit" class="btn btn-primary">Add category</button>
     </form>
 </div>
 <script>
