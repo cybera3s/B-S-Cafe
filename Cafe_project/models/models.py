@@ -99,12 +99,13 @@ class Receipt(DBModel):
     PK = 'id'
 
     def __init__(self, orders: dict, table_id: int, total_price: int = 0, final_price: int = 0, is_paid: bool = False,
-                 id: int = None):
+                 create_time= datetime.now(), id: int = None):
         self.orders = json.dumps(orders)
         self.total_price = total_price
         self.final_price = final_price
         self.is_paid = is_paid
         self.table_id = table_id
+        self.create_time = create_time
         if id:
             self.id = id
 
