@@ -38,10 +38,10 @@
           action="{{ url_for("cashier_add_category") }}" method="post">
         <div class="mb-3 mt-3">
             <label for="name">name category:</label>
-            <input type="text" class="form-control" id="name" placeholder="name category" name="name">
+            <input type="text" class="form-control" id="name" placeholder="name category" name="name" required>
         </div>
         <div class="mb-3" id="root-category">
-            <label for="root">Root:</label>
+            <label for="root">Add category:</label>
             <select id="root" name="root">
                 {% for cat in items_category %}
                     <option value="{{ cat.id }}">{{ cat.category }}</option>
