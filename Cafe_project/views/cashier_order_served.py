@@ -10,8 +10,8 @@ from views.landing_views import base_variables
 # Cashier
 def cashier_order_served():
     data = base_variables
-    data["page"]["title"] = "served"
-    items = db.read_by(Order, ('status_id', 1))
+    data["page"]["title"] = "Served orders"
+    items = db.read_by(Order, ('status_id', 3))
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
