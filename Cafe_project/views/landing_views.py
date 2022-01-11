@@ -60,29 +60,43 @@ def order(table_id):
 
     if request.method == 'GET':
         res = flask.make_response(render_template('order.html', data=data, items=items))
-        new_receipt = models.Receipt({}, int(table_id))
+        new_receipt = models.Receipt(int(table_id))
         receipt_id = db.create(new_receipt)
         res.set_cookie('receipt_id', str(receipt_id))
         res.set_cookie('table_id', table_id)
         return res
     elif request.method == 'POST':
-        data = request.get_json()
-        value1 = data['order']['item_id']
-        value2 = data['order']['count']
-        table = data['table']
-        receipt = data['receipt']
-        print(f"""
-        item_id : {value1}
-        count : {value2}
-        receipt_id : {receipt}
-        table)id : {table}""")
+        cookie = request.get_json()
+        item_id = cookie['order']['item_id']
+        item_count = cookie['order']['count']
+        table = cookie['table']
+        receipt = cookie['receipt']
+        new_order = models.Order(item_id, receipt, 1, item_count)
+        order_id = db.create(new_order)
+        db.array_modify(models.Receipt, ('orders', order_id), int(receipt))
         return '200'
     elif request.method == 'DELETE':
-        return f'DELETE/Order Page !{table_id}'
+        return f'DELETE/Order Page !Order_id'
     return
 
+
 def cart():
-    pass
+    if request.method == 'GET':
+        receipt = request.cookies.get('receipt_id')
+        orders = db.read_by(models.Order, ('receipt_id', receipt))
+        menu_items = db.read_all(models.MenuItems)
+        return render_template('cart.html', orders=orders, items=menu_items)
+    if request.method == "POST":
+        cookie = request.get_json()
+        table_id = int(cookie['table'])
+        receipt_id = int(cookie['receipt'])
+        current_table = db.read(models.Table, table_id)
+        current_receipt = db.read(models.Receipt, receipt_id)
+        current_receipt.is_paid = True
+        current_table.status = True
+        db.update(current_receipt)
+        db.update(current_table)
+        return redirect(url_for('home'))
 
 
 def about_us():
