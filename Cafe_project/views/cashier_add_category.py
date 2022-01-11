@@ -4,18 +4,36 @@ from database import manager
 from database.manager import db
 from models import models
 from models.models import Order
-from views.landing_views import base_variables
+base_variables ={
+    "pages": {
+        "home": {
+            'title': 'خانه',
+            'endpoint': 'home'
+        },
+        "menu": {
+            'title': 'منو',
+            'endpoint': 'menu'
+        },
+        "about_us": {
+            'title': 'درباره ما',
+            'endpoint': 'about_us'
+        },
+        "contact_us": {
+            'title': 'ارتباط با ما',
+            'endpoint': 'contact_us'
+        },
+    },
+    "current_page": ''
+}
 
 
 # Cashier
 def cashier_add_category():
-    data = base_variables
-    data["page"]["title"] = "category"
+
     items_category = db.read_all(models.Category)
     items_discount = db.read_all(models.Discount)
     if request.method == 'GET':
-        data["title"] = 'category'
-        return render_template('cashier/cashier_add_category.html', items_category=items_category, data=data,
+        return render_template('cashier/cashier_add_category.html', items_category=items_category,
                                items_discount=items_discount)
     elif request.method == "POST":
         name = request.form.get('name')
