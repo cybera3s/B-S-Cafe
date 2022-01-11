@@ -11,12 +11,13 @@ app.secret_key = urandom(24)
 
 #  -----------  Landing Pages----------------------
 
-app.add_url_rule('/', 'home', index, methods=['GET'])
+app.add_url_rule('/', 'index', index, methods=['GET'])
+app.add_url_rule('/home', 'home', home, methods=['GET'])
 app.add_url_rule('/menu', 'menu', menu, methods=['GET'])
 app.add_url_rule('/about_us', 'about_us', about_us, methods=['GET'])
 app.add_url_rule('/contact_us', 'contact_us', contact_us, methods=['GET', 'POST'])
 app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'DELETE'])
-# app.add_url_rule('/cart', 'cart', cart, methods=['GET', 'POST', 'DELETE'])
+app.add_url_rule('/cart', 'cart', cart, methods=['GET', 'POST', 'DELETE'])
 
 # #  -----------  Cashier Panel---------------------- #
 # app.add_url_rule('/logout', 'logout',logout.logout, methods=['GET', 'POST'])  # --------> (safa)
