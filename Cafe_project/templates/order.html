@@ -17,6 +17,21 @@
         </div>
     {% endfor %}
 </div>
-<a href="#" class="float">
-+
-</a>
+<button class="float" onclick="cart_loader()" data-bs-toggle="modal" data-bs-target="#cart">
+<i class="fa fa-cart-arrow-down my-float" aria-hidden="true"></i>
+</button>
+<div class="modal fade" id="cart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content customize-modal">
+      <div class="modal-header text-center">
+        <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container" id="cart-loader">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
