@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>#}
     {% include "fonts.html" %}
     {% include "bootstrap.html" %}
     <title>خانه</title>
@@ -15,6 +16,7 @@
 <div class="container-fluid p-0 m-0 text-dark" id="page-loader">
     {% include "home.html" %}
 </div>
+{% include "layouts/landing_page/footer.html" %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../../../static/js/landing/jquery-cookie.js"></script>
 <script> <!-- table select (modal Ajax) -->
@@ -63,7 +65,44 @@
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(postData),
-            success: function(resp){}
+            success: function(resp){
+                alert('این محصول با موفقیت به سبد خرید اضافه شد.')
+            }
+        })
+    }
+</script>
+<script>
+    function cart_loader(){
+        let target_url = "{{ url_for('cart') }}"
+        $.ajax({        // ajax request to send order details to flask
+            url : target_url,
+            type: "GET",
+            success: function(resp){
+                $('#cart-loader').empty()
+                $('#cart-loader').append(resp)
+            }
+        })
+    }
+</script>
+<script>
+    function payment(){
+        $('#page-loader').empty()
+        let table_id = $.cookie("table_id")
+        let receipt = $.cookie("receipt_id")
+        let target_url = '{{ url_for('cart') }}'
+        let postData = {
+            receipt: receipt,
+            table: table_id
+        }
+        $.ajax({
+            url : target_url,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(postData),
+            success: function (response){
+                $.cookie("receipt_id", null, { path: '/' });
+                $('#page-loader').append(response)
+            }
         })
     }
 </script>
