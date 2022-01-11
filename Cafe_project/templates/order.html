@@ -1,22 +1,22 @@
-<div class="row justify-content-around">
+<div class="row justify-content-around p-5 m-0">
     {% for item in items %}
         <div class="col-2 m-2 bg-dark text-center items">
             <div class="row m-0 p-0 item-image">
                 <img class='img-thumbnail border-none' src="../static/images/banner5.jpg" alt="">
             </div>
-            <div class="row"><h3>{{ item.name }}</h3></div>
-            <div class="row"><h4>{{ item.price }}</h4></div>
+            <div class="row"><h3 class="text-info">{{ item.name }}</h3></div>
+            <div class="row"><h6>{{ item.price }}</h6></div>
             <div class="row justify-content-center" style="align-items: center">
                 <div class="col-5">
-                    <input class="form-input" type="number" step="1" min="1" max="100" id="count-{{ item.id }}">
+                    <input class="form-input" style="border-radius:9px; width:3em;" type="number" step="1" min="1" max="100" id="count-{{ item.id }}">
                 </div>
                 <div class="col-12 col-sm-7">
                     <button class="btn btn-warning" onclick="order({{ item.id }})">سفارش</button>
                 </div>
             </div>
-
-
-
         </div>
     {% endfor %}
 </div>
+<a href="#" class="float">
++
+</a>
