@@ -1,36 +1,7 @@
 <div class="container-fluid m-0 p-0">
-    {% include "navbar.html" %}
     <div class="row mx-0" id="banner">
         <div class="col-12 m-0 p-0">
-            <button type="button" class="btn rounded-circle bg-black text-warning order" style="left:2vw" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Order
-            </button>
             <img class='img-fluid' src="../static/images/banner5.jpg" alt="banner">
         </div>
     </div>
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content customize-modal">
-      <div class="modal-header text-center">
-        <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-            <div class="row justify-content-between">
-                {% for table in tables %}
-                    {% if not table.status %}
-                        <div class="col-3 m-1 tables p-2" onclick="table_select(this.id)" id={{ table.id }}>
-                        <h6 class="text-dark">Table: {{ table.id }}</h6>
-                        <h6>Capacity: {{ table.capacity }}</h6>
-                        <h6>Status: Free</h6>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
