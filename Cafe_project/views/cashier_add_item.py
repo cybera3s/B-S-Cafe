@@ -28,7 +28,6 @@ def cashier_add_item():
         serving_time_period = request.form['serving']
         estimated_cooking_time = request.form['estimated']
         discount_value = int(request.form['discount'])
-        print(discount_value)
         discount_id = list(filter(lambda d: d.value == discount_value, discount))[0].id
         category_name = request.form['category']
         category_id = list(filter(lambda c: c.category == category_name, category))[0].id
