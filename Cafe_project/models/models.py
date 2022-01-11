@@ -1,6 +1,6 @@
 from abc import ABC
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class DBModel(ABC):  # abstract base Database model
@@ -99,17 +99,36 @@ class Receipt(DBModel):
     PK = 'id'
 
     def __init__(self, orders: dict, table_id: int, total_price: int = 0, final_price: int = 0, is_paid: bool = False,
-                 id: int = None):
+                 create_time= datetime.now(), id: int = None):
         self.orders = json.dumps(orders)
         self.total_price = total_price
         self.final_price = final_price
         self.is_paid = is_paid
         self.table_id = table_id
+        self.create_time = create_time
         if id:
             self.id = id
 
     def __repr__(self):
         return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.final_price}>"
+
+    @staticmethod
+    def last_week_report(all_receipts: list) -> list:
+        """
+        return a list that contains earning of the last seventh days
+        :param all_receipts: list of all receipts read of database
+        :return: a List of tuples consist of days of week and their earning
+        """
+        week = []
+        week_ago = [(datetime.today() - timedelta(days=i)).strftime('%A') for i in range(1, 8)]
+
+        for i in range(1, 8):
+            receipts = list(
+                filter(lambda order: order.create_time.day == (datetime.today() - timedelta(days=i)).day, all_receipts))
+            earning = sum(list(map(lambda order: order.final_price, receipts)))
+            week.append(earning)
+
+        return list(zip(week, week_ago))
 
 
 class Cashier(DBModel):
