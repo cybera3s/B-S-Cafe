@@ -31,13 +31,13 @@
                 </thead>
                 <tbody id="row">
                 {% for item in items %}
-                        <tr>
-                            <td class="text-center">{{ item.id }}</td>
-                            <td class="text-center">{{ item.menu_item }}</td>
-                            <td class="text-center">{{ item.count }}</td>
-                            <td class="text-center">{{ item.receipt_id }}</td>
-                            <td class="text-center">{{ item.create_time }}</td>
-                        </tr>
+                    <tr>
+                        <td class="text-center">{{ item.id }}</td>
+                        <td class="text-center">{{ item.menu_item }}</td>
+                        <td class="text-center">{{ item.count }}</td>
+                        <td class="text-center">{{ item.receipt_id }}</td>
+                        <td class="text-center">{{ item.create_time }}</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -51,8 +51,11 @@
 
 <script>
     $("#submit").on('click', function () {
-        $.get({{url_for('cashier_order_served')}}, function () {
+        $.ajax({
+            url:"{{url_for(title_get)}}",
+            type:'GET'
         });
+        console.log(13)
     });
 </script>
 </body>
