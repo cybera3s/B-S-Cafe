@@ -57,16 +57,32 @@ def order(table_id):
     data['current_page'] = 'order'
     items = db.read_all(models.MenuItems)
     table = db.read(models.Table, table_id)
+
     if request.method == 'GET':
         res = flask.make_response(render_template('order.html', data=data, items=items))
+        new_receipt = models.Receipt({}, int(table_id))
+        receipt_id = db.create(new_receipt)
+        res.set_cookie('receipt_id', str(receipt_id))
         res.set_cookie('table_id', table_id)
-
-        res.set_cookie('orders', json.dumps())
         return res
     elif request.method == 'POST':
-        return f'POST/Order Page !{table_id}'
+        data = request.get_json()
+        value1 = data['order']['item_id']
+        value2 = data['order']['count']
+        table = data['table']
+        receipt = data['receipt']
+        print(f"""
+        item_id : {value1}
+        count : {value2}
+        receipt_id : {receipt}
+        table)id : {table}""")
+        return '200'
     elif request.method == 'DELETE':
         return f'DELETE/Order Page !{table_id}'
+    return
+
+def cart():
+    pass
 
 
 def about_us():
