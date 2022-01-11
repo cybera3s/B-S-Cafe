@@ -120,7 +120,7 @@ class Receipt(DBModel):
         :return: a List of tuples consist of days of week and their earning
         """
         week = []
-        week_ago = [(datetime.today() - timedelta(days=i)).strftime('%A') for i in range(1, 8)]
+        week_ago = [(datetime.today() - timedelta(days=i)).strftime('%A')[0:3] for i in range(1, 8)]
 
         for i in range(1, 8):
             receipts = list(

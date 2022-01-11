@@ -17,10 +17,7 @@ def login():
             return render_template('cashier/login.html')
 
         # user exists
-        res = make_response("""
-                            <h1>cookie is set<br>Hello {}</h1>
-                            <button id='logout'>logout</button>
-                            """.format(user_info[0].first_name))
+        res = make_response(redirect(url_for('cashier_dashboard')))
         res.set_cookie('user', email)
         return res
 
