@@ -15,7 +15,7 @@ def cashier_dashboard():
     user_email = request.cookies.get('user')
     user = db.read_by(models.Cashier, ('email', user_email))
     data = {
-        'user': user,
+        'user': user[0],
         'today_earnings': today_earnings,
         'customer_count': len(today_receipts),
 
@@ -28,5 +28,10 @@ def cashier_dashboard():
 
     }
 
+    if request.method == "POST":
+        cashier = models.Cashier(**dict(request.form), id=user[0].id)
+        db.update(cashier)
+        data['user'] = cashier
+        return render_template('cashier/dashboard.html', data=data)
 
     return render_template('cashier/dashboard.html', data=data)
