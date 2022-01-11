@@ -24,9 +24,9 @@ app.add_url_rule('/cashier_panel', 'login',login.login, methods=['GET', 'POST'])
 app.add_url_rule('/cashier_panel/dashboard', 'cashier_dashboard', cashier_dashboard.cashier_dashboard, methods=['GET', 'POST']) # --------> (safa)
 # # app.add_url_rule('/cashier_panel/table', 'cashier_table', cashier_table.cashier_table, methods=['GET']) # --------> (amirali)
 # # app.add_url_rule('/cashier_panel/order', 'cashier_order', cashier_order.cashier_order, methods=['GET']) # --------> () (mamreza)
-# # app.add_url_rule('/cashier_panel/order/served', 'cashier_order_served', cashier_order_served.cashier_order_served, methods=['GET']) --------> (mamad nasimi)
+app.add_url_rule('/cashier_panel/order/served', 'cashier_order_served', cashier_order_served.cashier_order_served, methods=['GET']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/new_menu_item', 'cashier_add_item', cashier_add_item.cashier_add_item, methods=['POST', 'GET']) #--------> (mamreza)
-# # app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category', cashier_add_category.cashier_add_category, methods=['GET', 'POST']) --------> (mamad nasimi)
+app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category', cashier_add_category.cashier_add_category, methods=['GET', 'POST']) #--------> (mamad nasimi)
 # # app.add_url_rule('/cashier_panel/add_discount', 'cashier_add_discount', cashier_add_discount.cashier_add_discount, methods=['GET', 'POST']) --------> (meisam)
 
 # # for now optional
