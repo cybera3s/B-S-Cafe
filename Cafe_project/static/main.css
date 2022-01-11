@@ -1,6 +1,6 @@
 *{
-    margin:0 !important;
-    padding:0 !important;
+    margin:0;
+    padding:0;
     box-sizing: border-box;
 }
 nav {direction: rtl;}
@@ -12,6 +12,22 @@ nav {direction: rtl;}
 #item-count{
     width:4em;
     font-size:20px !important;
+}
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#0C9;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+}
+
+.my-float{
+	margin-top:22px;
 }
 @font-face {
 font-family: "Byekan";
