@@ -90,41 +90,42 @@
     <div class="row my-4 justify-content-center">
         <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
 
-               <form id='user_info' class="p-4 rounded" style="border-left:2px solid gray;border-top:2px solid gray;box-shadow: 3px 15px 16px grey;">
+               <form method="post" action="{{ url_for('cashier_dashboard') }}" id='user_info' class="p-4 rounded" style="border-left:2px solid gray;border-top:2px solid gray;box-shadow: 3px 15px 16px grey;">
                         <h3 class="text-center">Cashier Info</h3>
                         <!--  firstname               -->
                         <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                            <label for="validationDefault01">First name</label>
-                             <input type="text" class="form-control" id="validationDefault01" placeholder="First name" value="Sajad" required>
+                            <label for="first_name">First name</label>
+                             <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name" value={{ data.user.first_name }} required>
                         </div>
 
                         <!--  last name               -->
                         <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                            <label for="validationDefault02">Last name</label>
-                             <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" value="Safa" required>
+                            <label for="last_name">Last name</label>
+                             <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" value={{ data.user.last_name }} required>
                          </div>
 
 
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="validationDefault03">Email</label>
-                              <input type="email" class="form-control" id="validationDefault03" placeholder="Email" value="Cybera.3s@gmail.com" required>
+                              <label for="email">Email</label>
+                              <input type="email" class="form-control" name="email" id="email" placeholder="Email" value={{ data.user.email }} required>
                             </div>
 
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="validationDefault04">Phone Number</label>
-                              <input type="text" class="form-control" id="validationDefault04" placeholder="09224023292" required>
+                              <label for="phone_number">Phone Number</label>
+                              <input type="text" class="form-control" name="phone_number" id="phone_number" value={{ data.user.phone_number }} required>
                             </div>
 
 
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="validationDefault04">Change Password</label>
-                              <input type="text" class="form-control" id="validationDefault04" placeholder="new password..." required>
+                              <label for="password">Change Password</label>
+                              <input type="text" class="form-control" id="password" name="password" value={{ data.user.password }} required>
                             </div>
 
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                                <button id='save' class="btn btn-dark w-100 d-none" type="submit">Save changes</button>
+                                <input id='save' type="submit" class="btn btn-dark w-100 d-none" value="Save changes">
                             </div>
                 </form>
+
             </div>
         </div>
     </div>
