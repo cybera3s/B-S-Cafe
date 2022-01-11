@@ -35,12 +35,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        {% for i in receipts %}
+                                        {% set: %}
                                             <tr>
                                                 <td><strong>1</strong></td>
-                                                <td><a href="" style="text-decoration:none; color:#1b1e21;" type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">2</a></td>
+                                                <td><a href="" style="text-decoration:none; color:#1b1e21;" type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ i.id }}</a></td>
 
                                                 <td>2022</td>
                                             </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -56,21 +59,19 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">#</th>
-                                                                    <th scope="col">RECEIPT</th>
                                                                     <th scope="col">MENUITEM</th>
                                                                     <th scope="col">COUNT</th>
                                                                     <th scope="col">STATUS</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                            {% for o in orders %}
                                                                 <tr>
                                                                     <th scope="row">1</th>
-                                                                    <td>2</td>
-                                                                    <td>3</td>
-                                                                    <td>7</td>
+                                                                    <td>{{ o }}</td>
+                                                                    <td></td>
                                                                      <td class="dropdown">
                                                                         <div class="dropdown">
-                    <!--                                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
                                                                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
                                                                                 NEW
                                                                             </button>
@@ -82,49 +83,11 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <th scope="row">2</th>
-                                                                    <td>2</td>
-                                                                    <td>3</td>
-                                                                    <td>6</td>
-                                                                      <td class="dropdown">
-                                                                        <div class="dropdown">
-                    <!--                                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
-                                                                                NEW
-                                                                            </button>
-                                                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                                                <li><a class="dropdown-item" href="#">payed</a></li>
-                                                                                <li><a class="dropdown-item" href="#">deleted</a></li>
-                                                                                <li><a class="dropdown-item" href="#">served</a></li>
-                                                                             </ul>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">3</th>
-                                                                    <td>2</td>
-                                                                    <td>4</td>
-                                                                    <td>5</td>
-                                                                    <td class="dropdown">
-                                                                        <div class="dropdown">
-                    <!--                                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
-                                                                                NEW
-                                                                            </button>
-                                                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                                                <li><a class="dropdown-item" href="#">payed</a></li>
-                                                                                <li><a class="dropdown-item" href="#">deleted</a></li>
-                                                                                <li><a class="dropdown-item" href="#">served</a></li>
-                                                                             </ul>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                            {% endfor %}
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-
                                               <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <button type="button" class="btn btn-primary">Understood</button>
