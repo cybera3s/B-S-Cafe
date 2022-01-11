@@ -1,9 +1,6 @@
-from datetime import date
-
 from flask import url_for, request, redirect, render_template
 from database.manager import db
-from models import models
-from models.models import Order, MenuItems, Receipt
+from models.models import Order, MenuItems
 from views.landing_views import base_variables
 
 
@@ -16,7 +13,7 @@ def cashier_new_order():
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
         i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template('cashier/Cashier_order_served.html', items=items, data=data, title_get=title_get)
+    return render_template('cashier/Cashier_order_status.html', items=items, data=data, title_get=title_get)
 
 
 def cashier_cook_order():
@@ -28,7 +25,19 @@ def cashier_cook_order():
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
         i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template('cashier/Cashier_order_served.html', items=items, data=data, title_get=title_get)
+    return render_template('cashier/Cashier_order_status.html', items=items, data=data, title_get=title_get)
+
+
+def cashier_order_served():
+    data = base_variables
+    data["page"]["title"] = "Served orders"
+    title_get = 'cashier_order_served'
+    items = db.read_by(Order, ('status_id', 3))
+    for i in items:
+        x = db.read(MenuItems, i.menu_item)
+        i.menu_item = x.name
+        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+    return render_template('cashier/Cashier_order_status.html', items=items, data=data, title_get=title_get)
 
 
 def cashier_delete_order():
@@ -40,7 +49,7 @@ def cashier_delete_order():
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
         i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template('cashier/Cashier_order_served.html', items=items, data=data, title_get=title_get)
+    return render_template('cashier/Cashier_order_status.html', items=items, data=data, title_get=title_get)
 
 
 def cashier_paid_order():
@@ -52,4 +61,4 @@ def cashier_paid_order():
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
         i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template('cashier/Cashier_order_served.html', items=items, data=data, title_get=title_get)
+    return render_template('cashier/Cashier_order_status.html', items=items, data=data, title_get=title_get)
