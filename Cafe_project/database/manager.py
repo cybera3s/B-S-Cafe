@@ -97,5 +97,14 @@ class DBManager:
                 res = [model_class(**item) for item in res]
                 return res
 
+    def array_modify(self, model_class: type, column: tuple, pk: int):
+        assert issubclass(model_class, DBModel)
+        key, value = column
+        with self.conn:
+            curs = self.__get_cursor()
+            with curs:
+                curs.execute(
+                    f"""UPDATE {model_class.TABLE} SET {key} = {key} || {value} WHERE {model_class.PK} = {pk}""")
+
 
 db = DBManager()
