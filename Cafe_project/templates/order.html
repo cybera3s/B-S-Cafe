@@ -1,10 +1,10 @@
 <div class="row justify-content-around p-5 m-0">
     {% for item in items %}
-        <div class="col-2 m-2 bg-dark text-center items">
+        <div class="col-2 m-2 bg-dark text-center items p-2">
             <div class="row m-0 p-0 item-image">
-                <img class='img-thumbnail border-none' src="../static/images/banner5.jpg" alt="">
+                <img class='img-thumbnail border-none' src="../static/images/{{ item.picture_link }}" alt="">
             </div>
-            <div class="row"><h3 class="text-info">{{ item.name }}</h3></div>
+            <div class="row"><h5 class="text-warning">{{ item.name }}</h5></div>
             <div class="row"><h6>{{ item.price }}</h6></div>
             <div class="row justify-content-center" style="align-items: center">
                 <div class="col-5">
@@ -24,7 +24,7 @@
   <div class="modal-dialog">
     <div class="modal-content customize-modal">
       <div class="modal-header text-center">
-        <h5 class="modal-title" id="exampleModalLabel">سبد خرید شما</h5>
+        <h5 class="modal-title text-info" id="exampleModalLabel">سبد خرید شما</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
       </div>
       <div class="modal-body">
