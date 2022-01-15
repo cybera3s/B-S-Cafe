@@ -40,7 +40,7 @@
                                 <tr class="data" id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <td><strong>{{ receipts.index(i) + 1 }}</strong></td>
                                     <td>{{ i.id }}</td>
-                                    <td>2022</td>
+                                    <td>{{ i.create_time }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
