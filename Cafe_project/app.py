@@ -20,6 +20,7 @@ app.add_url_rule('/order/<table_id>', 'order', order, methods=['GET', 'POST', 'D
 app.add_url_rule('/cart', 'cart', cart, methods=['GET', 'POST', 'DELETE'])
 
 # #  -----------  Cashier Panel---------------------- #
+
 app.add_url_rule('/cashier_panel', 'login',login.login, methods=['GET', 'POST']) # --------> (safa)
 app.add_url_rule('/cashier_panel/dashboard', 'cashier_dashboard', cashier_dashboard.cashier_dashboard, methods=['GET']) # --------> (safa)
 app.add_url_rule('/cashier_panel/order', 'cashier_order', cashier_order.cashier_order, methods=['GET', 'POST'])  # --------> () (mamreza)
@@ -29,7 +30,6 @@ app.add_url_rule('/cashier_panel/order/delete', 'cashier_delete_order', cashier_
 app.add_url_rule('/cashier_panel/order/cook', 'cashier_cook_order', cashier_status_orders.cashier_cook_order,  methods=['GET']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/new_menu_item', 'cashier_add_item', cashier_add_item.cashier_add_item, methods=['POST', 'GET']) #--------> (mamreza)
 app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category', cashier_add_category.cashier_add_category, methods=['GET', 'POST']) #--------> (mamad nasimi)
-
 
 
 if __name__ == '__main__':
