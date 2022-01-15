@@ -30,7 +30,7 @@
                           {% endfor %}
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                               {% for st in status %}
-                                <a class="dropdown-item">{{ st.status }}</a>
+                                <a class="dropdown-item" id="{{ st.id }}" order="{{ order.id}}">{{ st.status }}</a>
                               {% endfor %}
                             </div>
                     </div>
@@ -45,6 +45,22 @@
     $(document).ready(function(){
         $(".dropdown-menu").on('click', 'a', function(){
             $(this).parents('.dropdown').find('button').text($(this).text());
+            let target_url = "{{ url_for('cashier_order') }}";
+            let DataSend = {
+            view: 'status_req',
+            order: Number($(this).attr('order')),
+            status_id: Number($(this).attr('id')),
+        };
+            console.log(DataSend)
+            $.ajax({
+            url: `${target_url}`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(DataSend),
+            success: function (response){
+                alert(response)
+            }
+        });
         });
     });
 </script>
