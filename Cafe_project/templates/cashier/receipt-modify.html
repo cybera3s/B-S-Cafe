@@ -17,20 +17,34 @@
                 {% endif %}
             {% endfor %}
             <td>{{ order.count }}</td>
-            <td>{{ order.status_id }}</td>
+<!--            <td>{{ order.status_id }}</td>-->
+
             <td class="dropdown">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
-                        NEW
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">payed</a></li>
-                        <li><a class="dropdown-item" href="#">deleted</a></li>
-                        <li><a class="dropdown-item" href="#">served</a></li>
-                    </ul>
-                </div>
+                    <div class="dropdown">
+                        {% for st in status %}
+                            {% if order.status_id == st.id %}
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+                                    {{ st.status }}
+                                </button>
+                            {% endif %}
+                          {% endfor %}
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              {% for st in status %}
+                                <a class="dropdown-item">{{ st.status }}</a>
+                              {% endfor %}
+                            </div>
+                    </div>
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".dropdown-menu").on('click', 'a', function(){
+            $(this).parents('.dropdown').find('button').text($(this).text());
+        });
+    });
+</script>
