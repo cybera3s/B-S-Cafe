@@ -10,12 +10,19 @@ def cashier_order():
             i.create_time = i.create_time.strftime("%Y/%-m/%d %-I:%m ")
         return render_template('cashier/order.html', receipts=receipts)
     if request.method == 'POST':
-        request_data = request.get_json()
-        orders = db.read_by(Order, ('receipt_id', request_data['receipt']))
         menu_items = db.read_all(MenuItems)
         status = db.read_all(Status)
-        for i in status:
-            print(i.status)
-        return render_template('cashier/receipt-modify.html', orders=orders, items=menu_items, status=status)
-
+        status = db.read_all(Status)
+        order = db.read_all(Order)
+        request_data = request.get_json()
+        if request_data['view'] == 'receipt_req':
+            orders = db.read_by(Order, ('receipt_id', request_data['receipt']))
+            return render_template('cashier/receipt-modify.html', orders=orders, items=menu_items, status=status)
+        elif request_data['view'] == 'status_req':
+            receipt_id = request_data['order']
+            status_id = request_data['status_id']
+            read_order = db.read(Order, receipt_id)
+            read_order.status_id = int(status_id)
+            db.update(read_order)
+            return render_template('cashier/receipt-modify.html', orders=order, items=menu_items, status=status)
 
