@@ -1,0 +1,36 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">MENUITEM</th>
+        <th scope="col">COUNT</th>
+        <th scope="col">STATUS</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in orders %}
+        <tr>
+            <th scope="row">{{ orders.index(order) + 1 }}</th>
+            {% for item in items %}
+                {% if order.menu_item  == item.id %}
+                    <td>{{ item.name }}</td>
+                {% endif %}
+            {% endfor %}
+            <td>{{ order.count }}</td>
+            <td>{{ order.status_id }}</td>
+            <td class="dropdown">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+                        NEW
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">payed</a></li>
+                        <li><a class="dropdown-item" href="#">deleted</a></li>
+                        <li><a class="dropdown-item" href="#">served</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
