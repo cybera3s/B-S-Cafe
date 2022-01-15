@@ -81,6 +81,7 @@
     $('.data').on('click', function () {
         let target_url = "{{ url_for('cashier_order') }}";
         let DataSend = {
+            view: 'receipt_req',
             receipt: Number(this.id)
         };
         console.log(this.id)
