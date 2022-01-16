@@ -31,7 +31,7 @@ app.add_url_rule('/cashier_panel/order/cook', 'cashier_cook_order', cashier_stat
 app.add_url_rule('/cashier_panel/new_menu_item', 'cashier_add_item', cashier_add_item.cashier_add_item, methods=['POST', 'GET']) #--------> (mamreza)
 app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category', cashier_add_category.cashier_add_category, methods=['GET', 'POST']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/order/new-order', 'cashier_order_new', cashier_status_orders.cashier_new_order, methods=['GET'])# --------> (mamad nasimi)
-
+app.add_url_rule('/cashier_panel/discount/new_discount', 'cashier_add_discount', cashier_add_discount.cashier_new_discount, methods=['GET','POST'])# ---------> (meysam nosrati
 
 if __name__ == '__main__':
     app.run(debug=True)
