@@ -45,7 +45,7 @@
           </li>
            <!-- Order -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="{{ url_for('cashier_order') }}" class="nav-link active">
                 <img class="mr-1" src="{{ url_for('static', filename="images/cashier/sidebare/orderphoto1.png") }}" alt="" width="27">
               <p>
                 Order
@@ -54,25 +54,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="{{ url_for('cashier_order_new') }}" class="nav-link active">
                   <i class="fas fa-plus mr-1"></i>
                   <p>New order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url_for('cashier_order_served') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Served order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url_for('cashier_delete_order') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Deleted order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url_for('cashier_cook_order') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>cooking order</p>
                 </a>
@@ -90,7 +90,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="{{ url_for('cashier_add_item') }}" class="nav-link active">
                   <i class="fas fa-plus mr-1"></i>
                   <p>New Item</p>
                 </a>
@@ -115,7 +115,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="{{ url_for('cashier_add_category') }}" class="nav-link active">
                   <i class="fas fa-plus mr-1"></i>
                   <p>New category</p>
                 </a>
