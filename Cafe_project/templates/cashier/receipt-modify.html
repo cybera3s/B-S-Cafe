@@ -1,0 +1,66 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">MENUITEM</th>
+        <th scope="col">COUNT</th>
+        <th scope="col">STATUS</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in orders %}
+        <tr>
+            <th scope="row">{{ orders.index(order) + 1 }}</th>
+            {% for item in items %}
+                {% if order.menu_item  == item.id %}
+                    <td>{{ item.name }}</td>
+                {% endif %}
+            {% endfor %}
+            <td>{{ order.count }}</td>
+<!--            <td>{{ order.status_id }}</td>-->
+
+            <td class="dropdown">
+                    <div class="dropdown">
+                        {% for st in status %}
+                            {% if order.status_id == st.id %}
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+                                    {{ st.status }}
+                                </button>
+                            {% endif %}
+                          {% endfor %}
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              {% for st in status %}
+                                <a class="dropdown-item" id="{{ st.id }}" order="{{ order.id}}">{{ st.status }}</a>
+                              {% endfor %}
+                            </div>
+                    </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".dropdown-menu").on('click', 'a', function(){
+            $(this).parents('.dropdown').find('button').text($(this).text());
+            let target_url = "{{ url_for('cashier_order') }}";
+            let DataSend = {
+            view: 'status_req',
+            order: Number($(this).attr('order')),
+            status_id: Number($(this).attr('id')),
+        };
+            console.log(DataSend)
+            $.ajax({
+            url: `${target_url}`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(DataSend),
+            success: function (response){
+                alert(response)
+            }
+        });
+        });
+    });
+</script>
