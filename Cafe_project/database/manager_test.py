@@ -74,3 +74,17 @@ class DBManagerTest(TestCase):
         self.db_manager.delete(self.C2)
         self.assertFalse(hasattr(self.C2, 'id'))
         self.assertRaises(Exception, self.db_manager.read, Order, id)
+
+    def test_read_all_success1(self):
+        list_number1 = len(self.db_manager.read_all(Category))
+        if not hasattr(self, 'C1'):
+            self.test_create_success1()
+        list_number_after_add1 = len(self.db_manager.read_all(Category))
+        self.assertEqual(list_number1 + 1, list_number_after_add1)
+
+    def test_read_all_success2(self):
+        list_number2 = len(self.db_manager.read_all(Order))
+        if not hasattr(self, 'C2'):
+            self.test_create_success2()
+        list_number_after_add2 = len(self.db_manager.read_all(Order))
+        self.assertEqual(list_number2 + 1, list_number_after_add2)
