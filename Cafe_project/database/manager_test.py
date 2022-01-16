@@ -56,3 +56,21 @@ class DBManagerTest(TestCase):
 
         read_p = self.db_manager.read(Order, self.C2.id)
         self.assertEqual(read_p.count, new_count)
+
+    def test_delete_success1(self):
+        if not hasattr(self, 'C1'):
+            self.test_create_success1()
+        id = self.C1.id
+
+        self.db_manager.delete(self.C1)
+        self.assertFalse(hasattr(self.C1, 'id'))
+        self.assertRaises(Exception, self.db_manager.read, Category, id)
+
+    def test_delete_success2(self):
+        if not hasattr(self, 'C2'):
+            self.test_create_success2()
+        id = self.C2.id
+
+        self.db_manager.delete(self.C2)
+        self.assertFalse(hasattr(self.C2, 'id'))
+        self.assertRaises(Exception, self.db_manager.read, Order, id)
