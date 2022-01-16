@@ -3,20 +3,20 @@
 }
 
 #Order tr {
-    border: 10px solid #fffbfb;
+    border: 10px solid #faf2f2;
 
 }
 
 #Order thead {
     background-color: #1a7dd7;
-    color: #fff8f8;
+    color: #faf2f2;
 }
 
 #Order tbody {
     background-color: #faf2f2;
 }
 
-#row tr:hover {
+#row_table tr:hover {
     background-color: #858383;
 }
 
