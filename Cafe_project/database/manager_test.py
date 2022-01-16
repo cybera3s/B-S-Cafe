@@ -17,7 +17,7 @@ class DBManagerTest(TestCase):
         self.assertEqual(self.C1.id, res)
 
     def test_create_success2(self):
-        self.C2 = Order(12, 198, 1, 2)
+        self.C2 = Order(12, 198, 4, 2)
         res = self.db_manager.create(self.C2)
 
         self.assertIsInstance(res, int)
@@ -87,4 +87,11 @@ class DBManagerTest(TestCase):
         if not hasattr(self, 'C2'):
             self.test_create_success2()
         list_number_after_add2 = len(self.db_manager.read_all(Order))
+        self.assertEqual(list_number2 + 1, list_number_after_add2)
+
+    def test_read_by_success(self):
+        list_number2 = len(self.db_manager.read_by(Order, ('status_id', 4)))
+        if not hasattr(self, 'C2'):
+            self.test_create_success2()
+        list_number_after_add2 = len(self.db_manager.read_by(Order, ('status_id', 4)))
         self.assertEqual(list_number2 + 1, list_number_after_add2)
