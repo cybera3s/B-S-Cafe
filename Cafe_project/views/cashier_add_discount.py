@@ -10,7 +10,10 @@ def cashier_new_discount():
         disValue = request.form['persentDiscount']
 
         newDiscount = Discount(value=int(disValue))
-
-        db.create(newDiscount)
-        flash("Discount successfuly added!")
+        try:
+            db.create(newDiscount)
+            msg = "discount successfully added!"
+        except Exception as e :
+            msg = "The entered value is Duplicated!"
+        flash(msg)
         return redirect(request.url)

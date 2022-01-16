@@ -31,10 +31,20 @@
               </div>
               <!-- form start -->
               <form action="{{ url_for('cashier_add_discount') }}" method="POST">
+              {% if get_flashed_messages() %}
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                                {{ get_flashed_messages()[0] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                    </div>
+                {% endif %}
                 <div class="card-body">
                   <div class="form-group">
-                      <label for="persentDiscount">Persent (<span class="persent">%</span>)</label>
-                    <input type="text" name="persentDiscount" class="form-control" id="persentDiscount" placeholder="Example: 10">
+                      <label for="persentDiscount">Persent (between 0 to 100)</label>
+                    <input type="range" name="persentDiscountrange" class="custom-range" id="customRange1" min="0" max="100" onchange="updateTextInput(this.value);">
+                    <input type="text" name="persentDiscount" class="form-control" id="textInput" placeholder="Example: 10">
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -52,5 +62,16 @@
     <!-- /.row -->
 {% endblock %}
 
-{% block extra_footer %}{% endblock %}
+{% block extra_footer %}
+<script>
+        var alertList = document.querySelectorAll('.alert')
+        alertList.forEach(function (alert) {
+          new bootstrap.Alert(alert)})
+    </script>
+<script>
+function updateTextInput(val) {
+          document.getElementById('textInput').value=val;
+        }
+</script>
+{% endblock %}
 
