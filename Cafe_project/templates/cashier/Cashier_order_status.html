@@ -1,34 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>{{ data.page.title }}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% extends "cashier/_base.html" %}
+
+{% block title %}{{ data.page.title }}{% endblock %}
+
+{% block extra_head %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-
-    <title>{{ data.page.title }}</title>
     <link rel="stylesheet" href="../../static/css/cashier/Cashier_order_served_css.css">
-<!--    <script src="{{ url_for('static' , filename = "") }}"></script>-->
+{% endblock %}
 
-</head>
+{% block content_title %}
+    {{ data.page.title }}
+{% endblock %}
 
-<body class="justify-content-center">
-<div class="container">
-    <div class="row" style="justify-content: center">
-        <div class="mx-auto" style="width:80vw">
-            <h1 class="title text-center"> {{ data.page.title }}</h1>
-            <table class="table" id="customers">
-                <thead>
-                <tr>
-                    <th class="text-center black">ID</th>
-                    <th class="text-center black">menu item</th>
-                    <th class="text-center black">count</th>
-                    <th class="text-center black">receipt</th>
-                    <th class="text-center black">create time</th>
-                </tr>
-                </thead>
+{% block content_body %}
+    <div class="row justify-content-center">
+            <div>
+                <h1 class="title text-center"> {{ data.page.title }}</h1>
+                <table class="table" id="customers">
+                    <thead>
+                        <tr>
+                            <th class="text-center black">ID</th>
+                            <th class="text-center black">menu item</th>
+                            <th class="text-center black">count</th>
+                            <th class="text-center black">receipt</th>
+                            <th class="text-center black">create time</th>
+                        </tr>
+                    </thead>
+
                 <tbody id="row">
                 {% for item in items %}
                     <tr>
@@ -46,10 +43,10 @@
 
         </div>
     </div>
-</div>
+{% endblock %}
 
-
-<script>
+{% block extra_footer %}
+    <script>
     $("#submit").on('click', function () {
         $.ajax({
             url:"{{url_for(title_get)}}",
@@ -58,7 +55,7 @@
         console.log(13)
     });
 </script>
-</body>
-</html>
+{% endblock %}
+
 
 
