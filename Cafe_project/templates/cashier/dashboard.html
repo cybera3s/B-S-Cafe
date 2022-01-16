@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+{% extends "cashier/_base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <style>
         .make-bright{
-            transition: ease 1000;
+            transition: ease 500ms;
         }
         .make-bright:hover{
             filter: brightness(1.2);
@@ -19,18 +15,18 @@
             transition:ease 1500ms;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
+{% block content_body %}
 
-<div class="container-fluid">
+    <!-- boxes -->
+    <div class="row justify-content-between">
 
-    <div class="row justify-content-center">
-
-        <!--  today customer      -->
-        <div id="total_customer" class="col-10 col-sm-10 col-md-5 bg-success bg-gradient btn p-4 m-3 text-light shdaow-lg rounded make-bright"
+        <!--  today Client      -->
+        <div id="total_customer" class="col-11 col-sm-11 col-md-5 bg-success bg-gradient btn p-4 m-3 text-light shdaow-lg rounded make-bright"
              style="box-shadow: 2px 6px 17px black;">
             <div class="row align-items-center">
-                <div class="col-xl-6 ml-5">
+                <div class="col-xl-6 mx-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                          width="100" height="100"
                          viewBox="0 0 50 50"
@@ -40,7 +36,7 @@
                 </div>
 
                 <div class="col-xl-6">
-                    <h2 class="fw-light">today customer</h2>
+                    <h2 class="fw-light">today Client</h2>
                     <h2>{{ data.customer_count }} people</h2>
 
                 </div>
@@ -50,12 +46,12 @@
         </div>
 
         <!--  today Earnings     -->
-        <div id="today_Earnings" class="col-10 col-sm-10 col-md-5 bg-primary p-4 m-3 text-light shdaow-lg rounded make-bright text-center"
+        <div id="today_Earnings" class="col-11 col-sm-11 col-md-5 bg-primary p-4 m-3 text-light shdaow-lg rounded make-bright text-center"
              style="box-shadow: 2px 6px 17px black;">
 
             <div class="row align-items-center">
 
-                <div class="col-xl-6">
+                <div class="col-xl-6 mx-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
                          viewBox="0 0 172 172" style=" fill:#000000;">
                         <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
@@ -78,60 +74,68 @@
             </div>
 
         </div>
+    </div>
 
-        <!--  chart      -->
-        <div class="col-12 col-sm-11 col-md-10" style="margin-top: 2rem">
+    <!-- end of boxes -->
+
+    <!--  chart      -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-12">
+            <h3 class="text-center fw-bold" style="border-bottom: 3px solid dodgerblue;">
+                Chart of Last Week Income
+            </h3>
+        </div>
+        <div class="col-12 col-sm-11 col-md-11" style="margin-top: 2rem">
             <canvas id="myChart""></canvas>
         </div>
 
-        <!-- cashier info        -->
-
     </div>
+    <!--  end of chart      -->
+
+    <!-- cashier info        -->
     <div class="row my-4 justify-content-center">
-        <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
+            <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
 
-               <form method="post" action="{{ url_for('cashier_dashboard') }}" id='user_info' class="p-4 rounded" style="border-left:2px solid gray;border-top:2px solid gray;box-shadow: 3px 15px 16px grey;">
-                        <h3 class="text-center">Cashier Info</h3>
-                        <!--  firstname               -->
-                        <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                            <label for="first_name">First name</label>
-                             <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name" value={{ data.user.first_name }} required>
-                        </div>
-
-                        <!--  last name               -->
-                        <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                            <label for="last_name">Last name</label>
-                             <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" value={{ data.user.last_name }} required>
-                         </div>
-
-
+                   <form method="post" action="{{ url_for('cashier_dashboard') }}" id='user_info' class="p-4 rounded" style="border-left:2px solid gray;border-top:2px solid gray;box-shadow: 3px 15px 16px grey;">
+                            <h3 class="text-center">Cashier Info</h3>
+                            <!--  firstname               -->
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="Email" value={{ data.user.email }} required>
+                                <label for="first_name">First name</label>
+                                 <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name" value={{ data.user.first_name }} required>
                             </div>
 
+                            <!--  last name               -->
                             <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="phone_number">Phone Number</label>
-                              <input type="text" class="form-control" name="phone_number" id="phone_number" value={{ data.user.phone_number }} required>
-                            </div>
+                                <label for="last_name">Last name</label>
+                                 <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" value={{ data.user.last_name }} required>
+                             </div>
 
 
-                            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                              <label for="password">Change Password</label>
-                              <input type="text" class="form-control" id="password" name="password" value={{ data.user.password }} required>
-                            </div>
+                                <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
+                                  <label for="email">Email</label>
+                                  <input type="email" class="form-control" name="email" id="email" placeholder="Email" value={{ data.user.email }} required>
+                                </div>
 
-                            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                                <input id='save' type="submit" class="btn btn-dark w-100 d-none" value="Save changes">
-                            </div>
-                </form>
+                                <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
+                                  <label for="phone_number">Phone Number</label>
+                                  <input type="text" class="form-control" name="phone_number" id="phone_number" value={{ data.user.phone_number }} required>
+                                </div>
 
+
+                                <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
+                                  <label for="password">Change Password</label>
+                                  <input type="text" class="form-control" id="password" name="password" value={{ data.user.password }} required>
+                                </div>
+
+                                <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
+                                    <input id='save' type="submit" class="btn btn-dark w-100 d-none" value="Save changes">
+                                </div>
+                    </form>
+
+                </div>
             </div>
-        </div>
-    </div>
-
-</div>
-
+{% endblock %}
+{% block extra_footer %}
 <script>
     var xValues = {{ data.chart.labels | safe }};
     var yValues = {{ data.chart.sum_receipts | safe }};
@@ -176,5 +180,4 @@
     });
 
 </script>
-</body>
-</html>
+{% endblock %}
