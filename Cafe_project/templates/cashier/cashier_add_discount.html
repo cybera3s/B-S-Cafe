@@ -8,26 +8,64 @@
     width: 100%;
   }
 }
-.persent{
-    color: #0c84ff;
+@import url(https://fonts.googleapis.com/css?family=Dosis:700);
+body {
+  font-family: "Dosis", Helvetica, Arial, sans-serif;
+  background: #ecf0f1;
+  color: #34495e;
 }
+.value {
+  text-align: center;
+  font-weight: bold;
+  font-size: 11vw;
+  height: 100px;
+  line-height: 60px;
+  margin: 40px auto;
+  letter-spacing: -.07em;
+  text-shadow: white 2px 2px 2px;
+}
+input[type="range"] {
+  display: block;
+  -webkit-appearance: none;
+  background-color: #bdc3c7;
+  height: 5px;
+  border-radius: 5px;
+  margin: 0 auto;
+  outline: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #e74c3c;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}​
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: white;
+    border: 2px solid #e74c3c;
+  }
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.6);
+  }
 </style>
 {% endblock %}
 
 
 {% block content_title %}
-    Add New Discount
+    Add Discount
 {% endblock %}
 
 
 {% block content_body %}
     <div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-12"></div>
-    <!-- /.col-lg-6 col-md-6 col-sm-12 -->
-    <div class="col-lg-4 col-md-4 col-sm-12">
+
+    <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6 mx-auto">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Add persent discount</h3>
+                <h3 class="card-title">Add Discount</h3>
               </div>
               <!-- form start -->
               <form action="{{ url_for('cashier_add_discount') }}" method="POST">
@@ -42,22 +80,21 @@
                 {% endif %}
                 <div class="card-body">
                   <div class="form-group">
-                      <label for="persentDiscount">Persent (between 0 to 100)</label>
-                    <input type="range" name="persentDiscountrange" class="custom-range" id="customRange1" min="0" max="100" onchange="updateTextInput(this.value);">
-                    <input type="text" name="persentDiscount" class="form-control" id="textInput" placeholder="Example: 10">
+                      <label for="persentDiscount">Set Discount (between 0 to 100)</label>
+                    <div class="value">0</div>
+                    <input class="form-control-range" name="persentDiscount" type="range" min="0" max="100" step="1" value="0">
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary btn-block">ADD</button>
                 </div>
               </form>
             </div>
     </div>
     <!-- /.col-6 -->
-    <div class="col-lg-4 col-md-4 col-sm-12"></div>
-    <!-- /.col-lg-6 col-md-6 col-sm-12 -->
+
     </div>
     <!-- /.row -->
 {% endblock %}
@@ -69,9 +106,15 @@
           new bootstrap.Alert(alert)})
     </script>
 <script>
-function updateTextInput(val) {
-          document.getElementById('textInput').value=val;
-        }
+var elem = document.querySelector('input[type="range"]');
+
+var rangeValue = function(){
+  var newValue = elem.value;
+  var target = document.querySelector('.value');
+  target.innerHTML = newValue + "%";
+}
+
+elem.addEventListener("input", rangeValue);
 </script>
 {% endblock %}
 
