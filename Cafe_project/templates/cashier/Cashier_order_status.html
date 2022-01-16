@@ -12,13 +12,12 @@
 {% endblock %}
 
 {% block content_body %}
-    <div class="row justify-content-center">
-            <div>
+    <div class="row justify-content-center mr-3 ml-3" id="Order">
                 <h1 class="title text-center"> {{ data.page.title }}</h1>
-                <table class="table" id="customers">
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="text-center black">ID</th>
+                            <th class="text-center black ">ID</th>
                             <th class="text-center black">menu item</th>
                             <th class="text-center black">count</th>
                             <th class="text-center black">receipt</th>
@@ -38,10 +37,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-
-            <button id="submit" type="button" class="btn btn-danger btn-sm btn-block ">Update</button>
-
-        </div>
+            <button id="submit" type="button" class="btn btn-primary btn-sm col-lg-1 col-sm-12 ">Update</button>
     </div>
 {% endblock %}
 
@@ -52,7 +48,6 @@
             url:"{{url_for(title_get)}}",
             type:'GET'
         });
-        console.log(13)
     });
 </script>
 {% endblock %}
