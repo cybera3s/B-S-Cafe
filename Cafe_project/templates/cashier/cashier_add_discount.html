@@ -1,0 +1,56 @@
+{% extends "cashier/_base.html" %}
+{% block title %}Add New Discount{% endblock %}
+
+{% block extra_head %}
+<style>
+@media only screen and (max-width: 680px) {
+  .card-footer>button {
+    width: 100%;
+  }
+}
+.persent{
+    color: #0c84ff;
+}
+</style>
+{% endblock %}
+
+
+{% block content_title %}
+    Add New Discount
+{% endblock %}
+
+
+{% block content_body %}
+    <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12"></div>
+    <!-- /.col-lg-6 col-md-6 col-sm-12 -->
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Add persent discount</h3>
+              </div>
+              <!-- form start -->
+              <form action="{{ url_for('cashier_add_discount') }}" method="POST">
+                <div class="card-body">
+                  <div class="form-group">
+                      <label for="persentDiscount">Persent (<span class="persent">%</span>)</label>
+                    <input type="text" name="persentDiscount" class="form-control" id="persentDiscount" placeholder="Example: 10">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+    </div>
+    <!-- /.col-6 -->
+    <div class="col-lg-4 col-md-4 col-sm-12"></div>
+    <!-- /.col-lg-6 col-md-6 col-sm-12 -->
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+{% block extra_footer %}{% endblock %}
+
