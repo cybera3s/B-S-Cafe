@@ -57,6 +57,27 @@ class Table(DBModel):
         if id:
             self.id = id
 
+    @staticmethod
+    def current_orders(db, table_id: int) -> dict:
+        """
+            return a dictionary that contains menu item as key and count number as value
+            :param table_id: table id for get menu items
+            :return: a dict of menu items and their counts
+        """
+        tables_receipts = db.read_by(Receipt, ('table_id', table_id))  # list of tables receipts filter by table id
+        # filtered receipts by is paid True
+        paid_tables_receipts = list(filter(lambda receipt: receipt.is_paid == True, tables_receipts))
+        # sort paid tables receipts by create time
+        sorted_receipts = sorted(paid_tables_receipts, key=lambda i: i.create_time, reverse=True)
+
+        orders_list = sorted_receipts[0].orders  # list of orders id of corresponding table
+        items = {}
+        for order in orders_list:
+            o = db.read(Order, order)
+            item = db.read(MenuItems, o.menu_item)
+            items[item.name] = o.count
+        return items
+
     def __repr__(self):
         return f"<Table_class {self.id}:{self.capacity},{self.position},{self.status}>"
 
