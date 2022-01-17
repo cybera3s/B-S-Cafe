@@ -1,6 +1,8 @@
+import json
+
 from flask import render_template, request
 from database.manager import db
-from models.models import Table
+from models.models import Table, Receipt
 
 
 def cashier_table():
@@ -21,11 +23,16 @@ def cashier_table():
 
     # handle AJAX POST request for changing state of tables
     if request.method == "POST":
-        data = request.get_json()
-        id = data['id']
-        table = db.read(Table, id)
-        table.status = False
-        db.update(table)
-        return '200'
+        received_data = request.get_json()
+        id = received_data['id']
+
+        if received_data['get_info']:   # Handle show info section
+            orders = Table.current_orders(db, id)
+            return render_template('cashier/table_items.html', data=data, orders=orders)
+        else:
+            table = db.read(Table, id)
+            table.status = False
+            db.update(table)
+            return '200'
     # handle get request
     return render_template('cashier/tables.html', data=data)
