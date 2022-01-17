@@ -12,49 +12,66 @@
 {% endblock %}
 
 {% block content_body %}
-    <div class="row justify-content-center">
-            <div>
-                <h1 class="title text-center"> {{ data.page.title }}</h1>
-                <table class="table" id="customers">
-                    <thead>
-                        <tr>
-                            <th class="text-center black">ID</th>
-                            <th class="text-center black">menu item</th>
-                            <th class="text-center black">count</th>
-                            <th class="text-center black">receipt</th>
-                            <th class="text-center black">create time</th>
-                        </tr>
-                    </thead>
+    <div class="row justify-content-center m-0" id="Order">
+        <h1 class="title text-center"> {{ data.page.title }}</h1>
+        <input type="text" id="Input" onkeyup="myFunction()" placeholder="Search for menu items.."
+               title="Type in a name">
+        <table class="table table-striped" id="Table" >
+            <thead>
+            <tr>
+                <th class="text-center black ">ID</th>
+                <th class="text-center black">menu item</th>
+                <th class="text-center black">count</th>
+                <th class="text-center black">receipt</th>
+                <th class="text-center black">create time</th>
+            </tr>
+            </thead>
 
-                <tbody id="row">
-                {% for item in items %}
-                    <tr>
-                        <td class="text-center">{{ item.id }}</td>
-                        <td class="text-center">{{ item.menu_item }}</td>
-                        <td class="text-center">{{ item.count }}</td>
-                        <td class="text-center">{{ item.receipt_id }}</td>
-                        <td class="text-center">{{ item.create_time }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
-            <button id="submit" type="button" class="btn btn-danger btn-sm btn-block ">Update</button>
-
-        </div>
+            <tbody id="row_table">
+            {% for item in items %}
+                <tr>
+                    <td class="text-center">{{ item.id }}</td>
+                    <td class="text-center">{{ item.menu_item }}</td>
+                    <td class="text-center">{{ item.count }}</td>
+                    <td class="text-center">{{ item.receipt_id }}</td>
+                    <td class="text-center">{{ item.create_time }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button id="submit" type="button" class="btn btn-primary col-md-1 col-12 btn-block">Update</button>
     </div>
 {% endblock %}
 
 {% block extra_footer %}
     <script>
-    $("#submit").on('click', function () {
-        $.ajax({
-            url:"{{url_for(title_get)}}",
-            type:'GET'
+        $("#submit").on('click', function () {
+            $.ajax({
+                url: "{{url_for(title_get)}}",
+                type: 'GET'
+            });
         });
-        console.log(13)
-    });
-</script>
+    </script>
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("Input");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("Table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 {% endblock %}
 
 
