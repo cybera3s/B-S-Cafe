@@ -27,5 +27,5 @@ def cashier_table():
         table.status = False
         db.update(table)
         return '200'
-
+    # handle get request
     return render_template('cashier/tables.html', data=data)
