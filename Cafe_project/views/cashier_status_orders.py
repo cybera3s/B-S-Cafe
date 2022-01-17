@@ -2,18 +2,18 @@ from flask import url_for, request, redirect, render_template
 from database.manager import db
 from models.models import Order, MenuItems
 
-
 base_variables = {
-"page": {
-"lang": 'en-US',
-"title": ''
-},
+    "page": {
+        "lang": 'en-US',
+        "title": ''
+    },
 }
+
 
 def cashier_new_order():
     data = base_variables
     data["page"]["title"] = "New Orders"
-    title_get = 'cashier_new_order'
+    title_get = 'cashier_order_new'
     items = db.read_by(Order, ('status_id', 1))
     for i in items:
         x = db.read(MenuItems, i.menu_item)
