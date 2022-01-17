@@ -132,6 +132,22 @@
         })
 
         });
+         // Send AJAX request on click on show info btn
+        $(".show-info").on('click', (event)=>{
+           var id = event.target.id
+            $.ajax({
+            url : "{{ url_for('cashier_table') }}",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({get_info: true,id: +id}),
+            success: function(response){
+                // show beautiful alert by Sweetalert lib
+                $(".modal-body").empty()
+                $(".modal-body").append(response)
+            }
+        })
+
+        });
 
 </script>
 
