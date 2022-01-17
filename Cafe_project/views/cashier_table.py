@@ -1,11 +1,15 @@
 import json
 
-from flask import render_template, request
+from flask import render_template, request, url_for
 from database.manager import db
 from models.models import Table, Receipt
 
 
 def cashier_table():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     tables = db.read_all(Table)  # fetch all of tables from database
 
     # turn status of boolean to string
