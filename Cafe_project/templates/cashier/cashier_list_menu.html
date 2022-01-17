@@ -6,4 +6,68 @@
 {% block content_title %}Item menu{% endblock %}
 {% block content_body %}
 
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for i in menuitems %}
+                    <tr>
+                        <td>{{ menuitems.index(i) + 1 }}</td>
+                        <td>{{ i.name}}</td>
+                        <td>{{ i.price }}</td>
+                        <td>
+                            <div class="d-flex">
+                                <a href="#" id="{{ i.id }}" class="edit btn btn-primary shadow btn-xs sharp mr-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-pencil"></i></a>
+                                <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Items</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="item_modal">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+{% endblock %}
+{% block extra_footer %}
+<script>
+    $('.edit').on('click', function () {
+        let url = "{{ url_for('cashier_list_menu') }}";
+        let SendData = {
+            view: 'item',
+            items: Number(this.id)
+        };
+        $("#item_modal").empty();
+        $.ajax({
+            url: `${url}`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(SendData),
+            success: function (response) {
+                $('#item_modal').append(response)
+            }
+        });
+    })
+</script>
 {% endblock %}
