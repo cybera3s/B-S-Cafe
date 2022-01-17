@@ -10,11 +10,13 @@ def cashier_table():
     for table in tables:
         table.status = 'Busy' if table.status else 'Free'
 
-
     data = {
         "page": {
             "title": "tables",
         },
+        "content": {
+            "tables": tables,
+        }
     }
 
     return render_template('cashier/tables.html', data=data)
