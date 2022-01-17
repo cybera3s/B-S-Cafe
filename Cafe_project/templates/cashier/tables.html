@@ -67,4 +67,19 @@
         })
     </script>
 
+    <script>
+        // show change state button on mouse hover to busy tables
+        $('.tables').on('mouseenter', function () {
+
+            $state = $(this).find(".state")
+
+            if ($state.html() === 'Busy'){
+                $(this).find(".change_state").fadeIn(600);
+            }
+        }).on('mouseleave', function () {
+            $(this).css("opacity", '1.0').find(".change_state").fadeOut(100);
+        });
+
+    </script>
+
 {% endblock %}
