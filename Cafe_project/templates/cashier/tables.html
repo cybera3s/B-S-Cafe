@@ -4,14 +4,14 @@
 {% block extra_head %}
     <style>
         .tables {
-            box-shadow: 2px 2px 10px black;
+            box-shadow: 1px 1px 5px gray;
             transition: ease 500ms;
         }
         img{
             transition: ease 700ms;
         }
 
-        .change_state {
+        .change_state, .show-info {
             display: none;
         }
         .change_state:hover img {
@@ -49,6 +49,8 @@
                 <button id="{{ table.id }}" class="change_state btn-danger w-50 position-absolute p-2 rounded-pill"
                         style="top:50%;left:50%;transform: translate(-50%, -50%)">Free the table
                 </button>
+                <button class="show-info btn-primary position-absolute p-1 rounded" style="bottom: 10px;left:50%;transform: translate(-50%);">Show Info
+                </button>
 
             </div>
 
@@ -75,13 +77,15 @@
 
             if ($state.html() === 'Busy'){
                 $(this).find(".change_state").fadeIn(600);
+                $(this).find(".show-info").fadeIn(600);
             }
         }).on('mouseleave', function () {
             $(this).css("opacity", '1.0').find(".change_state").fadeOut(100);
+            $(this).css("opacity", '1.0').find(".show-info").fadeOut(100);
         });
 
         // animate opacity of table image on mouse hover on Change State Button
-        $('.change_state').on('mouseenter', function () {
+        $('.change_state,.show-info').on('mouseenter', function () {
 
             $(this).parent().find('img').css("opacity", '0.5')
 
