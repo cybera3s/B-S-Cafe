@@ -1,6 +1,6 @@
 import json
 
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, redirect
 from database.manager import db
 from models.models import Table, Receipt
 
