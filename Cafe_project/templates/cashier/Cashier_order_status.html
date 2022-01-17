@@ -14,7 +14,9 @@
 {% block content_body %}
     <div class="row justify-content-center m-0" id="Order">
         <h1 class="title text-center"> {{ data.page.title }}</h1>
-        <table class="table table-striped">
+        <input type="text" id="Input" onkeyup="myFunction()" placeholder="Search for menu items.."
+               title="Type in a name">
+        <table class="table table-striped" id="Table" >
             <thead>
             <tr>
                 <th class="text-center black ">ID</th>
@@ -37,7 +39,7 @@
             {% endfor %}
             </tbody>
         </table>
-            <button id="submit" type="button" class="btn btn-primary col-md-1 col-12 btn-block">Update</button>
+        <button id="submit" type="button" class="btn btn-primary col-md-1 col-12 btn-block">Update</button>
     </div>
 {% endblock %}
 
@@ -49,6 +51,26 @@
                 type: 'GET'
             });
         });
+    </script>
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("Input");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("Table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
     </script>
 {% endblock %}
 
