@@ -1,7 +1,7 @@
 from flask import Flask
 from views.landing_views import *
 from views import cashier_add_category, cashier_add_discount, cashier_add_item, cashier_dashboard, cashier_order, \
-    cashier_table, login
+    cashier_table, login, cashier_list_menu
 from os import urandom
 from views import cashier_status_orders
 
@@ -29,6 +29,7 @@ app.add_url_rule('/cashier_panel/order/paid', 'cashier_paid_order', cashier_stat
 app.add_url_rule('/cashier_panel/order/delete', 'cashier_delete_order', cashier_status_orders.cashier_delete_order,  methods=['GET']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/order/cook', 'cashier_cook_order', cashier_status_orders.cashier_cook_order,  methods=['GET']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/new_menu_item', 'cashier_add_item', cashier_add_item.cashier_add_item, methods=['POST', 'GET']) #--------> (mamreza)
+app.add_url_rule('/cashier_panel/list_menu', 'cashier_list_menu', cashier_list_menu.cashier_list_menu, methods=['POST', 'GET']) #--------> (mamreza)
 app.add_url_rule('/cashier_panel/add_category', 'cashier_add_category', cashier_add_category.cashier_add_category, methods=['GET', 'POST']) #--------> (mamad nasimi)
 app.add_url_rule('/cashier_panel/order/new-order', 'cashier_order_new', cashier_status_orders.cashier_new_order, methods=['GET'])# --------> (mamad nasimi)
 
