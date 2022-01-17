@@ -1,0 +1,92 @@
+{% extends "cashier/_base.html" %}
+    {% block title %}Orders{% endblock %}
+
+{% block extra_head %}
+   <style>
+        .item tr:hover td{
+            background-color:#333;
+            color: white !important;
+            }
+
+    </style>
+{% endblock %}
+{% block content_title %}Orders List{% endblock %}
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-md item">
+                            <thead>
+                            <tr>
+                                <th style="width:80px;"><strong>#</strong></th>
+                                <th><strong>RECEIPT</strong></th>
+                                <th><strong>CREATE TIME</strong></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in receipts %}
+                                <tr class="data" id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <td><strong>{{ receipts.index(i) + 1 }}</strong></td>
+                                    <td>{{ i.id }}</td>
+                                    <td>{{ i.create_time }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Orders</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="receipt_modal">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block extra_footer %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".dropdown-menu").on('click', 'a', function(){
+            $(this).parents('.dropdown').find('button').text($(this).text());
+        });
+    });
+</script>
+<script>
+    $('.data').on('click', function () {
+        let target_url = "{{ url_for('cashier_order') }}";
+        let DataSend = {
+            view: 'receipt_req',
+            receipt: Number(this.id)
+        };
+        console.log(this.id)
+        $("#receipt_modal").empty();
+        $.ajax({
+            url: `${target_url}`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(DataSend),
+            success: function (response){
+                $("#receipt_modal").append(response)
+            }
+        });
+    }
+    )
+</script>
+{% endblock %}
