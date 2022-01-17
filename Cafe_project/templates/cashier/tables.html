@@ -8,7 +8,32 @@
 {% block content_title %}{{ data.page.title }}{% endblock %}
 
 {% block content_body %}
+    <div class="row justify-content-center">
 
+        {% for table in data.content.tables %}
+
+            <!-- using Bootstrap Popovers for show table info on mouse hover-->
+            <div class="col-12 col-sm-5 col-md-5 col-lg-3 text-center tables m-1 rounded position-relative"
+                 data-bs-toggle="popover"
+                 data-bs-html="true" title="<b style='background-color:red;'>table number : {{ table.id }}</b>"
+                 data-bs-content="<b>Position: {{ table.position }}</b><br>" data-bs-trigger="hover focus">
+                <h5 class="text-dark fw-bold">Capacity: <span id="capacity">{{ table.capacity }}</span></h5>
+                <h6 class="text-dark fw-bold">State: <span class="badge bg-success state" style="font-size: 3vh;"
+                                                           id="{{ table.id }}">{{ table.status }}</span></h6>
+                <!-- table image -->
+                <img width="200" src="{{ url_for('static', filename='images/cashier/tables/cafe-table-II.jpg') }}"
+                     alt="cafe table">
+
+                <!-- change state btn on free tables does not appear -->
+                <button id="{{ table.id }}" class="change_state btn-danger w-50 position-absolute p-2 rounded-pill"
+                        style="top:50%;left:50%;transform: translate(-50%, -50%)">Free the table
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
 {% endblock %}
 
 
