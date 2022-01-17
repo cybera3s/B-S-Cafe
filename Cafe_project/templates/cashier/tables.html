@@ -49,11 +49,26 @@
                 <button id="{{ table.id }}" class="change_state btn-danger w-50 position-absolute p-2 rounded-pill"
                         style="top:50%;left:50%;transform: translate(-50%, -50%)">Free the table
                 </button>
-                <button class="show-info btn-primary position-absolute p-1 rounded" style="bottom: 10px;left:50%;transform: translate(-50%);">Show Info
+                <button id="{{ table.id }}" class="show-info btn-primary position-absolute p-1 rounded" style="bottom: 10px;left:50%;transform: translate(-50%);" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Show Info
                 </button>
 
             </div>
+            <!-- Modal for show table items -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">List of Orders</h5>
+                  </div>
+                  <div class="modal-body" style="direction: rtl;text-align: right;">
 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
         {% endfor %}
 
     </div>
@@ -102,7 +117,7 @@
             url : "{{ url_for('cashier_table') }}",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({id: +id}),
+            data: JSON.stringify({get_info: false,id: +id}),
             success: function(response){
                 // show beautiful alert by Sweetalert lib
                 Swal.fire({
@@ -118,6 +133,6 @@
 
         });
 
-    </script>
+</script>
 
 {% endblock %}
