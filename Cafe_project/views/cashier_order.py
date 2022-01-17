@@ -5,6 +5,10 @@ from models.models import Order, Receipt, MenuItems, Status
 
 def cashier_order():
     if request.method == 'GET':
+        # route protecting
+        user_email = request.cookies.get('user')
+        if not user_email:
+            return redirect(url_for('login'))
         receipts = db.read_all(Receipt)
         for i in receipts:
             i.create_time = i.create_time.strftime("%Y/%-m/%d %-I:%m ")

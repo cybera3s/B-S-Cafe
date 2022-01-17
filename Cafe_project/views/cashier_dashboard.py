@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 
 
 def cashier_dashboard():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     all_receipts = db.read_all(models.Receipt)
 
     today_receipts = list(filter(lambda order: order.create_time.day == datetime.now().day, all_receipts))
@@ -12,7 +16,6 @@ def cashier_dashboard():
 
     report = models.Receipt.last_week_report(all_receipts=all_receipts)
 
-    user_email = request.cookies.get('user')
     user = db.read_by(models.Cashier, ('email', user_email))
     data = {
         'user': user[0],

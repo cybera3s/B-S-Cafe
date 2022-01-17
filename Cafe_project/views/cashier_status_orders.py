@@ -11,6 +11,10 @@ base_variables = {
 
 
 def cashier_new_order():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     data = base_variables
     data["page"]["title"] = "New Orders"
     title_get = 'cashier_order_new'
@@ -23,6 +27,10 @@ def cashier_new_order():
 
 
 def cashier_cook_order():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     data = base_variables
     data["page"]["title"] = "Cooking Orders"
     title_get = 'cashier_cook_order'
@@ -35,6 +43,10 @@ def cashier_cook_order():
 
 
 def cashier_order_served():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     data = base_variables
     data["page"]["title"] = "Served orders"
     title_get = 'cashier_order_served'
@@ -47,6 +59,10 @@ def cashier_order_served():
 
 
 def cashier_delete_order():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     data = base_variables
     data["page"]["title"] = "Delete Orders"
     title_get = 'cashier_delete_order'
@@ -59,6 +75,10 @@ def cashier_delete_order():
 
 
 def cashier_paid_order():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     data = base_variables
     data["page"]["title"] = "Paid Orders"
     title_get = 'cashier_paid_order'
