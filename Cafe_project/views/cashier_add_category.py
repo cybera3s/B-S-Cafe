@@ -1,9 +1,14 @@
-from flask import request, render_template, flash
+from flask import request, render_template, flash, redirect
 from database.manager import db
 from models import models
 
 
 def cashier_add_category():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
+
     items_category = db.read_all(models.Category)
     items_discount = db.read_all(models.Discount)
     if request.method == 'GET':
