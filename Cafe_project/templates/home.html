@@ -1,8 +1,73 @@
 <div class="row justify-content-center bg-dark m-0 p-0">
     <div class="col-12 text-center">
-        <h1 class="text-white"></h1>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    {% include "banner.html" %}
+                </div>
+                <div class="carousel-item">
+                    <div class="container-fluid m-0 p-0">
+                        <div class="row mx-0" id="banner">
+                            <div class="col-12 m-0 p-0">
+                                <img class='img-fluid w-100' src="../static/images/cafe-pic1.jpg" alt="banner">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container-fluid m-0 p-0">
+                        <div class="row mx-0" id="banner">
+                            <div class="col-12 m-0 p-0">
+                                <img class='img-fluid w-100' src="../static/images/cafe-pic2.jpg" alt="banner">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
 
-        {% include "banner.html" %}
 
+<div class="row justify-content-center bg-dark m-0 p-0">
+    <div class="col-12 text-center">
+        <h1 class="justify-content-center text-warning">کافه تلخ و شیرین</h1>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-12 col-sm-6">
+        <div class="row bg-dark h-50 rounded m-3">
+            <img src="../static/images/nema-cafe1.jpg" alt="">
+        </div>
+        <div class="row bg-dark h-50 rounded m-3">
+            <img  src="../static/images/nema-cafe2.jpg" alt="">
+        </div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <div class="row bg-dark h-50 rounded m-3">
+            <img src="../static/images/nema-cafe3.jpg" alt="">
+        </div>
+        <div class="row bg-dark h-50 rounded m-3">
+            <img src="../static/images/nema-cafe4.jpg" alt="">
+        </div>
     </div>
 </div>
