@@ -44,12 +44,13 @@ def home():
 
 
 def menu():
+    discounts = db.read_all(models.Discount)
     data = base_variables
     data['current_page'] = 'menu'
     items = db.read_all(models.MenuItems)
     if request.method == 'GET':
         data["title"] = 'menu'
-        return render_template('menu.html', items=items, data=data)
+        return render_template('menu.html', items=items, data=data, discounts=discounts)
 
 
 def order(table_id):
@@ -57,9 +58,10 @@ def order(table_id):
     data['current_page'] = 'order'
     items = db.read_all(models.MenuItems)
     table = db.read(models.Table, table_id)
+    discounts = db.read_all(models.Discount)
 
     if request.method == 'GET':
-        res = flask.make_response(render_template('order.html', data=data, items=items))
+        res = flask.make_response(render_template('order.html', data=data, items=items, discounts=discounts))
         new_receipt = models.Receipt(int(table_id))
         receipt_id = db.create(new_receipt)
         res.set_cookie('receipt_id', str(receipt_id))
@@ -71,13 +73,21 @@ def order(table_id):
         item_count = cookie['order']['count']
         table = cookie['table']
         receipt = cookie['receipt']
-        new_order = models.Order(item_id, receipt, 1, item_count)
+        new_order = models.Order(item_id, receipt, 1, int(item_count))
         order_id = db.create(new_order)
-        db.array_modify(models.Receipt, ('orders', order_id), int(receipt))
+        current_receipt = db.read(models.Receipt, int(receipt))
+        current_menu_item = db.read(models.MenuItems, new_order.menu_item)
+        discount = db.read(models.Discount, current_menu_item.discount_id)
+        current_receipt.total_price += current_menu_item.price * new_order.count
+        if discount.id == 1:
+            current_receipt.final_price += current_menu_item.price * new_order.count
+        else:
+            current_receipt.final_price += ((current_menu_item.price - ((current_menu_item.price * discount.value) / 100)) * new_order.count)
+        current_receipt.orders.append(order_id)
+        db.update(current_receipt)
         return '200'
     elif request.method == 'DELETE':
-        return f'DELETE/Order Page !Order_id'
-    return
+        pass
 
 
 def cart():
@@ -85,7 +95,8 @@ def cart():
         receipt = request.cookies.get('receipt_id')
         orders = db.read_by(models.Order, ('receipt_id', receipt))
         menu_items = db.read_all(models.MenuItems)
-        return render_template('cart.html', orders=orders, items=menu_items)
+        current_receipt = db.read(models.Receipt, int(receipt))
+        return render_template('cart.html', orders=orders, items=menu_items, receipt=current_receipt)
     if request.method == "POST":
         cookie = request.get_json()
         table_id = int(cookie['table'])
