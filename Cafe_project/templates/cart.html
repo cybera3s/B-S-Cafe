@@ -1,15 +1,17 @@
 <table class="table text-white">
   <thead>
     <tr>
-      <th scope="col">No.</th>
+      <th scope="col"></th>
       <th scope="col">آیتم ها</th>
       <th scope="col">تعداد</th>
+      <th scope="col">قیمت</th>
+
     </tr>
   </thead>
   <tbody>
   {% for order in orders %}
     <tr>
-      <th scope="row">{{ order.id }}</th>
+      <th scope="row">{{ (receipt.orders).index(order.id) + 1 }}</th>
       <td>
           {% for item in items %}
           {% if item.id == order.menu_item %}
@@ -18,9 +20,18 @@
           {% endfor %}
       </td>
       <td>{{ order.count }}</td>
+      <td>
+          {% for item in items %}
+          {% if item.id == order.menu_item %}
+            {{ item.price * order.count }} تومان
+          {% endif %}
+          {% endfor %}
+      </td>
+    <td><a type="button" onclick="DeleteOrder({{ order.id }})"><i class="fa fa-times text-danger" aria-hidden="true"></i></a></td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
+<p>قیمت کل: {{ receipt.total_price }}</p>
+<p>قیمت نهایی(با تخفیف): {{ receipt.final_price }}</p>
 
-<button class="btn btn-primary text-center" onclick="payment()" data-bs-dismiss="modal">پرداخت</button>
