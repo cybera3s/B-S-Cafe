@@ -1,6 +1,7 @@
 from flask import url_for, request, redirect, render_template
 from database.manager import db
 from models.models import Order, MenuItems
+from views.get_current_user import get_current_user
 
 base_variables = {
     "page": {
@@ -11,11 +12,13 @@ base_variables = {
 
 
 def cashier_new_order():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
+
     data = base_variables
+    data['user'] = user
     data["page"]["title"] = "New Orders"
     title_get = 'cashier_order_new'
     items = db.read_by(Order, ('status_id', 1))
@@ -27,12 +30,15 @@ def cashier_new_order():
 
 
 def cashier_cook_order():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
+
     data = base_variables
     data["page"]["title"] = "Cooking Orders"
+    data['user'] = user
+
     title_get = 'cashier_cook_order'
     items = db.read_by(Order, ('status_id', 2))
     for i in items:
@@ -43,11 +49,13 @@ def cashier_cook_order():
 
 
 def cashier_order_served():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
+
     data = base_variables
+    data['user'] = user
     data["page"]["title"] = "Served orders"
     title_get = 'cashier_order_served'
     items = db.read_by(Order, ('status_id', 3))
@@ -59,11 +67,13 @@ def cashier_order_served():
 
 
 def cashier_delete_order():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
+
     data = base_variables
+    data['user'] = user
     data["page"]["title"] = "Delete Orders"
     title_get = 'cashier_delete_order'
     items = db.read_by(Order, ('status_id', 4))
@@ -75,11 +85,13 @@ def cashier_delete_order():
 
 
 def cashier_paid_order():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
+
     data = base_variables
+    data['user'] = user
     data["page"]["title"] = "Paid Orders"
     title_get = 'cashier_paid_order'
     items = db.read_by(Order, ('status_id', 5))
