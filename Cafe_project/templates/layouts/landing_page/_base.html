@@ -5,78 +5,84 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>#}
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    #}
     {% include "fonts.html" %}
     {% include "bootstrap.html" %}
     <title>خانه</title>
 </head>
-<body class="bg-dark" >
+<body class="bg-dark">
 {% include "navbar.html" %}
 <div class="container-fluid p-0 m-0 text-dark" id="page-loader">
     {% include "home.html" %}
 </div>
-{% include "layouts/landing_page/footer.html" %}
+<div class="container-fluid p-0 m-0 text-dark" id="page-loader">
+    <div class="row">
+        {% include "layouts/landing_page/footer.html" %}
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../../../static/js/landing/jquery-cookie.js"></script>
 <script> <!-- table select (modal Ajax) -->
-    function table_select(table_id){
-        let target_url = 'http://127.0.0.1:5000/order'
-        $("#page-loader").empty()
-        $.ajax({
-            url : `${target_url}/${table_id}`,
-            type: "GET",
-            success: function (response){
-                $("#page-loader").append(`${response}`)
-            }
-        })
+function table_select(table_id) {
+    let target_url = 'http://127.0.0.1:5000/order'
+    $("#page-loader").empty()
+    $.ajax({
+        url: `${target_url}/${table_id}`,
+        type: "GET",
+        success: function (response) {
+            $("#page-loader").append(`${response}`)
+        }
+    })
 }
 </script>
 <script> <!-- Page Loading (ajax)  -->
-    function load_page(endPoint, title){
-        $("#page-loader").empty()
-        let target_url = `http://127.0.0.1:5000/${endPoint}`
-        $.ajax({
-            url : `${target_url}`,
-            type: "GET",
-            success: function (response) {
-                $("#page-loader").append(response)
-                $(document).attr("title", title);
-            }
-        })
+function load_page(endPoint, title) {
+    $("#page-loader").empty()
+    let target_url = `http://127.0.0.1:5000/${endPoint}`
+    $.ajax({
+        url: `${target_url}`,
+        type: "GET",
+        success: function (response) {
+            $("#page-loader").append(response)
+            $(document).attr("title", title);
+        }
+    })
 }
 </script>
 <script>  <!-- add FoodItem to Order (ajax)  -->
-    function order(item_id){
-        let table_id = $.cookie("table_id") // get table id from cookies to include in json file
-        let receipt_id = $.cookie("receipt_id") // get receipt id from cookies to include in json file
-        let target_url = `http://127.0.0.1:5000/order/${table_id}`
-        let order_count = $(`#count-${item_id}`).val()
-        let data = {} // to store order detail data
-        data['item_id'] = item_id
-        data['count'] = order_count
-        let postData = {    // to create a json object with required data
-          order: data,
-          table: table_id,
-          receipt: receipt_id
-        }
-        $.ajax({        // ajax request to send order details to flask
-            url : target_url,
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(postData),
-            success: function(resp){
-                alert('این محصول با موفقیت به سبد خرید اضافه شد.')
-            }
-        })
+function order(item_id) {
+    let table_id = $.cookie("table_id") // get table id from cookies to include in json file
+    let receipt_id = $.cookie("receipt_id") // get receipt id from cookies to include in json file
+    let target_url = `http://127.0.0.1:5000/order/${table_id}`
+    let order_count = $(`#count-${item_id}`).val()
+    let data = {} // to store order detail data
+    data['item_id'] = item_id
+    data['count'] = order_count
+    let postData = {    // to create a json object with required data
+        order: data,
+        table: table_id,
+        receipt: receipt_id
     }
+    $.ajax({        // ajax request to send order details to flask
+        url: target_url,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(postData),
+        success: function (resp) {
+            alert('این محصول با موفقیت به سبد خرید اضافه شد.')
+        }
+    })
+}
 </script>
 <script>
-    function cart_loader(){
+    function cart_loader() {
         let target_url = "{{ url_for('cart') }}"
         $.ajax({        // ajax request to send order details to flask
-            url : target_url,
+            url: target_url,
             type: "GET",
-            success: function(resp){
+            success: function (resp) {
                 $('#cart-loader').empty()
                 $('#cart-loader').append(resp)
             }
@@ -84,7 +90,7 @@
     }
 </script>
 <script>
-    function payment(){
+    function payment() {
         $('#page-loader').empty()
         let table_id = $.cookie("table_id")
         let receipt = $.cookie("receipt_id")
@@ -94,12 +100,12 @@
             table: table_id
         }
         $.ajax({
-            url : target_url,
+            url: target_url,
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(postData),
-            success: function (response){
-                $.cookie("receipt_id", null, { path: '/' });
+            success: function (response) {
+                $.cookie("receipt_id", null, {path: '/'});
                 $('#page-loader').append(response)
             }
         })
