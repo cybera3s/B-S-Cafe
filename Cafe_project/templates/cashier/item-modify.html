@@ -1,4 +1,3 @@
-<form id="data-form" role="form" action="{{ url_for('cashier_list_menu') }}" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
             <div class="panel">
@@ -12,19 +11,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="name"> Price </label>
+                        <label class="col-sm-4 control-label" for="Price"> Price </label>
                         <div class="col-sm-12">
                             <input type="text" class="form-control" name="price" id="Price" value="{{ item.price }}" required="" maxlength="70" >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="name"> serving time </label>
+                        <label class="col-sm-4 control-label" for="serving_time"> serving time </label>
                         <div class="col-sm-12">
-                            <input type="text" class="form-control" name="serving_time" id="serving" value="{{ item.serving_time_period }}" required="" maxlength="70">
+                            <input type="text" class="form-control" name="serving_time" id="serving_time" value="{{ item.serving_time_period }}" required="" maxlength="70">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="name"> estimated cooking time (minute)</label>
+                        <label class="col-sm-4 control-label" for="estimated"> estimated cooking time (minute)</label>
                         <div class="col-sm-12">
                             <input type="text" class="form-control" name="estimated" id="estimated" value="{{ item.estimated_cooking_time }}" required="" maxlength="70">
                         </div>
@@ -57,13 +56,11 @@
                     <span class="btn btn-primary btn-block btn-lg btn-file">
                         Browse image <input type="file" name="file">
                     </span>
-                    <input type="submit" id="send" name="send" class="btn btn-primary btn-block btn-lg">
-<!--                    <button id="send" name="send" class="btn btn-primary btn-block btn-lg">save</button>-->
+                    <button id="send" name="send" class="btn btn-primary btn-block btn-lg">save</button>
                 </div>
             </div>
         </div>
     </div>
-</form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -73,7 +70,7 @@
         let target_url = "{{ url_for('cashier_list_menu') }}";
         let id = $('#item_id').val()
         let name = $('#name').val()
-        let price = $('#price').val()
+        let price = $('#Price').val()
         let serving_time = $('#serving_time').val()
         let estimated = $('#estimated').val()
         let discount = $('#discount').val()
@@ -96,8 +93,8 @@
             data: JSON.stringify(DataSend),
             success: function (response){
                 Swal.fire(
-                  'Good job!',
-                  'You clicked the button!',
+                  'Item updated',
+                  'updated successfully!',
                   'success'
                 )
             }
