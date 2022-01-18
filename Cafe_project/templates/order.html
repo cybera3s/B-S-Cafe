@@ -1,37 +1,42 @@
-<div class="row justify-content-around p-5 m-0">
+<div class="row justify-content-center p-5 m-0">
     {% for item in items %}
-        <div class="col-2 m-2 bg-dark text-center items p-2">
-            <div class="row m-0 p-0 item-image">
-                <img class='img-thumbnail border-none' src="../static/images/{{ item.picture_link }}" alt="">
+        <div class="card m-3 bg-dark" style="width: 10rem;height:15rem; justify-content:center;">
+            <div class="m-0 p-0 item-image">
+                <img class="card-img-top mt-2 img-thumbnail border-none" src="../static/images/{{ item.picture_link }}"
+                     alt="not">
             </div>
-            <div class="row"><h5 class="text-warning">{{ item.name }}</h5></div>
-            <div class="row"><h6>{{ item.price }}</h6></div>
-            <div class="row justify-content-center" style="align-items: center">
-                <div class="col-5">
-                    <input class="form-input" style="border-radius:9px; width:3em;" type="number" step="1" min="1" max="100" id="count-{{ item.id }}">
-                </div>
-                <div class="col-12 col-sm-7">
-                    <button class="btn btn-warning" onclick="order({{ item.id }})">سفارش</button>
-                </div>
-            </div>
+            <div class="card-block">
+                <h4 class="text-center text-warning">{{ item.name }}</h4>
+                <p class="text-center text-light">{{ item.price }}</p>
+                <input class="form-input" style="border-radius:9px; width:6em;height: 2em ;justify-content:center;" type="number" step="1"
+                       min="1"
+                       max="100" id="count-{{ item.id }}">
+
+            <button class="btn btn-warning" style="border-radius:9px; width:6em;height: 2em;justify-content:center;"
+                    onclick="order({{ item.id }})">سفارش
+            </button>
+        </div>
         </div>
     {% endfor %}
+
 </div>
+
+
 <button class="float" onclick="cart_loader()" data-bs-toggle="modal" data-bs-target="#cart">
-<i class="fa fa-cart-arrow-down my-float" aria-hidden="true"></i>
+    <i class="fa fa-cart-arrow-down my-float" aria-hidden="true"></i>
 </button>
 <div class="modal fade" id="cart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content customize-modal">
-      <div class="modal-header text-center">
-        <h5 class="modal-title text-info" id="exampleModalLabel">سبد خرید شما</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container" id="cart-loader">
+    <div class="modal-dialog">
+        <div class="modal-content customize-modal">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-info" id="exampleModalLabel">سبد خرید شما</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container" id="cart-loader">
 
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

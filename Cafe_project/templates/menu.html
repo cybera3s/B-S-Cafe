@@ -1,11 +1,21 @@
-<div class="row justify-content-around p-5 m-0">
+<div class="row justify-content-center p-5 m-0">
     {% for item in items %}
-        <div class="col-2 m-2 bg-dark text-center items">
-            <div class="row m-0 p-0 item-image">
-                <img class='img-thumbnail border-none' src="../static/images/{{ item.picture_link }}" alt="">
+        <div class="card m-3 bg-dark" style="width: 10rem;height:15rem; justify-content:center;">
+            <div class="m-0 p-0 item-image">
+                <img class="card-img-top mt-2 img-thumbnail border-none" src="../static/images/{{ item.picture_link }}"
+                     alt="not">
             </div>
-            <div class="row"><h5 class="text-warning">{{ item.name }}</h5></div>
-            <div class="row"><h6>{{ item.price }}</h6></div>
+            <h4 class="text-center text-warning">{{ item.name }}</h4>
+            {% if item.discount_id != 1 %}
+                <p class="text-center text-light" style="text-decoration: line-through;">{{ item.price }}</p>
+                {% for discount in discounts %}
+                    {% if item.discount_id == discount.id %}
+                        <p class="text-center text-light" >{{ (item.price) - ((item.price * discount.value)//100) }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-light">{{ item.price }}</p>
+            {% endif %}
         </div>
     {% endfor %}
 </div>
