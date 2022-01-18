@@ -1,5 +1,5 @@
 from flask import Flask
-from views.landing_views import *
+from landing.landing_views import *
 from os import urandom
 from cashier.views import *
 
