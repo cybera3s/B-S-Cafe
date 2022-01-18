@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-decoration-none">
       <img src="https://freedesignfile.com/upload/2017/07/Hand-drawn-coffee-logos-design-vector-set-07.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">COFFEE Talkh</span>
+      <span class="brand-text font-weight-light">Cafe Talkho Shirin</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +13,7 @@
           <img src="{{ url_for('static', filename="images/cashier/avatar3.png") }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block text-decoration-none">{% block cashier_username %}seyed sajad{% endblock %}</a>
+          <a href="#cashier_info" class="d-block text-decoration-none">Cashier {% block cashier_username %}{{ data.user.first_name }}{% endblock %}</a>
         </div>
       </div>
 
@@ -39,7 +39,6 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Dashboard
-                <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
@@ -83,6 +82,13 @@
                   <p>cooking order</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url_for('cashier_paid_order') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Paid order</p>
+                </a>
+              </li>
+
             </ul>
           </li>
           <!-- Menu Items -->
@@ -102,7 +108,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url_for('cashier_list_menu') }}" class="nav-link">
                   <i class="far fa-list nav-icon"></i>
                   <p>list menu</p>
                 </a>
