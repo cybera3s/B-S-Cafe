@@ -29,13 +29,16 @@
     <div class="modal-dialog">
         <div class="modal-content customize-modal">
             <div class="modal-header text-center">
-                <h5 class="modal-title text-info" id="exampleModalLabel">سبد خرید شما</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title w-100 text-info" id="exampleModalLabel">سبد خرید شما</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="direction: rtl">
                 <div class="container" id="cart-loader">
 
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger text-center"  data-bs-dismiss="modal">بستن</button>
+                <button class="btn btn-primary text-center" onclick="payment()" data-bs-dismiss="modal">پرداخت</button>
             </div>
         </div>
     </div>
