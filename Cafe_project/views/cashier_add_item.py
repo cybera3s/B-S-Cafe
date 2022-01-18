@@ -1,5 +1,5 @@
 from flask import url_for, request, redirect, render_template, flash
-from database.manager import DBManager, db
+from database.manager import db
 from models.models import Discount, MenuItems, Category
 import os
 from werkzeug.utils import secure_filename
