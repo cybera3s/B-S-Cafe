@@ -355,12 +355,19 @@ def logout():
 
 
 def cashier_list_menu():
+    user = get_current_user()
+    # route protecting
+    if not user:
+        return redirect(url_for('login'))
+    data = {
+        'user': user,
 
+    }
     menuitem = db.read_all(MenuItems)
     discount = db.read_all(Discount)
     category = db.read_all(Category)
     if request.method == 'GET':
-        return render_template('cashier/cashier_list_menu.html', menuitems=menuitem)
+        return render_template('cashier/cashier_list_menu.html', menuitems=menuitem, data=data)
     if request.method == 'POST':
         request_data = request.get_json()
         if request_data['view'] == 'item':
@@ -389,4 +396,4 @@ def cashier_list_menu():
             item_update.discount_id = int(discount_id)
             item_update.category_id = int(category_id)
             db.update(item_update)
-            return render_template('cashier/cashier_list_menu.html', menuitems=menuitem)
+            return render_template('cashier/cashier_list_menu.html', menuitems=menuitem, data=data)
