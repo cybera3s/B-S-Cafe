@@ -3,15 +3,21 @@ from database.manager import DBManager, db
 from models.models import Discount, MenuItems, Category
 import os
 from werkzeug.utils import secure_filename
+from views.get_current_user import get_current_user
 
 UPLOAD_FOLDER = 'static/images/items'
 
 
 def cashier_add_item():
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    user = get_current_user()
+    if not user:
         return redirect(url_for('login'))
+
+    data = {
+        'user': user,
+
+    }
     discount = db.read_all(Discount)
     category = db.read_all(Category)
     if request.method == 'POST':
@@ -42,4 +48,4 @@ def cashier_add_item():
         db.create(new_item)
         flash('Image successfully uploaded and displayed below')
         return redirect(request.url)
-    return render_template("cashier/cashier_add_item.html", discounts=discount, categorys=category)
+    return render_template("cashier/cashier_add_item.html", discounts=discount, categorys=category, data=data)
