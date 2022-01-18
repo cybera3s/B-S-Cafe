@@ -8,16 +8,14 @@
             <div class="card-block">
                 <h4 class="text-center text-warning">{{ item.name }}</h4>
                 <p class="text-center text-light">{{ item.price }}</p>
-                <div class="row justify-content-center" style="align-items: center">
-                    <div class="col-5">
-                        <input class="form-input" style="border-radius:9px; width:3em;" type="number" step="1" min="1"
-                               max="100" id="count-{{ item.id }}">
-                    </div>
-                    <div class="col-5">
-                        <button class="btn btn-warning" onclick="order({{ item.id }})">سفارش</button>
-                    </div>
-                </div>
-            </div>
+                <input class="form-input" style="border-radius:9px; width:6em;height: 2em ;justify-content:center;" type="number" step="1"
+                       min="1"
+                       max="100" id="count-{{ item.id }}">
+
+            <button class="btn btn-warning" style="border-radius:9px; width:6em;height: 2em;justify-content:center;"
+                    onclick="order({{ item.id }})">سفارش
+            </button>
+        </div>
         </div>
     {% endfor %}
 
