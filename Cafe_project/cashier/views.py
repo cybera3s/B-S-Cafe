@@ -389,6 +389,7 @@ def cashier_list_menu():
             category_name = request_data['category']
             category_id = list(filter(lambda c: c.category == category_name, category))[0].id
             item_update = db.read(MenuItems, id)
+            item_update.name = name
             item_update.price = int(price)
             item_update.serving_time_period = serving_time
             item_update.estimated_cooking_time = int(estimated)
