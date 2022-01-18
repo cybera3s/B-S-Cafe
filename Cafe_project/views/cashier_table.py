@@ -1,14 +1,13 @@
-import json
-
 from flask import render_template, request, url_for, redirect
 from database.manager import db
-from models.models import Table, Receipt
+from models.models import Table
+from views.get_current_user import get_current_user
 
 
 def cashier_table():
+    user = get_current_user()
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    if not user:
         return redirect(url_for('login'))
     tables = db.read_all(Table)  # fetch all of tables from database
 
@@ -17,6 +16,7 @@ def cashier_table():
         table.status = 'Busy' if table.status else 'Free'
 
     data = {
+        'user': user,
         "page": {
             "title": "tables",
         },
