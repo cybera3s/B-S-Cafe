@@ -74,7 +74,7 @@
             contentType: "application/json",
             data: JSON.stringify(postData),
             success: function(resp){
-                swal('سفارش موفق', 'سفارش با موفقیت ثبت شد', 'success')
+                swal('سفارش موفق', 'محصول با موفقیت به سبد خرید اضافه شد!', 'success')
             }
         })
     }
@@ -105,7 +105,7 @@
             data: JSON.stringify(postData),
             success: function (response){
                 $('#page-loader').append(response)
-                swal('سفارش موفق', 'سفارش با موفقیت ثبت شد', 'success')
+                swal('پرداخت موفق', `شماره رسید : ${$.cookie('receipt_id')}`, 'success')
                 $.removeCookie("receipt_id", { path: '/' });
             }
         })
