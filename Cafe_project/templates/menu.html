@@ -5,13 +5,17 @@
                 <img class="card-img-top mt-2 img-thumbnail border-none" src="../static/images/{{ item.picture_link }}"
                      alt="not">
             </div>
-            <div class="card-block">
-                <h4 class="text-center text-warning">{{ item.name }}</h4>
-                <p class="text-center text-light">
-                    {{ item.price }}
-                </p>
-            </div>
+            <h4 class="text-center text-warning">{{ item.name }}</h4>
+            {% if item.discount_id != 1 %}
+                <p class="text-center text-light" style="text-decoration: line-through;">{{ item.price }}</p>
+                {% for discount in discounts %}
+                    {% if item.discount_id == discount.id %}
+                        <p class="text-center text-light" >{{ (item.price) - ((item.price * discount.value)//100) }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-light">{{ item.price }}</p>
+            {% endif %}
         </div>
     {% endfor %}
-
 </div>
