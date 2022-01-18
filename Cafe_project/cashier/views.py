@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = 'static/images/items'
+UPLOAD_FOLDER = 'static/images'
 
 base_variables = {
     "page": {
