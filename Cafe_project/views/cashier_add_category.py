@@ -1,19 +1,24 @@
 from flask import request, render_template, flash, redirect, url_for
 from database.manager import db
 from models import models
+from views.get_current_user import get_current_user
 
 
 def cashier_add_category():
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    user = get_current_user()
+    if not user:
         return redirect(url_for('login'))
 
+    data = {
+        'user': user,
+
+    }
     items_category = db.read_all(models.Category)
     items_discount = db.read_all(models.Discount)
     if request.method == 'GET':
         return render_template('cashier/cashier_add_category.html', items_category=items_category,
-                               items_discount=items_discount)
+                               items_discount=items_discount, data=data)
 
     elif request.method == "POST":
 
@@ -26,4 +31,4 @@ def cashier_add_category():
 
         flash('New Category Added !')
         return render_template('cashier/cashier_add_category.html', items_category=items_category,
-                               items_discount=items_discount)
+                               items_discount=items_discount, data=data)
