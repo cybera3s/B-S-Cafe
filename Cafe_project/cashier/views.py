@@ -397,3 +397,10 @@ def cashier_list_menu():
             item_update.category_id = int(category_id)
             db.update(item_update)
             return render_template('cashier/cashier_list_menu.html', menuitems=menuitem, data=data)
+        elif request_data['view'] == 'del':
+            print('del')
+            id = request_data['id']
+            item = db.read(MenuItems, id)
+            db.delete(item)
+            print('deleted')
+            return "200"
