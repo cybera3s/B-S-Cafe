@@ -32,7 +32,7 @@ def cashier_list_menu():
             category_id = list(filter(lambda c: c.category == category_name, category))[0].id
             item_update = db.read(MenuItems, id)
             item_update.price = int(price)
-            item_update.serving_time_period = int(serving_time)
+            item_update.serving_time_period = serving_time
             item_update.estimated_cooking_time = int(estimated)
             item_update.picture_link = int(estimated)
             item_update.discount_id = int(discount_id)
