@@ -1,13 +1,14 @@
 from flask import url_for, request, redirect, render_template, make_response, flash
 from database.manager import db
 from models import models
-from datetime import datetime, timedelta
+from datetime import datetime
+from views.get_current_user import get_current_user
 
 
 def cashier_dashboard():
     # route protecting
-    user_email = request.cookies.get('user')
-    if not user_email:
+    user = get_current_user()
+    if not user:
         return redirect(url_for('login'))
     all_receipts = db.read_all(models.Receipt)
 
@@ -16,9 +17,8 @@ def cashier_dashboard():
 
     report = models.Receipt.last_week_report(all_receipts=all_receipts)
 
-    user = db.read_by(models.Cashier, ('email', user_email))
     data = {
-        'user': user[0],
+        'user': user,
         'today_earnings': today_earnings,
         'customer_count': len(today_receipts),
 
@@ -32,7 +32,7 @@ def cashier_dashboard():
     }
 
     if request.method == "POST":
-        cashier = models.Cashier(**dict(request.form), id=user[0].id)
+        cashier = models.Cashier(**dict(request.form), id=user.id)
         db.update(cashier)
         data['user'] = cashier
         return render_template('cashier/dashboard.html', data=data)
