@@ -19,6 +19,7 @@ def cashier_order():
         status = db.read_all(Status)
         order = db.read_all(Order)
         request_data = request.get_json()
+        print(request_data)
         if request_data['view'] == 'receipt_req':
             orders = db.read_by(Order, ('receipt_id', request_data['receipt']))
             return render_template('cashier/receipt-modify.html', orders=orders, items=menu_items, status=status)
