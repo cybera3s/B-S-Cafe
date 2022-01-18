@@ -8,6 +8,10 @@ UPLOAD_FOLDER = 'static/images/items'
 
 
 def cashier_add_item():
+    # route protecting
+    user_email = request.cookies.get('user')
+    if not user_email:
+        return redirect(url_for('login'))
     discount = db.read_all(Discount)
     category = db.read_all(Category)
     if request.method == 'POST':

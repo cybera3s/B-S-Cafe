@@ -151,7 +151,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url_for('cashier_table') }}" class="nav-link">
                   <i class="far fa-list nav-icon"></i>
                   <p>Table list</p>
                 </a>
@@ -169,7 +169,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="{{ url_for('cashier_add_discount') }}" class="nav-link active">
                     <i class="fas fa-plus mr-1"></i>
                   <p>New Discount</p>
                 </a>
@@ -183,7 +183,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ url_for('logout') }}" class="nav-link">
               <i class="fas fa-sign-out-alt mr-1"></i>
               <p>
                 Logout
