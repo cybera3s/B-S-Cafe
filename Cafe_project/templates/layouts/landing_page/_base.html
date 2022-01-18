@@ -39,9 +39,9 @@
  <!-- Page Loading (ajax)  -->
     function load_page(endPoint, title){
 
-        $("#page-loader").fadeOut(500, function (){
-            $("#page-loader").empty()
-        })
+
+        $("#page-loader").empty()
+
 
         let target_url = `http://127.0.0.1:5000/${endPoint}`
         $.ajax({
@@ -49,7 +49,6 @@
             type: "GET",
             success: function (response) {
                 $("#page-loader").append(response)
-                $("#page-loader").fadeIn(500)
                 $(document).attr("title", title);
             }
         })
