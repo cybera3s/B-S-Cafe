@@ -10,7 +10,7 @@
                 <p class="text-center text-light">{{ item.price }}</p>
                 <input class="form-input" style="border-radius:9px; width:6em;height: 2em ;justify-content:center;" type="number" step="1"
                        min="1"
-                       max="100" id="count-{{ item.id }}">
+                       max="100" id="count-{{ item.id }}" value="1">
 
             <button class="btn btn-warning" style="border-radius:9px; width:6em;height: 2em;justify-content:center;"
                     onclick="order({{ item.id }})">سفارش
