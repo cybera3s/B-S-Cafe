@@ -119,7 +119,7 @@ class Receipt(DBModel):
     TABLE = 'receipts'
     PK = 'id'
 
-    def __init__(self, table_id: int, orders: list = None, total_price: int = 0, final_price: int = 0, is_paid: bool = False,
+    def __init__(self, table_id: int, orders: list = [], total_price: int = 0, final_price: int = 0, is_paid: bool = False,
                  create_time=datetime.now(), id: int = None):
         self.orders = orders
         self.total_price = total_price
