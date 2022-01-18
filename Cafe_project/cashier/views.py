@@ -123,7 +123,7 @@ def cashier_add_item():
                              discount_id=discount_id)
 
         db.create(new_item)
-        flash('Image successfully uploaded and displayed below')
+        flash('Menu Item successfully Added !')
         return redirect(request.url)
     return render_template("cashier/cashier_add_item.html", discounts=discount, categorys=category, data=data)
 
