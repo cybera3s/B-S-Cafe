@@ -1,9 +1,7 @@
 dbConfig = {
-
-    'DEFAULT_HOST': "194.39.205.167",
-    'DEFAULT_USER': "maktab",
-    'DEFAULT_PASSWORD': 'maktab',
-    'DEFAULT_DATABASE_NAME': 'group3_db',
-    'DEFAULT_PORT': 5432
-
+    "DEFAULT_HOST": "localhost",
+    "DEFAULT_USER": "cafe",
+    "DEFAULT_PASSWORD": "Cafe123456789",
+    "DEFAULT_DATABASE_NAME": "cafe",
+    "DEFAULT_PORT": 5432,
 }
