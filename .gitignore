@@ -1,4 +1,4 @@
-Cafe_project/venv/
-__pycache__/
-Cafe_project/.idea/
-.idea
+**/venv/
+**/__pycache__/
+**/.idea/
+**/.idea
