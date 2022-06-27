@@ -16,11 +16,11 @@
     <div class="container-fluid p-0 m-0 text-dark" id="page-loader">
         {% include "home.html" %}
     </div>
-    <div class="container-fluid p-0 m-0 text-dark" id="page-loader">
-        <div class="row">
-            {% include "layouts/landing_page/footer.html" %}
-        </div>
+
+    <div class="row m-0 p-0">
+        {% include "layouts/landing_page/footer.html" %}
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/jquery-cookie.js') }}"></script>
     <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
