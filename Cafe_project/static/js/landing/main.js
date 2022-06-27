@@ -1,6 +1,8 @@
 /*jshint esversion: 6 */
+$( document ).ready(function() {
+    console.log( "Document is ready!" );
 
-function table_select(table_id) {
+    function table_select(table_id) {
     let target_url = 'http://127.0.0.1:5000/order';
     $("#page-loader").empty();
     $.ajax({
@@ -12,23 +14,25 @@ function table_select(table_id) {
     })
 }
 
-// <!-- Page Loading (ajax)  -->
-function load_page(endPoint, title) {
+//  nav bar link on click event
+    $(".navigation-link > a").click( function(e) {
+        e.preventDefault();
+        console.log("nav link clicked");
+        let title = $(this).data("title");
+        let endPoint = $(this).data("endpoint");
+        $("#page-loader").empty();
 
+        let target_url = 'http://127.0.0.1:5000/' + endPoint;
+        $.ajax({
+            url: target_url,
+            type: "GET",
+            success: function (response) {
+                $("#page-loader").append(response);
+                $(document).attr("title", title);
+            }
+    });
 
-    $("#page-loader").empty();
-
-
-    let target_url = `http://127.0.0.1:5000/${endPoint}`;
-    $.ajax({
-        url: `${target_url}`,
-        type: "GET",
-        success: function (response) {
-            $("#page-loader").append(response)
-            $(document).attr("title", title);
-        }
-    })
-}
+});
 
 // add FoodItem to Order (ajax)
 function order(item_id) {
@@ -67,25 +71,26 @@ function cart_loader() {
     })
 }
 
-function payment() {
-    $('#page-loader').empty();
-    let table_id = $.cookie("table_id");
-    let receipt = $.cookie("receipt_id");
-    let target_url = '{{ url_for('cart') }}';
-    let postData = {
-        receipt: receipt,
-        table: table_id
-    }
-    $.ajax({
-        url: target_url,
-        type: 'POST',
-        contentType: "application/json",
-        data: JSON.stringify(postData),
-        success: function (response) {
-            $('#page-loader').append(response)
-            swal('payment successful ', `Receipt Number : ${$.cookie('receipt_id')}`, 'success')
-            $.removeCookie("receipt_id", {path: '/'});
-        }
-    })
-}
+// function payment() {
+//     $('#page-loader').empty();
+//     let table_id = $.cookie("table_id");
+//     let receipt = $.cookie("receipt_id");
+//     let target_url = '{{ url_for('cart') }}';
+//     let postData = {
+//         receipt: receipt,
+//         table: table_id
+//     }
+//     $.ajax({
+//         url: target_url,
+//         type: 'POST',
+//         contentType: "application/json",
+//         data: JSON.stringify(postData),
+//         success: function (response) {
+//             $('#page-loader').append(response)
+//             swal('payment successful ', `Receipt Number : ${$.cookie('receipt_id')}`, 'success')
+//             $.removeCookie("receipt_id", {path: '/'});
+//         }
+//     })
+// }
+});
 
