@@ -11,6 +11,7 @@ base_variables = {
         "contact_us": {"title": "Contact Us", "endpoint": "contact_us"},
     },
     "current_page": "",
+    "site_name": "Bitter & Sweet"
 }
 
 
