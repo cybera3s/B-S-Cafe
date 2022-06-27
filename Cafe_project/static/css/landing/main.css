@@ -29,8 +29,8 @@
 }
 @font-face {
 font-family: "Byekan";
-src: url("fonts/BYekan.eot");
-src: url("fonts/BYekan.woff") format("woff");
+src: url("../../fonts/BYekan.eot");
+src: url("../../fonts/BYekan.woff") format("woff");
 }
 
 .items{
@@ -84,4 +84,7 @@ src: url("fonts/BYekan.woff") format("woff");
 
 .index-page-home > img:hover{
     transform: scale(1.03,1.03);
+}
+.navigation-link{
+    cursor:pointer;
 }
