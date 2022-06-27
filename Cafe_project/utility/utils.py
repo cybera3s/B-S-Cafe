@@ -2,10 +2,9 @@ import re
 
 
 class Validator:
-
     @staticmethod
     def validate_fullname(name):
-        pattern = r'^[a-zA-Z]{3,}$'
+        pattern = r"^[a-zA-Z]{3,}$"
         if re.match(pattern, name):
             return True
         else:
@@ -29,7 +28,7 @@ class Validator:
 
     @staticmethod
     def validate_password(passwd):
-        pattern = r'.{4,}'
+        pattern = r".{4,}"
         if re.match(pattern, passwd):
             return True
         else:

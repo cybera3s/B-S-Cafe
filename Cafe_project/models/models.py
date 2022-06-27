@@ -1,5 +1,4 @@
 from abc import ABC
-import json
 from datetime import datetime, timedelta
 
 
@@ -12,11 +11,20 @@ class DBModel(ABC):  # abstract base Database model
 
 
 class MenuItems(DBModel):  # Menu items model
-    TABLE = 'menu_items'  # TABLE NAME
-    PK = 'id'  # PRIMARY KEY FOR TABLE
+    TABLE = "menu_items"  # TABLE NAME
+    PK = "id"  # PRIMARY KEY FOR TABLE
 
-    def __init__(self, name: str, price: int, category_id: int, picture_link: str, serving_time_period: str,
-                 estimated_cooking_time: int, discount_id: int = 1, id: int = None):
+    def __init__(
+        self,
+        name: str,
+        price: int,
+        category_id: int,
+        picture_link: str,
+        serving_time_period: str,
+        estimated_cooking_time: int,
+        discount_id: int = 1,
+        id: int = None,
+    ):
         self.name = name
         self.price = price
         self.serving_time_period = serving_time_period
@@ -33,8 +41,8 @@ class MenuItems(DBModel):  # Menu items model
 
 
 class Status(DBModel):
-    TABLE = 'status'
-    PK = 'id'
+    TABLE = "status"
+    PK = "id"
 
     def __init__(self, status: str, id: int = None):
         self.status = status
@@ -47,10 +55,12 @@ class Status(DBModel):
 
 
 class Table(DBModel):
-    TABLE = 'tables'
-    PK = 'id'
+    TABLE = "tables"
+    PK = "id"
 
-    def __init__(self, capacity: int, position: str, status: bool = False, id: int = None):
+    def __init__(
+        self, capacity: int, position: str, status: bool = False, id: int = None
+    ):
         self.capacity = capacity
         self.position = position
         self.status = status
@@ -60,17 +70,25 @@ class Table(DBModel):
     @staticmethod
     def current_orders(db, table_id: int) -> dict:
         """
-            return a dictionary that contains menu item as key and count number as value
-            :param table_id: table id for get menu items
-            :return: a dict of menu items and their counts
+        return a dictionary that contains menu item as key and count number as value
+        :param table_id: table id for get menu items
+        :return: a dict of menu items and their counts
         """
-        tables_receipts = db.read_by(Receipt, ('table_id', table_id))  # list of tables receipts filter by table id
+        tables_receipts = db.read_by(
+            Receipt, ("table_id", table_id)
+        )  # list of tables receipts filter by table id
         # filtered receipts by is paid True
-        paid_tables_receipts = list(filter(lambda receipt: receipt.is_paid == True, tables_receipts))
+        paid_tables_receipts = list(
+            filter(lambda receipt: receipt.is_paid == True, tables_receipts)
+        )
         # sort paid tables receipts by create time
-        sorted_receipts = sorted(paid_tables_receipts, key=lambda i: i.create_time, reverse=True)
+        sorted_receipts = sorted(
+            paid_tables_receipts, key=lambda i: i.create_time, reverse=True
+        )
 
-        orders_list = sorted_receipts[0].orders  # list of orders id of corresponding table
+        orders_list = sorted_receipts[
+            0
+        ].orders  # list of orders id of corresponding table
         items = {}
         for order in orders_list:
             o = db.read(Order, order)
@@ -83,10 +101,12 @@ class Table(DBModel):
 
 
 class Category(DBModel):
-    TABLE = 'category'
-    PK = 'id'
+    TABLE = "category"
+    PK = "id"
 
-    def __init__(self, category: str, root_id: int = None, discount_id: int = 1, id: int = None):
+    def __init__(
+        self, category: str, root_id: int = None, discount_id: int = 1, id: int = None
+    ):
         self.category = category
         self.root_id = root_id
         self.discount_id = discount_id
@@ -98,11 +118,18 @@ class Category(DBModel):
 
 
 class Order(DBModel):
-    TABLE = 'orders'
-    PK = 'id'
+    TABLE = "orders"
+    PK = "id"
 
-    def __init__(self, menu_item: int, receipt_id: int, status_id: int, count: int = 1, create_time=datetime.now(),
-                 id: int = None):
+    def __init__(
+        self,
+        menu_item: int,
+        receipt_id: int,
+        status_id: int,
+        count: int = 1,
+        create_time=datetime.now(),
+        id: int = None,
+    ):
         self.menu_item = menu_item
         self.count = count
         self.receipt_id = receipt_id
@@ -112,15 +139,23 @@ class Order(DBModel):
             self.id = id
 
     def __repr__(self):
-        return f'<Order_Class {self.id}:{self.menu_item}>'
+        return f"<Order_Class {self.id}:{self.menu_item}>"
 
 
 class Receipt(DBModel):
-    TABLE = 'receipts'
-    PK = 'id'
+    TABLE = "receipts"
+    PK = "id"
 
-    def __init__(self, table_id: int, orders: list = [], total_price: int = 0, final_price: int = 0, is_paid: bool = False,
-                 create_time=datetime.now(), id: int = None):
+    def __init__(
+        self,
+        table_id: int,
+        orders: list = [],
+        total_price: int = 0,
+        final_price: int = 0,
+        is_paid: bool = False,
+        create_time=datetime.now(),
+        id: int = None,
+    ):
         self.orders = orders
         self.total_price = total_price
         self.final_price = final_price
@@ -141,11 +176,19 @@ class Receipt(DBModel):
         :return: a List of tuples consist of days of week and their earning
         """
         week = []
-        week_ago = [(datetime.today() - timedelta(days=i)).strftime('%A')[0:3] for i in range(1, 8)]
+        week_ago = [
+            (datetime.today() - timedelta(days=i)).strftime("%A")[0:3]
+            for i in range(1, 8)
+        ]
 
         for i in range(1, 8):
             receipts = list(
-                filter(lambda order: order.create_time.day == (datetime.today() - timedelta(days=i)).day, all_receipts))
+                filter(
+                    lambda order: order.create_time.day
+                    == (datetime.today() - timedelta(days=i)).day,
+                    all_receipts,
+                )
+            )
             earning = sum(list(map(lambda order: order.final_price, receipts)))
             week.append(earning)
 
@@ -153,10 +196,18 @@ class Receipt(DBModel):
 
 
 class Cashier(DBModel):
-    TABLE = 'cashier'
+    TABLE = "cashier"
     PK = "id"
 
-    def __init__(self, first_name: str, last_name: str, phone_number: str, email: str, password: str, id: int = None):
+    def __init__(
+        self,
+        first_name: str,
+        last_name: str,
+        phone_number: str,
+        email: str,
+        password: str,
+        id: int = None,
+    ):
         self.first_name = first_name
         self.last_name = last_name
         self.phone_number = phone_number
@@ -170,8 +221,8 @@ class Cashier(DBModel):
 
 
 class Discount(DBModel):
-    TABLE = 'discount'
-    PK = 'id'
+    TABLE = "discount"
+    PK = "id"
 
     def __init__(self, value: int, id: int = None):
         self.value = value
