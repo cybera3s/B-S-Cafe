@@ -3,7 +3,6 @@
     padding:0;
     box-sizing: border-box;
 }
-nav {direction: rtl;}
 
 #banner{
     height: 100vh;
@@ -75,4 +74,14 @@ src: url("fonts/BYekan.woff") format("woff");
 .customize-modal{
     background-color: rgba(7, 7, 7, 0.68) !important;
     color: white !important;
+}
+
+.index-page-home > img{
+    border-radius: 3rem;
+    transition: all ease-in-out 300ms;
+    height: fit-content;
+}
+
+.index-page-home > img:hover{
+    transform: scale(1.03,1.03);
 }
