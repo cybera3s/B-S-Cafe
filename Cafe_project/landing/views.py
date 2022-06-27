@@ -1,13 +1,14 @@
-from flask import request, render_template
+import flask
+from flask import request, render_template, redirect, url_for
 from database.manager import db
 from models import models
 
 base_variables = {
     "pages": {
-        "home": {"title": "خانه", "endpoint": "home"},
-        "menu": {"title": "منو", "endpoint": "menu"},
-        "about_us": {"title": "درباره ما", "endpoint": "about_us"},
-        "contact_us": {"title": "ارتباط با ما", "endpoint": "contact_us"},
+        "home": {"title": "Home", "endpoint": "home"},
+        "menu": {"title": "Menu", "endpoint": "menu"},
+        "about_us": {"title": "About", "endpoint": "about_us"},
+        "contact_us": {"title": "Contact Us", "endpoint": "contact_us"},
     },
     "current_page": "",
 }
