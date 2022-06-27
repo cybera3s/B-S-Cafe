@@ -1,27 +1,44 @@
 <div class="row mx-0 sticky-top">
     <div class="col-12 m-0 p-0">
-        <nav class="navbar navbar-expand-lg navbar-dark" style="width:100%; position: sticky; top:0;padding-left:25px; background-color: #1b1e21">
+        <nav class="navbar navbar-expand-md navbar-dark"
+             style="width:100%; position: sticky; top:0;padding-left:25px; background-color: #1b1e21">
             <div class="container-fluid">
-                <a class="navbar-brand nav-logo" href="#">کافه تلخ و شیرین</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand nav-logo" href="#">{{ data['site_name'] }}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         {% for item in data['pages'].values() %}
+
                             {% if item['endpoint'] == data['current_page'] %}
-                                <li class="nav-item mx-4 active" style="cursor:pointer">
-                                    <a class="nav-link" onclick="load_page('{{ item['endpoint'] }}','{{ item['title'] }}')" id="{{ item['endpoint'] }}">{{ item['title'] }} <span class="sr-only"></span></a>
+                                <li class="nav-item mx-4 active navigation-link">
+                                    <a class="nav-link "
+                                       data-endpoint="{{ item['endpoint'] }}"
+                                       data-title="{{ item['title'] }}"
+                                       id="{{ item['endpoint'] }}">
+                                        {{ item['title'] }}
+                                        <span class="sr-only"></span>
+                                    </a>
                                 </li>
                             {% else %}
-                                <li class="nav-item mx-4" style="cursor:pointer">
-                                    <a class="nav-link" onclick="load_page('{{ item['endpoint'] }}','{{ item['title'] }}')" id="{{ item['endpoint'] }}">{{ item['title'] }} <span class="sr-only"></span></a>
+                                <li class="nav-item mx-4 navigation-link">
+                                    <a class="nav-link"
+                                       data-endpoint="{{ item['endpoint'] }}"
+                                       data-title="{{ item['title'] }}"
+                                       id="{{ item['endpoint'] }}">{{ item['title'] }}
+                                        <span class="sr-only"></span>
+                                    </a>
                                 </li>
                             {% endif %}
+
                         {% endfor %}
-                        <li class="nav-item mx-4">
+                        <!-- New Order nav link  -->
+                        <li class="nav-item mx-4 navigation-link">
                             <a class='nav-link' type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                سفارش
+                                New Order
                             </a>
                         </li>
                     </ul>
@@ -31,29 +48,31 @@
     </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content p-3 customize-modal">
-      <div class="modal-header text-center">
-        <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-            <div class="row justify-content-between">
-                {% for table in tables %}
-                    {% if table.status == False %}
-                        <div class="col-3 m-1 tables p-2" data-bs-dismiss="modal" onclick="table_select(this.id)" id={{ table.id }}>
-                        <h6 class="text-dark">میز شماره  {{ table.id }}</h6>
-                        <h6>ظرفیت :  {{ table.capacity }}</h6>
+    <div class="modal-dialog">
+        <div class="modal-content p-3 customize-modal">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        {% for table in tables %}
+                        {% if table.status == False %}
+                        <div class="col-3 m-1 tables p-2 rounded" data-bs-dismiss="modal"
+                             onclick="table_select(this.id)"
+                             id="{{ table.id }}">
+                            <h6 class="text-dark">Table #{{ table.id }}</h6>
+                            <h6>Capacity : {{ table.capacity }}</h6>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endif %}
-                {% endfor %}
+                </div>
+            </div>
+            <div class="navbar-footer text-center">
+                <button class="btn btn-danger text-center" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-      </div>
-    <div class="navbar-footer text-center">
-        <button class="btn btn-danger text-center"  data-bs-dismiss="modal">بستن</button>
     </div>
-    </div>
-  </div>
 </div>
