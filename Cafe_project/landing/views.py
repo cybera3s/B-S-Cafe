@@ -22,14 +22,14 @@ def index():
     tables = db.read_all(models.Table)
     if request.method == "GET":
         data["title"] = "home"
-        return render_template("index.html", data=data, tables=tables)
+        return render_template("landing/index.html", data=data, tables=tables)
 
 
 def home():
     data = base_variables
     data["current_page"] = "index"
     if request.method == "GET":
-        return render_template("home.html", data=data)
+        return render_template("landing/home/home.html", data=data)
 
 
 def menu():
@@ -39,7 +39,7 @@ def menu():
     items = db.read_all(models.MenuItems)
     if request.method == "GET":
         data["title"] = "menu"
-        return render_template("menu.html", items=items, data=data, discounts=discounts)
+        return render_template("landing/menu.html", items=items, data=data, discounts=discounts)
 
 
 def order(table_id):
@@ -51,7 +51,7 @@ def order(table_id):
 
     if request.method == "GET":
         res = flask.make_response(
-            render_template("order.html", data=data, items=items, discounts=discounts)
+            render_template("landing/order.html", data=data, items=items, discounts=discounts)
         )
         new_receipt = models.Receipt(int(table_id))
         receipt_id = db.create(new_receipt)
@@ -110,11 +110,11 @@ def about_us():
     data = base_variables
     data["current_page"] = "about_us"
     if request.method == "GET":
-        return render_template("about_us.html", data=data)
+        return render_template("landing/about_us/about_us.html", data=data)
 
 
 def contact_us():
     data = base_variables
     data["current_page"] = "contact_us"
     if request.method == "GET":
-        return render_template("contact_us.html", data=data)
+        return render_template("landing/contact_us/contact_us.html", data=data)

@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="css/landing/main.css") }}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    {% include "fonts.html" %}
-    {% include "bootstrap.html" %}
+    {% include "landing/includes/fonts.html" %}
+    {% include "landing/includes/bootstrap.html" %}
     <title>Home</title>
 </head>
 <body class="bg-dark">
-    {% include "navbar.html" %}
+    {% include "landing/layouts/navbar.html" %}
     <div class="container-fluid p-0 m-0 text-dark" id="page-loader">
-        {% include "home.html" %}
+        {% include "landing/home/home.html" %}
     </div>
 
     <div class="row m-0 p-0">
-        {% include "layouts/landing_page/footer.html" %}
+        {% include "landing/layouts/footer.html" %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
