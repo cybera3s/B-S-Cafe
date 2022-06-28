@@ -15,7 +15,7 @@
 
                             {% if item['endpoint'] == data['current_page'] %}
                                 <li class="nav-item mx-4 active navigation-link">
-                                    <a class="nav-link "
+                                    <a class="nav-link nav-link-spa"
                                        data-endpoint="{{ item['endpoint'] }}"
                                        data-title="{{ item['title'] }}"
                                        id="{{ item['endpoint'] }}">
@@ -25,7 +25,7 @@
                                 </li>
                             {% else %}
                                 <li class="nav-item mx-4 navigation-link">
-                                    <a class="nav-link"
+                                    <a class="nav-link nav-link-spa"
                                        data-endpoint="{{ item['endpoint'] }}"
                                        data-title="{{ item['title'] }}"
                                        id="{{ item['endpoint'] }}">{{ item['title'] }}

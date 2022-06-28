@@ -15,7 +15,7 @@ $( document ).ready(function() {
 }
 
 //  nav bar link on click event
-    $(".navigation-link > a").click( function(e) {
+    $(".nav-link-spa").click( function(e) {
         e.preventDefault();
         console.log("nav link clicked");
         let title = $(this).data("title");
