@@ -1,10 +1,13 @@
 from flask import Flask
+from flask_cors import CORS
+
 from landing.views import *
 from os import urandom
 from cashier.views import *
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = urandom(24)
+CORS(app, origins=["http://localhost*", "http://127.0.0.1"])
 
 #  -----------  Landing Pages----------------------
 
