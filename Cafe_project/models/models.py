@@ -101,14 +101,14 @@ class Table(DBModel):
 
 
 class Category(DBModel):
-    TABLE = "category"
+    TABLE = "categories"
     PK = "id"
 
     def __init__(
-        self, category: str, root_id: int = None, discount_id: int = 1, id: int = None
+        self, category_name: str, category_root: int = None, discount_id: int = 1, id: int = None
     ):
-        self.category = category
-        self.root_id = root_id
+        self.category_name = category_name
+        self.category_root = category_root
         self.discount_id = discount_id
         if id:
             self.id = id
@@ -123,18 +123,18 @@ class Order(DBModel):
 
     def __init__(
         self,
-        menu_item: int,
+        menu_item_id: int,
         receipt_id: int,
-        status_id: int,
+        status_code_id: int,
         count: int = 1,
-        create_time=datetime.now(),
+        create_at=datetime.now(),
         id: int = None,
     ):
-        self.menu_item = menu_item
+        self.menu_item_id = menu_item_id
         self.count = count
         self.receipt_id = receipt_id
-        self.status_id = status_id
-        self.create_time = create_time
+        self.status_id = status_code_id
+        self.create_at = create_at
         if id:
             self.id = id
 
@@ -149,19 +149,19 @@ class Receipt(DBModel):
     def __init__(
         self,
         table_id: int,
-        orders: list = [],
+        # orders: list = [],
         total_price: int = 0,
         final_price: int = 0,
         is_paid: bool = False,
-        create_time=datetime.now(),
+        create_at=datetime.now(),
         id: int = None,
     ):
-        self.orders = orders
+        # self.orders = orders
         self.total_price = total_price
         self.final_price = final_price
         self.is_paid = is_paid
         self.table_id = table_id
-        self.create_time = create_time
+        self.created_at = create_at
         if id:
             self.id = id
 
@@ -196,7 +196,7 @@ class Receipt(DBModel):
 
 
 class Cashier(DBModel):
-    TABLE = "cashier"
+    TABLE = "cashiers"
     PK = "id"
 
     def __init__(
@@ -221,7 +221,7 @@ class Cashier(DBModel):
 
 
 class Discount(DBModel):
-    TABLE = "discount"
+    TABLE = "discounts"
     PK = "id"
 
     def __init__(self, value: int, id: int = None):
