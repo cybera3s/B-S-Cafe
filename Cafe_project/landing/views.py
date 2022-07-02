@@ -16,10 +16,9 @@ base_variables = {
 
 
 def index():
-
     data = base_variables
     data["current_page"] = "index"
-    tables = db.read_by(models.Table, ("status", "FALSE")) # read tables that are empty
+    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
 
     if request.method == "GET":
         data["title"] = "home"
@@ -76,9 +75,9 @@ def order(table_id):
             current_receipt.final_price += current_menu_item.price * new_order.count
         else:
             current_receipt.final_price += (
-                current_menu_item.price
-                - ((current_menu_item.price * discount.value) / 100)
-            ) * new_order.count
+                                                   current_menu_item.price
+                                                   - ((current_menu_item.price * discount.value) / 100)
+                                           ) * new_order.count
         current_receipt.orders.append(order_id)
         db.update(current_receipt)
         return "200"
