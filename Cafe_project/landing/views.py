@@ -19,7 +19,8 @@ def index():
 
     data = base_variables
     data["current_page"] = "index"
-    tables = db.read_all(models.Table)
+    tables = db.read_by(models.Table, ("status", "FALSE")) # read tables that are empty
+
     if request.method == "GET":
         data["title"] = "home"
         return render_template("landing/index.html", data=data, tables=tables)
