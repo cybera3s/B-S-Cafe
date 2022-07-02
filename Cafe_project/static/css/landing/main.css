@@ -24,9 +24,8 @@
 	text-align:center;
 }
 
-.my-float{
-	margin-top:22px;
-}
+
+
 @font-face {
 font-family: "Byekan";
 src: url("../../fonts/BYekan.eot");
@@ -88,3 +87,49 @@ src: url("../../fonts/BYekan.woff") format("woff");
 .navigation-link{
     cursor:pointer;
 }
+
+.carousel-inner {
+    height: 23rem;
+    border-radius: 10px;
+}
+
+.carousel-inner > .carousel-item > img{
+    height: 23rem;
+}
+
+.add-to-cart-btn {
+    border-radius:9px;
+    width:6em;
+    height: 2em;
+    justify-content:center;
+
+}
+
+.add-to-cart-btn:hover{
+    background-color: green!important;
+}
+#count-item-input {
+    border-radius:9px;
+    padding: 10px;
+    width:6em;
+    height: 2em ;
+    justify-content:center;
+}
+
+#count-item-input:hover {
+    border-color: dodgerblue!important;
+}
+.menu-item-box{
+    border: solid 1px rgba(0, 0, 0, 0.65);
+    box-shadow: 12px 10px 37px black;
+}
+
+#cart-float-btn{
+    border: 1px solid gray;
+}
+
+#cart-float-btn:hover{
+    transform: scale(1.07,1.07);
+}
+
+
