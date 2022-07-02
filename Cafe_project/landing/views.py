@@ -49,6 +49,7 @@ def order(table_id):
     table = db.read(models.Table, table_id)
     discounts = db.read_all(models.Discount)
 
+    # table selecting
     if request.method == "GET":
         res = flask.make_response(
             render_template("landing/order.html", data=data, items=items, discounts=discounts)
