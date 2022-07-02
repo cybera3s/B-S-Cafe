@@ -47,32 +47,4 @@
         </nav>
     </div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content p-3 customize-modal">
-            <div class="modal-header text-center">
-                <h5 class="modal-title" id="exampleModalLabel">Choose a table please</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        {% for table in tables %}
-                        {% if table.status == False %}
-                        <div class="col-3 m-1 tables p-2 rounded" data-bs-dismiss="modal"
-                             onclick="table_select(this.id)"
-                             id="{{ table.id }}">
-                            <h6 class="text-dark">Table #{{ table.id }}</h6>
-                            <h6>Capacity : {{ table.capacity }}</h6>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-footer text-center">
-                <button class="btn btn-danger text-center" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+
