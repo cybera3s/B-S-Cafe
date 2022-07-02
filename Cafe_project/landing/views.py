@@ -94,7 +94,7 @@ def cart():
         return render_template(
             "cart.html", orders=orders, items=menu_items, receipt=current_receipt
         )
-    if request.method == "POST":
+    elif request.method == "POST":
         cookie = request.get_json()
         table_id = int(cookie["table"])
         receipt_id = int(cookie["receipt"])
