@@ -118,9 +118,7 @@ def cashier_add_item():
         discount_value = int(request.form["discount"])
         discount_id = list(filter(lambda d: d.value == discount_value, discount))[0].id
         category_name = request.form["category"]
-        category_id = list(filter(lambda c: c.category == category_name, category))[
-            0
-        ].id
+        category_id = list(filter(lambda c: c.category_name == category_name, category))[0].id
         new_item = MenuItems(
             name=name,
             price=price,
@@ -227,7 +225,7 @@ def cashier_new_order():
     data["user"] = user
     data["page"]["title"] = "New Orders"
     title_get = "cashier_order_new"
-    items = db.read_by(Order, ("status_id", 1))
+    items = db.read_by(Order, ("status_code_id", 1))
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
@@ -361,7 +359,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-
+        print(email, password)
         user_info: Cashier = db.read_by(Cashier, ("email", email))
 
         # user does not exist
