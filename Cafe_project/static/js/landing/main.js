@@ -34,30 +34,35 @@ $( document ).ready(function() {
 
 });
 
-// add FoodItem to Order (ajax)
-function order(item_id) {
-    let table_id = $.cookie("table_id") // get table id from cookies to include in json file
-    let receipt_id = $.cookie("receipt_id") // get receipt id from cookies to include in json file
-    let target_url = `http://127.0.0.1:5000/order/${table_id}`
-    let order_count = $(`#count-${item_id}`).val()
-    let data = {} // to store order detail data
-    data['item_id'] = item_id;
-    data['count'] = order_count;
-    let postData = {    // to create a json object with required data
-        order: data,
-        table: table_id,
-        receipt: receipt_id
-    };
-    $.ajax({        // ajax request to send order details to flask
-        url: target_url,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(postData),
-        success: function (resp) {
-            swal('سفارش موفق', 'محصول با موفقیت به سبد خرید اضافه شد!', 'success')
-        }
-    })
-}
+    // click event for add to cart btn
+    $("#page-loader").on( "click", "button.add-to-cart-btn", function(event) {
+        event.preventDefault();
+        let item_id = $(this).data('itemid');
+
+        console.log("add to cart clicked id: " + item_id);
+
+        let table_id = $.cookie("table_id");
+        let receipt_id = $.cookie("receipt_id");
+        let target_url = BASE_URL + '/order/' + table_id;
+        let order_count = $(`#count-${item_id}`).val();
+
+        let data = {} // to store order detail data
+        data['item_id'] = item_id;
+        data['count'] = order_count;
+        let postData = {    // to create a json object with required data
+            order: data,
+            table: table_id,
+            receipt: receipt_id
+        };
+
+         $.post(
+            target_url,
+            {...postData},
+            function (data) {
+
+                console.log(data);
+            }
+        );
 
 function cart_loader() {
     let target_url = "{{ url_for('cart') }}"
