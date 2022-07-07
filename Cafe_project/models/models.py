@@ -155,21 +155,21 @@ class Receipt(DBModel):
     PK = "id"
 
     def __init__(
-        self,
-        table_id: int,
-        # orders: list = [],
-        total_price: int = 0,
-        final_price: int = 0,
-        is_paid: bool = False,
-        create_at=datetime.now(),
-        id: int = None,
+            self,
+            table_id: int,
+            # orders: list = [],
+            total_price: int = 0,
+            final_price: int = 0,
+            is_paid: bool = False,
+            created_at=datetime.now(),
+            id: int = None,
     ):
         # self.orders = orders
         self.total_price = total_price
         self.final_price = final_price
         self.is_paid = is_paid
         self.table_id = table_id
-        self.created_at = create_at
+        self.created_at = created_at
         if id:
             self.id = id
 
