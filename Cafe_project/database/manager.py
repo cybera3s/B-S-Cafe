@@ -80,6 +80,12 @@ class DBManager:
                     **dict(res)
                 )  # returns an instance of the Model with inserted values
 
+    def raw_query(self, query: str):
+        with self.conn:
+            curs = self.__get_cursor()
+            curs.execute(query)
+            return list(map(dict, curs.fetchall())) if curs.fetchall() else []
+
     def update(self, model_instance: DBModel) -> None:
         assert isinstance(model_instance, DBModel)
         with self.conn:
