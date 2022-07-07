@@ -147,7 +147,7 @@ class Order(DBModel):
             self.id = id
 
     def __repr__(self):
-        return f"<Order_Class {self.id}:{self.menu_item}>"
+        return f"<Order_Class {self.id}:{self.menu_item_id}>"
 
 
 class Receipt(DBModel):
