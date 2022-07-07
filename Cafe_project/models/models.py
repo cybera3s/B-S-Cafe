@@ -193,7 +193,7 @@ class Receipt(DBModel):
             receipts = list(
                 filter(
                     lambda order: order.create_time.day
-                    == (datetime.today() - timedelta(days=i)).day,
+                                  == (datetime.today() - timedelta(days=i)).day,
                     all_receipts,
                 )
             )
