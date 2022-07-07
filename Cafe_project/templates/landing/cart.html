@@ -1,36 +1,24 @@
-<table class="table text-white">
+<table class="table text-white" style="direction: ltr;">
   <thead>
     <tr>
-      <th scope="col"></th>
-      <th scope="col">آیتم ها</th>
-      <th scope="col">تعداد</th>
-      <th scope="col">قیمت</th>
+      <th scope="col">#</th>
+      <th scope="col">Items</th>
+      <th scope="col">Count</th>
+      <th scope="col">Price</th>
 
     </tr>
   </thead>
   <tbody>
   {% for order in orders %}
     <tr>
-      <th scope="row">{{ (receipt.orders).index(order.id) + 1 }}</th>
-      <td>
-          {% for item in items %}
-          {% if item.id == order.menu_item %}
-            {{ item.name }}
-          {% endif %}
-          {% endfor %}
-      </td>
+      <th scope="row">{{ loop.index }}</th>
+      <td>{{ order.name }}</td>
       <td>{{ order.count }}</td>
-      <td>
-          {% for item in items %}
-          {% if item.id == order.menu_item %}
-            {{ item.price * order.count }} تومان
-          {% endif %}
-          {% endfor %}
-      </td>
+      <td>${{ order.price * order.count }}</td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
-<p>قیمت کل: {{ receipt.total_price }}</p>
-<p>قیمت نهایی(با تخفیف): {{ receipt.final_price }}</p>
+<p>Total Price: ${{ receipt.total_price }}</p>
+<p>Final Price(with Discount)): ${{ receipt.final_price }}</p>
 
