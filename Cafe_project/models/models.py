@@ -113,7 +113,7 @@ class Category(DBModel):
     PK = "id"
 
     def __init__(
-        self, category_name: str, category_root: int = None, discount_id: int = 1, id: int = None
+            self, category_name: str, category_root: int = None, discount_id: int = 1, id: int = None
     ):
         self.category_name = category_name
         self.category_root = category_root
