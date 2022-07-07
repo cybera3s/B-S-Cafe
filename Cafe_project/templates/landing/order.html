@@ -14,16 +14,16 @@
                 <h4 class="text-center text-warning">{{ item.name }}</h4>
                 <p class="text-center text-light">${{ item.price }}</p>
                 <input class="form-input w-100" id="count-item-input" type="number" step="1"
-                       id="count-{{ item.id }}"
+                       data-itemid="{{ item.id }}"
                        min="1"
                        max="100"
                        value="1"
                 >
 
-            <button class="btn btn-warning w-100 my-2 add-to-cart-btn" data-itemId="{{ item.id }}">
+                <button class="btn btn-warning w-100 my-2 add-to-cart-btn" data-itemId="{{ item.id }}">
                 Add to cart
             </button>
-        </div>
+            </div>
         </div>
     {% endfor %}
 
