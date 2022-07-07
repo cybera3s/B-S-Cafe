@@ -36,6 +36,14 @@ class MenuItems(DBModel):  # Menu items model
         if id:
             self.id = id
 
+    def final_price(self, db):
+        discount = db.read(Discount, self.discount_id)
+        discount_value = discount.value
+
+        if discount_value:
+            return int((self.price * discount_value / 100) - discount_value)
+        return self.price
+
     def __repr__(self):
         return f"<menuItem_class {self.id}:{self.name}>"
 
