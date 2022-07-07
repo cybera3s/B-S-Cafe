@@ -101,12 +101,16 @@ def order(table_id):
 
 def cart():
     if request.method == "GET":
-        receipt = request.cookies.get("receipt_id")
-        orders = db.read_by(models.Order, ("receipt_id", receipt))
-        menu_items = db.read_all(models.MenuItems)
-        current_receipt = db.read(models.Receipt, int(receipt))
+        # show cart items
+
+        receipt_id = request.args.get("receipt_id")     # read request queries
+
+        receipt_obj = db.read(models.Receipt, int(receipt_id))
+        orders = receipt_obj.get_orders(db)
+        total_price, final_price = receipt_obj.price(db)
+
         return render_template(
-            "cart.html", orders=orders, items=menu_items, receipt=current_receipt
+            "landing/cart.html", orders=orders, total_price=total_price, final_price=final_price
         )
     elif request.method == "POST":
         cookie = request.get_json()
