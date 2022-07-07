@@ -4,20 +4,36 @@ $( document ).ready(function() {
     console.log("Document is ready!");
     const BASE_URL = 'http://127.0.0.1:5000';
 
-    // Table click event
+    // Table select click event
     $(".table-item").click(function () {
         $("#page-loader").empty();
         let tableId = $(this).attr('id');
-        let target_url = 'http://127.0.0.1:5000/order/' + tableId;
+        let target_url =  BASE_URL + '/order/' + tableId;
         console.log(`table ${tableId} clicked`);
 
-        $.get(
-            target_url,
-            function (data) {
-                $("#page-loader").append(data);
-                console.log(data.headers);
+        $.ajax({
+            url: target_url,
+            method: 'post',
+            data: {
+                'action': "select_table"
+            },
+            success: function (data, status, xhr){
+                if (xhr.status === 200){
+                    $("#page-loader").append(data);
+
+                    let receipt_id = xhr.getResponseHeader('receipt_id');
+                    $.cookie('receipt_id', receipt_id);
+                    $.cookie('table_id', tableId)
+
+                };
+
+            },
+            error: function (err, status) {
+                console.log(err, status);
+                let errorMsg = '<h1>Something went wrong</h1>'
+                $("#page-loader").append(errorMsg);
             }
-        ).catch(err => console.log(err.responseText));
+        })
     });
 
     //  nav bar link on click event
@@ -40,41 +56,59 @@ $( document ).ready(function() {
 
 });
 
-    // click event for add to cart btn
+    ///////////       Add to cart button click event      ////////////////
     $("#page-loader").on( "click", "button.add-to-cart-btn", function(event) {
         event.preventDefault();
-        let item_id = $(this).data('itemid');
 
-        console.log("add to cart clicked id: " + item_id);
+        let itemId = $(this).prev().data('itemid');
+        let itemCount = $(this).prev().val();
+        let receiptId = $.cookie('receipt_id');
+        const url = BASE_URL + "/order/" + itemId
+        // console.log(`${itemCount} of ${itemId}`);
+        // define data for post request
+        let data = {
+            action: 'add_to_cart',
+            itemId: itemId,
+            itemCount: +itemCount,
+            receiptId: +receiptId,
+        }
+          $.ajax({
+            url: url,
+            type: "post",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
 
-        let table_id = $.cookie("table_id");
-        let receipt_id = $.cookie("receipt_id");
-        let target_url = BASE_URL + '/order/' + table_id;
-        let order_count = $(`#count-${item_id}`).val();
+            success: function (data){
 
-        let data = {} // to store order detail data
-        data['item_id'] = item_id;
-        data['count'] = order_count;
-        let postData = {    // to create a json object with required data
-            order: data,
-            table: table_id,
-            receipt: receipt_id
-        };
+                    if (data.status === 200){
+                        swal("Successful", "Updated Cart!", "success", {
+                            buttons: false,
+                            timer: 1500,
+                        });
+                    } else if (data.status === 201) {
+                        swal("Successful", "Added to Cart!", "success", {
+                            buttons: false,
+                            timer: 1500,
+                        });
+                    }
 
-         $.post(
-            target_url,
-            {...postData},
-            function (data) {
-
-                console.log(data);
+                    console.log(data.msg);
+            },
+            error: function(err){
+                console.log(err);
             }
-        );
+         });
+
+
 
     });
 
-    // show cart modal click event
-    $("#cart-float-btn").click(function () {
-        let target_url = BASE_URL + '/cart';
+    ///////////////      show cart modal click event        ////////////
+    $("#page-loader").on( "click", "#cart-float-btn", function(event){
+        // console.log('Cart Item clicked');
+        let receiptId = $.cookie('receipt_id');
+         let target_url = BASE_URL + '/cart' + `?receipt_id=${receiptId}`;
 
         $.get(
             target_url,
@@ -83,6 +117,7 @@ $( document ).ready(function() {
                 $('#cart-loader').append(data);
             }
         );
+
     });
 
     // function payment() {
