@@ -173,6 +173,7 @@ class Receipt(DBModel):
             self.id = id
 
     def get_orders(self, db):
+        """return current orders"""
         res = db.raw_query(
             f"""select orders.*, name, price, value as discount from orders inner join menu_items
                 on orders.menu_item_id = menu_items.id
@@ -180,6 +181,19 @@ class Receipt(DBModel):
                 where orders.receipt_id = {self.id};"""
         )
         return res
+
+    def price(self, db):
+        """
+            calculate final and total price
+            :param db: DBManager type
+            :return: a tuple consist of total_price and final_price => (total, final)
+        """
+        orders = self.get_orders(db)
+        total = sum(list(map(lambda o: o['count'] * o['price'], orders)))
+        discounts = sum(list(map(lambda o: o['discount'], orders)))
+        final = total - discounts
+
+        return total, final
 
     def __repr__(self):
         return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.final_price}>"
