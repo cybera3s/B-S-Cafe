@@ -130,19 +130,19 @@ class Order(DBModel):
     PK = "id"
 
     def __init__(
-        self,
-        menu_item_id: int,
-        receipt_id: int,
-        status_code_id: int,
-        count: int = 1,
-        create_at=datetime.now(),
-        id: int = None,
+            self,
+            menu_item_id: int,
+            receipt_id: int,
+            status_code_id: int,
+            count: int = 1,
+            created_at=datetime.now(),
+            id: int = None,
     ):
         self.menu_item_id = menu_item_id
         self.count = count
         self.receipt_id = receipt_id
-        self.status_id = status_code_id
-        self.create_at = create_at
+        self.status_code_id = status_code_id
+        self.created_at = created_at
         if id:
             self.id = id
 
