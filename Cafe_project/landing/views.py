@@ -2,6 +2,7 @@ import flask
 from flask import request, render_template, redirect, url_for
 from database.manager import db
 from models import models
+from models.models import Order
 
 base_variables = {
     "pages": {
@@ -46,43 +47,56 @@ def order(table_id):
     data = base_variables
     data["current_page"] = "order"
     items = db.read_all(models.MenuItems)
-    table = db.read(models.Table, table_id)
     discounts = db.read_all(models.Discount)
 
-    # table selecting
-    if request.method == "GET":
-        res = flask.make_response(
-            render_template("landing/order.html", data=data, items=items, discounts=discounts)
-        )
-        new_receipt = models.Receipt(int(table_id))
-        receipt_id = db.create(new_receipt)
-        res.set_cookie("receipt_id", str(receipt_id))
-        res.set_cookie("table_id", table_id)
-        return res
-    elif request.method == "POST":
-        cookie = request.get_json()
-        item_id = cookie["order"]["item_id"]
-        item_count = cookie["order"]["count"]
-        table = cookie["table"]
-        receipt = cookie["receipt"]
-        new_order = models.Order(item_id, receipt, 1, int(item_count))
-        order_id = db.create(new_order)
-        current_receipt = db.read(models.Receipt, int(receipt))
-        current_menu_item = db.read(models.MenuItems, new_order.menu_item)
-        discount = db.read(models.Discount, current_menu_item.discount_id)
-        current_receipt.total_price += current_menu_item.price * new_order.count
-        if discount.id == 1:
-            current_receipt.final_price += current_menu_item.price * new_order.count
-        else:
-            current_receipt.final_price += (
-                                                   current_menu_item.price
-                                                   - ((current_menu_item.price * discount.value) / 100)
-                                           ) * new_order.count
-        current_receipt.orders.append(order_id)
-        db.update(current_receipt)
-        return "200"
-    elif request.method == "DELETE":
-        pass
+    if request.method == "POST":
+        data = request.form or request.get_json()
+
+        # table selecting
+        if data.get('action') == 'select_table':
+
+            response = flask.make_response(
+                render_template("landing/order.html", data=data, items=items, discounts=discounts)
+            )
+
+            # create new receipt
+            new_receipt = models.Receipt(int(table_id))
+            receipt_id = db.create(new_receipt)
+            response.headers['receipt_id'] = receipt_id
+            return response
+
+        # Add To Cart
+        elif data.get('action') == 'add_to_cart':
+
+            # if order already exists
+            menu_item_id = data.get('itemId')
+            existing_order = db.read_by(Order, ('menu_item_id', menu_item_id))
+            item_count = data.get('itemCount')
+
+            if existing_order:
+
+                existing_order = existing_order[0]
+                existing_order.count += item_count
+                db.update(existing_order)
+
+                return {
+                    'status': 200,
+                    'msg': 'item updated successfully'
+                }
+
+            # create new order
+            new_order = models.Order(
+                menu_item_id=menu_item_id,
+                receipt_id=data.get('receiptId'),
+                status_code_id=1,
+                count=item_count
+            )
+            db.create(new_order)
+
+            return {
+                'status': 201,
+                'msg': 'Added to cart successfully'
+            }
 
 
 def cart():
