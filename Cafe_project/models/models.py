@@ -157,7 +157,6 @@ class Receipt(DBModel):
     def __init__(
             self,
             table_id: int,
-            # orders: list = [],
             total_price: int = 0,
             final_price: int = 0,
             is_paid: bool = False,
@@ -172,6 +171,15 @@ class Receipt(DBModel):
         self.created_at = created_at
         if id:
             self.id = id
+
+    def get_orders(self, db):
+        res = db.raw_query(
+            f"""select orders.*, name, price, value as discount from orders inner join menu_items
+                on orders.menu_item_id = menu_items.id
+                join discounts on menu_items.discount_id = discounts.id
+                where orders.receipt_id = {self.id};"""
+        )
+        return res
 
     def __repr__(self):
         return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.final_price}>"
