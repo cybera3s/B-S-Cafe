@@ -84,7 +84,7 @@ class DBManager:
         with self.conn:
             curs = self.__get_cursor()
             curs.execute(query)
-            return list(map(dict, curs.fetchall())) if curs.fetchall() else []
+            return list(map(dict, curs.fetchall())) or []
 
     def update(self, model_instance: DBModel) -> None:
         assert isinstance(model_instance, DBModel)
