@@ -15,15 +15,15 @@ class MenuItems(DBModel):  # Menu items model
     PK = "id"  # PRIMARY KEY FOR TABLE
 
     def __init__(
-        self,
-        name: str,
-        price: int,
-        category_id: int,
-        picture_link: str,
-        serving_time_period: str,
-        estimated_cooking_time: int,
-        discount_id: int = 1,
-        id: int = None,
+            self,
+            name: str,
+            price: int,
+            category_id: int,
+            picture_link: str,
+            serving_time_period: str,
+            estimated_cooking_time: int,
+            discount_id: int = 1,
+            id: int = None,
     ):
         self.name = name
         self.price = price
