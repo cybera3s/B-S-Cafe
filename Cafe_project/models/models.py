@@ -67,7 +67,7 @@ class Table(DBModel):
     PK = "id"
 
     def __init__(
-        self, capacity: int, position: str, status: bool = False, id: int = None
+            self, capacity: int, position: str, status: bool = False, id: int = None
     ):
         self.capacity = capacity
         self.position = position
