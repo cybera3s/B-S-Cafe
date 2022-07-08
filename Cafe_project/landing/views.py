@@ -54,14 +54,19 @@ def order(table_id):
 
         # table selecting
         if data.get('action') == 'select_table':
-
             response = flask.make_response(
                 render_template("landing/order.html", data=data, items=items, discounts=discounts)
             )
 
-            # create new receipt
-            new_receipt = models.Receipt(int(table_id))
-            receipt_id = db.create(new_receipt)
+            # if receipt is already exists
+            receipt = db.read_by(models.Receipt, ('table_id', table_id))
+            if len(receipt) == 0:
+                receipt_id = receipt[0].id
+            else:
+                # create new receipt
+                new_receipt = models.Receipt(int(table_id))
+                receipt_id = db.create(new_receipt)
+
             response.headers['receipt_id'] = receipt_id
             return response
 
