@@ -196,7 +196,7 @@ class Receipt(DBModel):
         return total, final
 
     def __repr__(self):
-        return f"<Class_Receipt id_{self.id}:{self.orders}||Price: {self.final_price}>"
+        return f"<Class_Receipt id_{self.id}||Price: {self.final_price}>"
 
     @staticmethod
     def last_week_report(all_receipts: list) -> list:
