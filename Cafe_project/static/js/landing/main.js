@@ -6,7 +6,7 @@ $( document ).ready(function() {
 
     // Table select click event
     $(".table-item").click(function () {
-        $("#page-loader").empty();
+
         let tableId = $(this).attr('id');
         let target_url =  BASE_URL + '/order/' + tableId;
         console.log(`table ${tableId} clicked`);
@@ -19,6 +19,7 @@ $( document ).ready(function() {
             },
             success: function (data, status, xhr){
                 if (xhr.status === 200){
+                    $("#page-loader").empty();
                     $("#page-loader").append(data);
 
                     let receipt_id = xhr.getResponseHeader('receipt_id');
@@ -30,8 +31,8 @@ $( document ).ready(function() {
             },
             error: function (err, status) {
                 console.log(err, status);
-                let errorMsg = '<h1>Something went wrong</h1>'
-                $("#page-loader").append(errorMsg);
+                let errorMsg = `Something went wrong\n${err.status} ${err.statusText}`;
+                 swal("Failed", errorMsg, "error");
             }
         })
     });
