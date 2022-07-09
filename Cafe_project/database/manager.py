@@ -141,6 +141,30 @@ class DBManager:
                 res = [model_class(**item) for item in res]
                 return res
 
+    def find_by(self, model_class: type, **kwargs):
+        """
+            find records in table where kwargs conditions match
+            :param model_class: a model Class type
+            :param kwargs: conditions as keyword arguments
+            :return: an object or None
+        """
+        assert issubclass(model_class, DBModel)
+        conditions = []
+        for k, v in kwargs.items():
+            conditions.append(f"{k} = {v}")
+        where_conditions = " and ".join(conditions)
+
+        with self.conn:
+            curs = self.__get_cursor()
+            with curs:
+                curs.execute(
+                    f"""SELECT * FROM {model_class.TABLE} WHERE {where_conditions};"""
+                )
+                res = curs.fetchone()
+                return model_class(
+                    **dict(res)
+                ) if res else None
+
     def array_modify(self, model_class: type, column: tuple, pk: int):
         assert issubclass(model_class, DBModel)
         key, value = column
