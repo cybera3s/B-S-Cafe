@@ -30,11 +30,11 @@ def login_required(view):
         takes a view function and check if user is in cookies
     """
 
-    def wrapper():
+    def wrapper(*args, **kwargs):
         user = get_current_user()
         if not user:
             return redirect(url_for("login"))
-        return view(user)
+        return view(user, *args, **kwargs)
 
     return wrapper
 
@@ -225,87 +225,38 @@ def cashier_order(user):
 
 
 @login_required
-def cashier_new_order(user):
+def cashier_order_status(user, status_id):
     data = base_variables
     data["user"] = user
-    data["page"]["title"] = "New Orders"
-    title_get = "cashier_order_new"
 
-    items = Order.read_by_joined_status(1, db)
-
+    match status_id:
+        case 1:
+            data["page"]["title"] = "New Orders"
+            status = status_id
+            items = Order.read_by_joined_status(1, db)
+        case 2:
+            data["page"]["title"] = "Cooking Orders"
+            status = status_id
+            items = Order.read_by_joined_status(2, db)
+        case 3:
+            data["page"]["title"] = "Served orders"
+            status = status_id
+            items = Order.read_by_joined_status(3, db)
+        case 4:
+            data["page"]["title"] = "Delete Orders"
+            status = status_id
+            items = Order.read_by_joined_status(4, db)
+        case 5:
+            data["page"]["title"] = "Paid Orders"
+            status = status_id
+            items = Order.read_by_joined_status(5, db)
+        case _:
+            return "<h1>Wrong Status code</h1>"
+    # static section
     context = {
         'data': data,
         'items': items,
-        'title_get': title_get
-    }
-    return render_template("cashier/Cashier_order_status.html", **context)
-
-
-@login_required
-def cashier_cook_order(user):
-    data = base_variables
-    data["page"]["title"] = "Cooking Orders"
-    data["user"] = user
-    title_get = "cashier_cook_order"
-
-    items = Order.read_by_joined_status(2, db)
-
-    context = {
-        'data': data,
-        'items': items,
-        'title_get': title_get
-    }
-    return render_template("cashier/Cashier_order_status.html", **context)
-
-
-@login_required
-def cashier_order_served(user):
-    data = base_variables
-    data["user"] = user
-    data["page"]["title"] = "Served orders"
-    title_get = "cashier_order_served"
-
-    items = Order.read_by_joined_status(3, db)
-
-    context = {
-        'data': data,
-        'items': items,
-        'title_get': title_get
-    }
-    return render_template("cashier/Cashier_order_status.html", **context)
-
-
-@login_required
-def cashier_delete_order(user):
-    data = base_variables
-    data["user"] = user
-    data["page"]["title"] = "Delete Orders"
-    title_get = "cashier_delete_order"
-
-    # read orders with status id 4 -> deleted
-    items = Order.read_by_joined_status(4, db)
-
-    context = {
-        'items': items,
-        'data': data,
-        'title_get': title_get
-    }
-    return render_template("cashier/Cashier_order_status.html", **context)
-
-
-@login_required
-def cashier_paid_order(user):
-    data = base_variables
-    data["user"] = user
-    data["page"]["title"] = "Paid Orders"
-    title_get = "cashier_paid_order"
-
-    # read orders with status id 5 -> paid
-    items = Order.read_by_joined_status(5, db)
-    context = {
-        'items': items,
-        'data': data,
-        'title_get': title_get
+        'status': status
     }
     return render_template("cashier/Cashier_order_status.html", **context)
 
