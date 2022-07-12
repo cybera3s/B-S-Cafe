@@ -4,13 +4,17 @@ from flask_cors import CORS
 from landing.views import *
 from os import urandom
 from cashier.views import *
+from core.template_filters import format_datetime
+
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = urandom(24)
 CORS(app, origins=["http://localhost*", "http://127.0.0.1"], expose_headers=['receipt_id'])
 
-#  -----------  Landing Pages----------------------
+# template filters
+app.add_template_filter(format_datetime, "format_date")
 
+#  -----------  Landing Pages----------------------
 app.add_url_rule("/", "index", index, methods=["GET"])
 app.add_url_rule("/home", "home", home, methods=["GET"])
 app.add_url_rule("/menu", "menu", menu, methods=["GET"])
