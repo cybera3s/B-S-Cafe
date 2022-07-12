@@ -200,30 +200,28 @@ def cashier_order(user):
         return render_template("cashier/order.html", **context)
 
     if request.method == "POST":
-        menu_items = db.read_all(MenuItems)
-        status = db.read_all(Status)
-        order = db.read_all(Order)
+        # get json payload of request
         request_data = request.get_json()
-        if request_data["view"] == "receipt_req":
-            orders = db.read_by(Order, ("receipt_id", request_data["receipt"]))
-            return render_template(
-                "cashier/receipt-modify.html",
-                orders=orders,
-                items=menu_items,
-                status=status,
-            )
 
+        context = {
+            "status": db.read_all(Status),
+        }
+
+        # get receipt orders
+        if request_data["view"] == "receipt_req":
+            context['orders'] = Order.read_by_receipt_with_menu_items_status(request_data["receipt_id"], db)
+            return render_template("cashier/receipt-modify.html", **context)
+
+        # change order status of a receipt
         elif request_data["view"] == "status_req":
             receipt_id = request_data["order"]
             status_id = request_data["status_id"]
             read_order = db.read(Order, receipt_id)
-            read_order.status_id = int(status_id)
+            read_order.status_code_id = int(status_id)
             db.update(read_order)
             return render_template(
                 "cashier/receipt-modify.html",
-                orders=order,
-                items=menu_items,
-                status=status,
+                **context
             )
 
 
