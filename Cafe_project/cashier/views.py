@@ -230,14 +230,15 @@ def cashier_new_order(user):
     data["user"] = user
     data["page"]["title"] = "New Orders"
     title_get = "cashier_order_new"
-    items = db.read_by(Order, ("status_code_id", 1))
-    for i in items:
-        x = db.read(MenuItems, i.menu_item)
-        i.menu_item = x.name
-        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template(
-        "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
-    )
+
+    items = Order.read_by_joined_status(1, db)
+
+    context = {
+        'data': data,
+        'items': items,
+        'title_get': title_get
+    }
+    return render_template("cashier/Cashier_order_status.html", **context)
 
 
 @login_required
