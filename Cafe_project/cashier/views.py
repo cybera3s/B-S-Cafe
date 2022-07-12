@@ -266,11 +266,8 @@ def cashier_cook_order():
     )
 
 
-def cashier_order_served():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
+@login_required
+def cashier_order_served(user):
 
     data = base_variables
     data["user"] = user
