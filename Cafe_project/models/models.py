@@ -166,6 +166,19 @@ class Order(DBModel):
         )
         return res
 
+    @classmethod
+    def read_by_joined_status(cls, status_id: int, db) -> dict:
+        """
+            return a order by provided status_code_id and status table joined
+        """
+        res = db.raw_query(
+            f"""select orders.*, status, name as item_name from orders
+                    inner join menu_items on orders.menu_item_id = menu_items.id
+                    inner join status on orders.status_code_id = status.id
+                    where orders.status_code_id = {status_id};"""
+        )
+        return res
+
     def __repr__(self):
         return f"<Order_Class {self.id}:{self.menu_item_id}>"
 
