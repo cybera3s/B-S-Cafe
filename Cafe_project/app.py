@@ -23,7 +23,7 @@ app.add_url_rule("/cart", "cart", cart, methods=["GET", "POST", "DELETE"])
 
 app.add_url_rule("/admin", "login", login, methods=["GET", "POST"])
 app.add_url_rule(
-    "/cashier_panel/dashboard", "cashier_dashboard", cashier_dashboard, methods=["GET"]
+    "/cashier_panel/dashboard", "cashier_dashboard", cashier_dashboard, methods=["GET", "POST"]
 )
 app.add_url_rule(
     "/cashier_panel/order", "cashier_order", cashier_order, methods=["GET", "POST"]
