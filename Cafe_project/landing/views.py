@@ -59,9 +59,10 @@ def order(table_id):
             )
 
             # if receipt is already exists
-            receipt = db.read_by(models.Receipt, ('table_id', table_id))
-            if len(receipt) == 0:
-                receipt_id = receipt[0].id
+            receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
+            print(models.Order.next_id(db))
+            if receipt is not None:
+                receipt_id = receipt.id
             else:
                 # create new receipt
                 new_receipt = models.Receipt(int(table_id))
