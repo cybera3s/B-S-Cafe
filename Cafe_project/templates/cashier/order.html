@@ -30,11 +30,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for i in receipts %}
-                                <tr class="data" id="{{ i.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    <td><strong>{{ receipts.index(i) + 1 }}</strong></td>
-                                    <td>{{ i.id }}</td>
-                                    <td>{{ i.created_at }}</td>
+                            {% for receipt in receipts %}
+                                <tr class="data receipt-item" id="{{ receipt.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <td><strong>{{ loop.index }}</strong></td>
+                                    <td>{{ receipt.id }}</td>
+                                    <td>{{ receipt.created_at }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
