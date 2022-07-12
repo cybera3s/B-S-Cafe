@@ -1,6 +1,6 @@
 from models.models import *
 from database.manager import db
-from flask import url_for, request, redirect, render_template, make_response, flash
+from flask import url_for, request, redirect, render_template, make_response, flash, Response
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
@@ -325,50 +325,54 @@ def logout():
     return resp
 
 
-def cashier_list_menu():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
+@login_required
+def cashier_list_menu(user):
     data = {
         "user": user,
     }
-    menuitem = db.read_all(MenuItems)
-    discount = db.read_all(Discount)
-    category = db.read_all(Category)
+    menuitems = db.read_all(MenuItems)
+    discounts = db.read_all(Discount)
+    categories = db.read_all(Category)
+    context = {
+        'data': data,
+    }
     if request.method == "GET":
-        return render_template(
-            "cashier/cashier_list_menu.html", menuitems=menuitem, data=data
-        )
-    if request.method == "POST":
-        request_data = request.get_json()
-        if request_data["view"] == "item":
-            print(request_data)
-            print(request_data["view"])
-            items = db.read_by(MenuItems, ("id", request_data["items"]))
-            return render_template(
-                "cashier/item-modify.html",
-                items=items,
-                categories=category,
-                discounts=discount,
-            )
+        context['menuitems'] = menuitems
+        return render_template("cashier/cashier_list_menu.html", **context)
 
-        elif request_data["view"] == "list_item":
-            print(request_data)
-            print(request_data["name"])
-            id = request_data["id"]
-            name = request_data["name"]
-            price = request_data["price"]
-            serving_time = request_data["serving_time"]
-            estimated = request_data["estimated"]
-            discount_value = int(request_data["discount"])
-            discount_id = list(filter(lambda d: d.value == discount_value, discount))[
-                0
-            ].id
-            category_name = request_data["category"]
-            category_id = list(filter(lambda c: c.category == category_name, category))[
-                0
-            ].id
+    if request.method == "POST":
+        data = request.get_json()
+
+        # get menu item by id
+        if data["view"] == "get_item":
+            item = db.read(MenuItems, data["items"])
+            context.update({
+                'item': item,
+                'categories': categories,
+                'discounts': discounts
+
+            })
+            return render_template("cashier/item-modify.html", **context)
+
+        # edit menu item
+        elif data["view"] == "edit_item":
+            del data['view']
+            print(data)
+            id = data["id"]
+            name = data["name"]
+            price = data["price"]
+            serving_time = data["serving_time"]
+            estimated = data["estimated"]
+
+            try:
+                # get discount value
+                discount_id = int(data["discount"])
+                discount_id = list(filter(lambda d: d.id == int(discount_id), discounts))[0].id
+                category_id = data["category"]
+                category_id = list(filter(lambda c: c.id == int(category_id), categories))[0].id
+            except:
+                return Response("{'msg':'something went wrong'}", status=400, mimetype='application/json')
+
             item_update = db.read(MenuItems, id)
             item_update.name = name
             item_update.price = int(price)
@@ -378,13 +382,12 @@ def cashier_list_menu():
             item_update.discount_id = int(discount_id)
             item_update.category_id = int(category_id)
             db.update(item_update)
-            return render_template(
-                "cashier/cashier_list_menu.html", menuitems=menuitem, data=data
-            )
-        elif request_data["view"] == "del":
-            print("del")
-            id = request_data["id"]
+            context['menuitems'] = menuitems
+            return render_template("cashier/cashier_list_menu.html", **context)
+
+        # delete menu item
+        elif data["view"] == "del":
+            id = data["id"]
             item = db.read(MenuItems, id)
             db.delete(item)
-            print("deleted")
             return "200"
