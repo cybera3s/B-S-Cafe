@@ -80,6 +80,12 @@ class DBManager:
                     **dict(res)
                 )  # returns an instance of the Model with inserted values
 
+    def query(self, q):
+        with self.conn:
+            curs = self.__get_cursor()
+            curs.execute(q)
+            return curs.fetchall()
+
     def raw_query(self, query: str):
         with self.conn:
             curs = self.__get_cursor()
@@ -174,6 +180,5 @@ class DBManager:
                 curs.execute(
                     f"""UPDATE {model_class.TABLE} SET {key} = {key} || {value} WHERE {model_class.PK} = {pk}"""
                 )
-
 
 db = DBManager()
