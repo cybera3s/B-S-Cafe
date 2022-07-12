@@ -187,7 +187,6 @@ def cashier_dashboard(user):
 @login_required
 def cashier_order(user):
     if request.method == "GET":
-
         receipts = db.read_all(Receipt)
 
         context = {
@@ -268,7 +267,6 @@ def cashier_cook_order():
 
 @login_required
 def cashier_order_served(user):
-
     data = base_variables
     data["user"] = user
     data["page"]["title"] = "Served orders"
@@ -284,12 +282,8 @@ def cashier_order_served(user):
     return render_template("cashier/Cashier_order_status.html", **context)
 
 
-def cashier_delete_order():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
-
+@login_required
+def cashier_delete_order(user):
     data = base_variables
     data["user"] = user
     data["page"]["title"] = "Delete Orders"
