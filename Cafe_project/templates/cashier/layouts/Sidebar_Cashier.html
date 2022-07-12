@@ -59,31 +59,31 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('cashier_order_new') }}" class="nav-link">
+                <a href="{{ url_for('cashier_order_status', status_id=1) }}" class="nav-link">
                   <i class="fas fa-plus mr-1"></i>
                   <p>New order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('cashier_order_served') }}" class="nav-link">
+                <a href="{{ url_for('cashier_order_status', status_id=2) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Served order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('cashier_delete_order') }}" class="nav-link">
+                <a href="{{ url_for('cashier_order_status', status_id=3) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Deleted order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('cashier_cook_order') }}" class="nav-link">
+                <a href="{{ url_for('cashier_order_status', status_id=4) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>cooking order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('cashier_paid_order') }}" class="nav-link">
+                <a href="{{ url_for('cashier_order_status', status_id=5) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Paid order</p>
                 </a>
