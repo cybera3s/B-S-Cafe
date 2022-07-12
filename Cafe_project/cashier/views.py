@@ -29,11 +29,13 @@ def login_required(view):
     """
         takes a view function and check if user is in cookies
     """
+
     def wrapper():
         user = get_current_user()
         if not user:
             return redirect(url_for("login"))
         return view(user)
+
     return wrapper
 
 
@@ -182,20 +184,21 @@ def cashier_dashboard(user):
     return render_template("cashier/dashboard.html", data=data)
 
 
-def cashier_order():
+@login_required
+def cashier_order(user):
     if request.method == "GET":
-        # route protecting
-        user = get_current_user()
-        if not user:
-            return redirect(url_for("login"))
 
-        data = {
-            "user": user,
-        }
         receipts = db.read_all(Receipt)
-        for i in receipts:
-            i.created_at = i.created_at.strftime("%Y/%-m/%d %-I:%m ")
-        return render_template("cashier/order.html", receipts=receipts, data=data)
+
+        context = {
+            "data": {
+                "user": user
+            },
+            "receipts": receipts
+        }
+
+        return render_template("cashier/order.html", **context)
+
     if request.method == "POST":
         menu_items = db.read_all(MenuItems)
         status = db.read_all(Status)
