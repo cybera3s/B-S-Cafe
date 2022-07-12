@@ -5,6 +5,11 @@
 {% block extra_head %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../../static/css/cashier/Cashier_order_served_css.css">
+    <style>
+        tr:hover{
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
 {% block content_title %}
@@ -16,8 +21,9 @@
         <h1 class="title text-center"> {{ data.page.title }}</h1>
         <input type="text" id="Input" onkeyup="myFunction()" placeholder="Search for menu items.."
                title="Type in a name">
-        {% if items|length %}
-        <table class="table table-striped" id="Table" >
+
+        {% if items|length > 0 %}
+        <table class="mt-2 rounded table table-dark table-responsive-sm table-hover thead-dark" id="Table" >
             <thead>
             <tr>
                 <th class="text-center black ">ID</th>
@@ -31,7 +37,7 @@
             <tbody id="row_table">
 
                     {% for item in items %}
-                        <tr>
+                        <tr class="order-item">
                             <td class="text-center">{{ item['id'] }}</td>
                             <td class="text-center">{{ item['item_name'] }}</td>
                             <td class="text-center">{{ item['count'] }}</td>
@@ -45,7 +51,7 @@
         {% else %}
             <div class="alert alert-info my-2">There is no items!</div>
         {% endif %}
-        <button id="submit" type="button" class="btn btn-primary col-md-1 col-12 btn-block">Update</button>
+        <button id="submit" type="button" class="btn btn-primary col-12 col-sm-10 col-md-8 col-lg-3 btn-block">Update</button>
     </div>
 {% endblock %}
 
@@ -53,7 +59,7 @@
     <script>
         $("#submit").on('click', function () {
             $.ajax({
-                url: "{{url_for(title_get)}}",
+                url: "{{url_for('cashier_order_status', status_id=status)}}",
                 type: 'GET'
             });
         });
