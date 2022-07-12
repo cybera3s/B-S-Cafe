@@ -32,30 +32,14 @@ app.add_url_rule(
 app.add_url_rule(
     "/cashier_panel/order", "cashier_order", cashier_order, methods=["GET", "POST"]
 )
+
 app.add_url_rule(
-    "/cashier_panel/order/served",
-    "cashier_order_served",
-    cashier_order_served,
+    "/cashier_panel/order/status/<int:status_id>",
+    "cashier_order_status",
+    cashier_order_status,
     methods=["GET"],
 )
-app.add_url_rule(
-    "/cashier_panel/order/paid",
-    "cashier_paid_order",
-    cashier_paid_order,
-    methods=["GET"],
-)
-app.add_url_rule(
-    "/cashier_panel/order/delete",
-    "cashier_delete_order",
-    cashier_delete_order,
-    methods=["GET"],
-)
-app.add_url_rule(
-    "/cashier_panel/order/cook",
-    "cashier_cook_order",
-    cashier_cook_order,
-    methods=["GET"],
-)
+
 app.add_url_rule(
     "/cashier_panel/new_menu_item",
     "cashier_add_item",
@@ -73,12 +57,6 @@ app.add_url_rule(
     "cashier_add_category",
     cashier_add_category,
     methods=["GET", "POST"],
-)
-app.add_url_rule(
-    "/cashier_panel/order/new-order",
-    "cashier_order_new",
-    cashier_new_order,
-    methods=["GET"],
 )
 app.add_url_rule(
     "/cashier_panel/discount/new_discount",
