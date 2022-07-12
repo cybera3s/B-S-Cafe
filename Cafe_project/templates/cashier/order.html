@@ -10,7 +10,12 @@
         .receipt-item{
             cursor: pointer;
         }
-
+        .status-item{
+            cursor: pointer;
+        }
+        .status-item:hover{
+             background-color: #34a0b2;
+        }
 
     </style>
 {% endblock %}
@@ -79,7 +84,7 @@
         let target_url = "{{ url_for('cashier_order') }}";
         let DataSend = {
             view: 'receipt_req',
-            receipt: Number(this.id)
+            receipt_id: +this.id
         };
         console.log(this.id)
         $("#receipt_modal").empty();
