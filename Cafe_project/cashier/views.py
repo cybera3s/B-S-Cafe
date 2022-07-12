@@ -39,24 +39,21 @@ def login_required(view):
     return wrapper
 
 
-def cashier_add_category():
-    # route protecting
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-
+@login_required
+def cashier_add_category(user):
     data = {
         "user": user,
     }
     items_category = db.read_all(Category)
     items_discount = db.read_all(Discount)
+
+    context = {
+        'items_category': items_category,
+        'items_discount': items_discount,
+        'data': data,
+    }
     if request.method == "GET":
-        return render_template(
-            "cashier/cashier_add_category.html",
-            items_category=items_category,
-            items_discount=items_discount,
-            data=data,
-        )
+        return render_template("cashier/cashier_add_category.html", **context)
 
     elif request.method == "POST":
 
@@ -67,13 +64,13 @@ def cashier_add_category():
         new_category = Category(category, root_id, discount_id)
         db.create(new_category)
 
+        context = {
+            'items_category': items_category,
+            'items_discount': items_discount,
+            'data': data,
+        }
         flash("New Category Added !")
-        return render_template(
-            "cashier/cashier_add_category.html",
-            items_category=items_category,
-            items_discount=items_discount,
-            data=data,
-        )
+        return render_template("cashier/cashier_add_category.html", **context)
 
 
 def cashier_new_discount():
