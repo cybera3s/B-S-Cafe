@@ -25,6 +25,18 @@ def get_current_user() -> Cashier:
     return user_res
 
 
+def login_required(view):
+    """
+        takes a view function and check if user is in cookies
+    """
+    def wrapper():
+        user = get_current_user()
+        if not user:
+            return redirect(url_for("login"))
+        return view(user)
+    return wrapper
+
+
 def cashier_add_category():
     # route protecting
     user = get_current_user()
