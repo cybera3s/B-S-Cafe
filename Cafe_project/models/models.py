@@ -129,7 +129,7 @@ class Category(DBModel):
             self.id = id
 
     def __repr__(self):
-        return f"<Category_class {self.id}:{self.category}>"
+        return f"<Category_class {self.id}:{self.category_name}>"
 
 
 class Order(DBModel):
