@@ -152,15 +152,12 @@ def cashier_add_item():
     )
 
 
-def cashier_dashboard():
-    # route protecting
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
+@login_required
+def cashier_dashboard(user):
     all_receipts = db.read_all(Receipt)
 
     today_receipts = list(
-        filter(lambda order: order.create_time.day == datetime.now().day, all_receipts)
+        filter(lambda order: order.created_at.day == datetime.now().day, all_receipts)
     )
     today_earnings = sum(list(map(lambda order: order.final_price, today_receipts)))
 
@@ -197,7 +194,7 @@ def cashier_order():
         }
         receipts = db.read_all(Receipt)
         for i in receipts:
-            i.create_time = i.create_time.strftime("%Y/%-m/%d %-I:%m ")
+            i.created_at = i.created_at.strftime("%Y/%-m/%d %-I:%m ")
         return render_template("cashier/order.html", receipts=receipts, data=data)
     if request.method == "POST":
         menu_items = db.read_all(MenuItems)
@@ -241,7 +238,7 @@ def cashier_new_order():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
-        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template(
         "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
     )
@@ -262,7 +259,7 @@ def cashier_cook_order():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
-        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template(
         "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
     )
@@ -282,7 +279,7 @@ def cashier_order_served():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
-        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template(
         "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
     )
@@ -302,7 +299,7 @@ def cashier_delete_order():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
-        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template(
         "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
     )
@@ -322,7 +319,7 @@ def cashier_paid_order():
     for i in items:
         x = db.read(MenuItems, i.menu_item)
         i.menu_item = x.name
-        i.create_time = i.create_time.strftime("%Y/%-m/%d  %-I:%m ")
+        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
     return render_template(
         "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
     )
