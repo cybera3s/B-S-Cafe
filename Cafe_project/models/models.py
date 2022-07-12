@@ -6,6 +6,13 @@ class DBModel(ABC):  # abstract base Database model
     TABLE: str  # table name
     PK: str  # primary key column of the table
 
+    @classmethod
+    def next_id(cls, db):
+        id_seq = cls.TABLE + "_id_seq"
+        query = f"select nextval('{id_seq}');"
+        res = db.query(query)
+        return dict(res[0]) if res else None
+
     def __str__(self) -> str:
         return f"<{self.__class__.__name__} {vars(self)}>"
 
@@ -214,7 +221,7 @@ class Receipt(DBModel):
         for i in range(1, 8):
             receipts = list(
                 filter(
-                    lambda order: order.create_time.day
+                    lambda order: order.created_at.day
                                   == (datetime.today() - timedelta(days=i)).day,
                     all_receipts,
                 )
