@@ -300,24 +300,21 @@ def cashier_delete_order(user):
     return render_template("cashier/Cashier_order_status.html", **context)
 
 
-def cashier_paid_order():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
-
+@login_required
+def cashier_paid_order(user):
     data = base_variables
     data["user"] = user
     data["page"]["title"] = "Paid Orders"
     title_get = "cashier_paid_order"
-    items = db.read_by(Order, ("status_id", 5))
-    for i in items:
-        x = db.read(MenuItems, i.menu_item)
-        i.menu_item = x.name
-        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template(
-        "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
-    )
+
+    # read orders with status id 5 -> paid
+    items = Order.read_by_joined_status(5, db)
+    context = {
+        'items': items,
+        'data': data,
+        'title_get': title_get
+    }
+    return render_template("cashier/Cashier_order_status.html", **context)
 
 
 def cashier_table():
