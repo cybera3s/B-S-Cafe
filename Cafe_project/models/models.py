@@ -153,6 +153,19 @@ class Order(DBModel):
         if id:
             self.id = id
 
+    @classmethod
+    def read_by_receipt_with_menu_items_status(cls, receipt_id: int, db) -> dict:
+        """
+            return orders joined by menu item name and status
+        """
+        res = db.raw_query(
+        f"""select orders.*, name as item_name, status from orders
+            inner join menu_items on orders.menu_item_id = menu_items.id
+            inner join status on orders.status_code_id = status.id
+            where receipt_id = {receipt_id};"""
+        )
+        return res
+
     def __repr__(self):
         return f"<Order_Class {self.id}:{self.menu_item_id}>"
 
