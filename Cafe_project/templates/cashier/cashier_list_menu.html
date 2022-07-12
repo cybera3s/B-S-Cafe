@@ -18,7 +18,7 @@
                 <tbody>
                 {% for i in menuitems %}
                     <tr id="{{ i.id }}">
-                        <td>{{ menuitems.index(i) + 1 }}</td>
+                        <td>{{ loop.index }}</td>
                         <td>{{ i.name}}</td>
                         <td>{{ i.price }}</td>
                         <td>
@@ -32,7 +32,7 @@
                 </tbody>
             </table>
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="staticBackdropLabel">Items</h5>
@@ -57,7 +57,7 @@
     $('.edit').on('click', function () {
         let url = "{{ url_for('cashier_list_menu') }}";
         let SendData = {
-            view: 'item',
+            view: 'get_item',
             items: Number(this.id)
         };
         $("#item_modal").empty();
