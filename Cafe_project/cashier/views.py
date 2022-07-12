@@ -288,14 +288,16 @@ def cashier_delete_order(user):
     data["user"] = user
     data["page"]["title"] = "Delete Orders"
     title_get = "cashier_delete_order"
-    items = db.read_by(Order, ("status_id", 4))
-    for i in items:
-        x = db.read(MenuItems, i.menu_item)
-        i.menu_item = x.name
-        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template(
-        "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
-    )
+
+    # read orders with status id 4 -> deleted
+    items = Order.read_by_joined_status(4, db)
+
+    context = {
+        'items': items,
+        'data': data,
+        'title_get': title_get
+    }
+    return render_template("cashier/Cashier_order_status.html", **context)
 
 
 def cashier_paid_order():
