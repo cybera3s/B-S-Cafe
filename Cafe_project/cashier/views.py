@@ -224,12 +224,8 @@ def cashier_order(user):
             )
 
 
-def cashier_new_order():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
-
+@login_required
+def cashier_new_order(user):
     data = base_variables
     data["user"] = user
     data["page"]["title"] = "New Orders"
@@ -244,25 +240,21 @@ def cashier_new_order():
     )
 
 
-def cashier_cook_order():
-    user = get_current_user()
-    # route protecting
-    if not user:
-        return redirect(url_for("login"))
-
+@login_required
+def cashier_cook_order(user):
     data = base_variables
     data["page"]["title"] = "Cooking Orders"
     data["user"] = user
-
     title_get = "cashier_cook_order"
-    items = db.read_by(Order, ("status_id", 2))
-    for i in items:
-        x = db.read(MenuItems, i.menu_item)
-        i.menu_item = x.name
-        i.created_at = i.created_at.strftime("%Y/%-m/%d  %-I:%m ")
-    return render_template(
-        "cashier/Cashier_order_status.html", items=items, data=data, title_get=title_get
-    )
+
+    items = Order.read_by_joined_status(2, db)
+
+    context = {
+        'data': data,
+        'items': items,
+        'title_get': title_get
+    }
+    return render_template("cashier/Cashier_order_status.html", **context)
 
 
 @login_required
