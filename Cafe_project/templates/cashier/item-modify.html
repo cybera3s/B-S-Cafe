@@ -45,7 +45,9 @@
                         <select id="discount" name="discount" class="form-control" required="">
                             <option disabled="" selected="">Select your discount</option>
                             {% for d in discounts %}
-                                <option value="{{ d.id }}" {% if item.discount_id== d.id %}selected{% endif %}>{{ d.value }}</option>
+                            <option value="{{ d.id }}" {% if item.discount_id== d.id %}selected{% endif %}>{{ d.value
+                                }}
+                            </option>
                             {% endfor %}
                         </select>
                     </div>
