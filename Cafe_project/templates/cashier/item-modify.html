@@ -89,7 +89,7 @@
 
                 </span>
 
-                <button id="send" name="send" class="btn btn-primary btn-block btn-lg">save</button>
+                <button id="sendData" class="btn btn-primary btn-block btn-lg">Save</button>
 
             </div>
         </div>
@@ -149,6 +149,77 @@
             }
         });
     }
+
+    // click event for send data submit
+    $('#sendData').on('click', function () {
+        let target_url = "{{ url_for('cashier_list_menu') }}";
+        let id = $('#item_id').val()
+        let name = $('#name').val()
+        let price = $('#Price').val()
+        let serving_time = $('#serving_time').val()
+        let estimated = $('#estimated').val()
+        let discount = $('#discount').val()
+        let category = $('#category').val()
+        let picture_link = $("#picture_link");
+        let formItemsList = ['#item_id', '#name', '#Price', '#serving_time', '#estimated', '#discount', '#category',
+        "#picture_link"]
+
+        let changed = false;
+        $(formItemsList.join(',')).on('input', function(){
+            changed = true;
+        });
+
+        if (changed){
+            try {
+
+                sendImage(picture_link)
+                    .then(data => {
+                        console.log(data);
+
+                        let DataSend = {
+                            view: 'edit_item',
+                            id: +id,
+                            name: name,
+                            price: +price,
+                            serving_time: serving_time,
+                            estimated: +estimated,
+                            discount: +discount,
+                            category: +category,
+                            image: data
+                        }
+
+                        $.ajax({
+                            url: `${target_url}`,
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(DataSend),
+                            success: function (response) {
+                                Swal.fire(
+                                    'Item updated',
+                                    'updated successfully!',
+                                    'success'
+                                );
+                            },
+                            error: function (request, status, error) {
+                                console.log(error)
+                                Swal.fire('Failed', "something went wrong", 'error');
+                            }
+                        });
+                    })
+                    .catch(err => console.log(err));
+
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            Swal.fire(
+                'No changes!',
+                'No changes detected!',
+                'info'
+            );
+        }
+
+    });
 
 
 </script>
