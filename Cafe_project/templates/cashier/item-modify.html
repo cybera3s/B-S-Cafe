@@ -97,42 +97,30 @@
 </div>
 
 <script>
-    $('#send').on('click', function () {
-        let target_url = "{{ url_for('cashier_list_menu') }}";
-        let id = $('#item_id').val()
-        let name = $('#name').val()
-        let price = $('#Price').val()
-        let serving_time = $('#serving_time').val()
-        let estimated = $('#estimated').val()
-        let discount = $('#discount').val()
-        let category = $('#category').val()
+    // show uploaded image in img tag on change of file input
+    $("#picture_link").on('change', function () {
 
-        let DataSend = {
-            view: 'edit_item',
-            id: id,
-            name: name,
-            price: price,
-            serving_time: serving_time,
-            estimated: estimated,
-            discount: +discount,
-            category: category
-        }
+        let file = $(this).prop('files')[0];
 
-        $.ajax({
-            url: `${target_url}`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(DataSend),
-            success: function (response) {
-                Swal.fire(
-                    'Item updated',
-                    'updated successfully!',
-                    'success'
-                );
-            },
-            error: function (request, status, error) {
-                Swal.fire('Failed',"something went wrong", 'error');
-            }
-        });
+        // image type validation
+        if (!/image\/*/.test(file.type)) {
+            Swal.fire(
+                'Failed',
+                'Wrong type for image input!',
+                'error'
+            );
+            $(this).focus()
+            return;
+        };
+
+        let tempURL = URL.createObjectURL(file);
+
+        $("#targetImage").attr('src', tempURL);
+        $("label[for='targetImage']").text(file.name);
+
+        // console.log(tempURL);
+
     });
+
+
 </script>
