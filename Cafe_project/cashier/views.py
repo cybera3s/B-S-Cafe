@@ -356,6 +356,14 @@ def cashier_list_menu(user):
     if request.method == "POST":
         data = request.get_json()
 
+        if request.files:
+            try:
+                filename = save_and_validate_file(request, 'file')
+            except Exception:
+                return Response("{'msg':'something went wrong'}", status=400)
+
+            return Response(filename, status=200)
+
         # get menu item by id
         if data["view"] == "get_item":
             item = db.read(MenuItems, data["items"])
@@ -370,33 +378,30 @@ def cashier_list_menu(user):
         # edit menu item
         elif data["view"] == "edit_item":
             del data['view']
-            print(data)
-            id = data["id"]
-            name = data["name"]
-            price = data["price"]
-            serving_time = data["serving_time"]
-            estimated = data["estimated"]
+
+            data = {**data}
 
             try:
                 # get discount value
                 discount_id = int(data["discount"])
-                discount_id = list(filter(lambda d: d.id == int(discount_id), discounts))[0].id
+                discount_id = list(filter(lambda d: d.id == discount_id, discounts))[0].id
                 category_id = data["category"]
                 category_id = list(filter(lambda c: c.id == int(category_id), categories))[0].id
             except:
                 return Response("{'msg':'something went wrong'}", status=400, mimetype='application/json')
 
-            item_update = db.read(MenuItems, id)
-            item_update.name = name
-            item_update.price = int(price)
-            item_update.serving_time_period = serving_time
-            item_update.estimated_cooking_time = int(estimated)
-            item_update.picture_link = int(estimated)
-            item_update.discount_id = int(discount_id)
-            item_update.category_id = int(category_id)
-            db.update(item_update)
-            context['menuitems'] = menuitems
-            return render_template("cashier/cashier_list_menu.html", **context)
+            modified_item = db.read(MenuItems, data['id'])
+
+            modified_item.name = data['name']
+            modified_item.price = data['price']
+            modified_item.serving_time_period = data['serving_time']
+            modified_item.estimated_cooking_time = data['estimated']
+            modified_item.picture_link = data['image']
+            modified_item.discount_id = data['discount']
+            modified_item.category_id = data['category']
+            db.update(modified_item)
+
+            return Response("updated", status=200)
 
         # delete menu item
         elif data["view"] == "del":
