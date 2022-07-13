@@ -81,7 +81,12 @@
                     </a>
                 </div>
                 <span class="btn btn-primary btn-block btn-lg btn-file">
-                    Browse image <input type="file" name="file">
+                    Browse image
+                    <input type="file" name="file"
+                           id="picture_link"
+                           value="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                    />
+
                 </span>
 
                 <button id="send" name="send" class="btn btn-primary btn-block btn-lg">save</button>
