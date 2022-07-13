@@ -1,5 +1,7 @@
 import re
 
+from flask import current_app
+
 
 class Validator:
     @staticmethod
@@ -33,3 +35,12 @@ class Validator:
             return True
         else:
             return False
+
+
+def allowed_file(filename: str) -> bool:
+    """
+        check if provided file name matches to allowed extension
+        return true of false according condition
+    """
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
