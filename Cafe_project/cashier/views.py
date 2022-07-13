@@ -94,11 +94,9 @@ def cashier_add_category(user):
         return render_template("cashier/cashier_add_category.html", **context)
 
 
-def cashier_new_discount():
-    # route protecting
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
+@login_required
+def cashier_new_discount(user):
+
     data = {
         "user": user,
     }
