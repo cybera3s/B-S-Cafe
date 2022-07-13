@@ -1,15 +1,36 @@
 from models.models import *
 from database.manager import db
-from flask import url_for, request, redirect, render_template, make_response, flash, Response
+from flask import url_for, request, redirect, render_template, make_response, flash, Response, Request, current_app
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = "static/images"
+from utility.utils import allowed_file
 
 base_variables = {
     "page": {"lang": "en-US", "title": ""},
 }
+
+
+def save_and_validate_file(req: Request, key: str):
+    """
+        Takes request and a string key and look for key in
+        request.files if found and be valid then save it to UPLOAD_FOLDER
+        and returns filename
+    """
+    if key not in req.files:
+        raise KeyError('No File Part')
+
+    file = req.files[key]
+
+    if file.filename == "":
+        raise FileNotFoundError('No image selected for uploading!')
+
+    # check if uploaded file has correct extensions and file is not none
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        return filename
 
 
 def get_current_user() -> Cashier:
