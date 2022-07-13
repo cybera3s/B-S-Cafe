@@ -8,6 +8,11 @@ from core.template_filters import format_datetime
 
 
 app = Flask(__name__, template_folder="templates")
+# app configuration
+app.config['UPLOAD_FOLDER'] = "static/images/menu_items"
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1000 * 1000  # set maximum volume to 5 MB for a uploaded content
+
 app.secret_key = urandom(24)
 CORS(app, origins=["http://localhost*", "http://127.0.0.1"], expose_headers=['receipt_id'])
 
