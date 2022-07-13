@@ -117,28 +117,22 @@ def cashier_new_discount(user):
         return redirect(request.url)
 
 
-def cashier_add_item():
-    # route protecting
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
+@login_required
+def cashier_add_item(user):
 
     data = {
         "user": user,
     }
     discount = db.read_all(Discount)
     category = db.read_all(Category)
+
     if request.method == "POST":
-        if "file" not in request.files:
-            flash("No file part")
+
+        try:
+            filename = save_and_validate_file(request, 'file')
+        except Exception as e:
+            flash(str(e))
             return redirect(request.url)
-        file = request.files["file"]
-        if file.filename == "":
-            flash("No image selected for uploading")
-            return redirect(request.url)
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
 
         image_url = filename
         name = request.form["name"]
