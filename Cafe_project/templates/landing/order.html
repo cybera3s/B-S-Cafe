@@ -1,30 +1,32 @@
 <div class="row justify-content-center p-5 m-0">
 
     {% for item in items %}
-        <div class="card m-3 bg-dark p-3 col-12 col-sm-11 col-md-5 col-lg-3 menu-item-box" style="height:fit-content; justify-content:center;">
-            <div class="m-0 p-0 item-image">
-                <img
+    <div class="card m-3 bg-dark p-3 col-12 col-sm-11 col-md-5 col-lg-3 menu-item-box"
+         style="max-height:300px;height:fit-content; justify-content:center;">
+        <div class="m-0 p-0 item-image">
+            <img
                     class="card-img-top mt-2 img-thumbnail border-none"
-                     src="../static/images/{{ item.picture_link }}"
-                     alt="not"
-                >
-            </div>
+                    src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                    alt="{{ item.name }}"
+                    style="max-height: 200px;"
+            >
+        </div>
 
-            <div class="card-block text-center mt-3">
-                <h4 class="text-center text-warning">{{ item.name }}</h4>
-                <p class="text-center text-light">${{ item.price }}</p>
-                <input class="form-input w-100" id="count-item-input" type="number" step="1"
-                       data-itemid="{{ item.id }}"
-                       min="1"
-                       max="100"
-                       value="1"
-                >
+        <div class="card-block text-center mt-3">
+            <h4 class="text-center text-warning">{{ item.name }}</h4>
+            <p class="text-center text-light">${{ item.price }}</p>
+            <input class="form-input w-100" id="count-item-input" type="number" step="1"
+                   data-itemid="{{ item.id }}"
+                   min="1"
+                   max="100"
+                   value="1"
+            >
 
-                <button class="btn btn-warning w-100 my-2 add-to-cart-btn" data-itemId="{{ item.id }}">
+            <button class="btn btn-warning w-100 my-2 add-to-cart-btn" data-itemId="{{ item.id }}">
                 Add to cart
             </button>
-            </div>
         </div>
+    </div>
     {% endfor %}
 
 </div>
