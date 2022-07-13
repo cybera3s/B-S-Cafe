@@ -122,5 +122,33 @@
 
     });
 
+    function sendImage(fileInput) {
+        /*
+            Takes a file input object then returns a POST request promise with image as form data
+        */
+
+        // create new form data instance for storing image file
+        let form_data = new FormData();
+        let file = fileInput.prop('files')[0]
+        form_data.append('file', file);
+
+        // console.log(file);
+
+        return $.ajax({
+            type: 'POST',
+            url: '/cashier_panel/list_menu',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                console.log("uploading was successful: ", data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
 
 </script>
