@@ -69,9 +69,12 @@ def order(table_id):
             response = flask.make_response(
                 render_template("landing/order.html", data=data, items=items, discounts=discounts)
             )
+            table = db.find_by(models.Table, id=table_id, status=False)
+            if table is None:
+                return Response("Table is Busy", status=400)
 
-            # if receipt is already exists
             receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
+            # if receipt is already exists
             print(models.Order.next_id(db))
             if receipt is not None:
                 receipt_id = receipt.id
