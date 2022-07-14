@@ -98,7 +98,7 @@ class Table(DBModel):
         )
         # sort paid tables receipts by create time
         sorted_receipts = sorted(
-            paid_tables_receipts, key=lambda i: i.create_time, reverse=True
+            paid_tables_receipts, key=lambda i: i.created_at, reverse=True
         )
 
         orders_list = sorted_receipts[
