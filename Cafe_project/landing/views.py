@@ -35,8 +35,14 @@ def index():
 def home():
     data = base_variables
     data["current_page"] = "index"
+    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
+
+    context = {
+        'data': data,
+        'tables': tables
+    }
     if request.method == "GET":
-        return render_template("landing/home/home.html", data=data)
+        return render_template("landing/home/home.html", **context)
 
 
 def menu():
