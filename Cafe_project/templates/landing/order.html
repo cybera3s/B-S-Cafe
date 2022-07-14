@@ -1,18 +1,17 @@
 <div class="row justify-content-center p-5 m-0">
-
     {% for item in items %}
-    <div class="card m-3 bg-dark p-3 col-12 col-sm-11 col-md-5 col-lg-3 menu-item-box"
-         style="height:400px; justify-content:center;">
-        <div class="m-0 p-0 item-image">
-            <img
-                    class="card-img-top mt-2 img-thumbnail border-none"
-                    src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
-                    alt="{{ item.name }}"
-                    style="height: 200px;"
-            >
-        </div>
+        <div class="card m-3 bg-dark p-3 col-12 col-sm-11 col-md-5 col-lg-3 menu-item-box"
+             style="height:400px; justify-content:center;">
+            <div class="m-0 p-0 item-image">
+                <img
+                        class="card-img-top mt-2 img-thumbnail border-none"
+                        src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                        alt="{{ item.name }}"
+                        style="height: 200px;"
+                >
+            </div>
 
-        <div class="card-block text-center mt-3">
+            <div class="card-block text-center mt-3">
             <h4 class="text-center text-warning">{{ item.name }}</h4>
             <p class="text-center text-light">${{ item.price }}</p>
             <input class="form-input w-100" id="count-item-input" type="number" step="1"
@@ -26,7 +25,7 @@
                 Add to cart
             </button>
         </div>
-    </div>
+        </div>
     {% endfor %}
 
 </div>
