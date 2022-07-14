@@ -150,6 +150,15 @@
         });
     }
 
+    let changed = false;
+    let formItemsList = ['#item_id', '#name', '#Price', '#serving_time', '#estimated', '#discount', '#category',
+        "#picture_link"]
+
+    $("#staticBackdrop").on( "input", formItemsList.join(','), ()=>{
+        changed = true;
+        console.log(changed)
+    });
+
     // click event for send data submit
     $('#sendData').on('click', function () {
         let target_url = "{{ url_for('cashier_list_menu') }}";
@@ -161,13 +170,6 @@
         let discount = $('#discount').val()
         let category = $('#category').val()
         let picture_link = $("#picture_link");
-        let formItemsList = ['#item_id', '#name', '#Price', '#serving_time', '#estimated', '#discount', '#category',
-        "#picture_link"]
-
-        let changed = false;
-        $(formItemsList.join(',')).on('input', function(){
-            changed = true;
-        });
 
         if (changed){
             try {
