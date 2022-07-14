@@ -31,7 +31,12 @@ $( document ).ready(function() {
             },
             error: function (err, status) {
                 console.log(err, status);
-                let errorMsg = `Something went wrong\n${err.status} ${err.statusText}`;
+                if (err.status === 400){
+                    let errorMsg = `${err.responseText}`;
+                    swal("Failed", errorMsg, "error");
+                    return;
+                }
+                let errorMsg = `Something went wrong\n${err.status} \n${err.statusText}`;
                  swal("Failed", errorMsg, "error");
             }
         })
@@ -121,27 +126,54 @@ $( document ).ready(function() {
 
     });
 
-    // function payment() {
-    //     $('#page-loader').empty();
-    //     let table_id = $.cookie("table_id");
-    //     let receipt = $.cookie("receipt_id");
-    //     let target_url = '{{ url_for('cart') }}';
-    //     let postData = {
-    //         receipt: receipt,
-    //         table: table_id
-    //     }
-    //     $.ajax({
-    //         url: target_url,
-    //         type: 'POST',
-    //         contentType: "application/json",
-    //         data: JSON.stringify(postData),
-    //         success: function (response) {
-    //             $('#page-loader').append(response)
-    //             swal('payment successful ', `Receipt Number : ${$.cookie('receipt_id')}`, 'success')
-    //             $.removeCookie("receipt_id", {path: '/'});
-    //         }
-    //     })
-    // }
+
+    function paymentBtnClickEvent() {
+        /*
+            send post request to cart view to finalize the payment
+        */
+
+
+        // console.log('pay btn clicked');
+
+        let table_id = $.cookie("table_id");
+        let receipt = $.cookie("receipt_id");
+        let target_url = BASE_URL + '/cart';
+
+        let postData = {
+            receipt: receipt,
+            table: table_id
+        }
+
+        $.ajax({
+            url: target_url,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(postData),
+            success: function (response) {
+                $('#page-loader').empty();
+                $('#page-loader').append(response);
+                swal(
+                    'payment successful ',
+                    `Receipt Number : ${$.cookie('receipt_id')}`,
+                    'success'
+                );
+                $.removeCookie("receipt_id", {path: '/'});
+
+            },
+            error: function (error) {
+                console.log(error);
+                swal(
+                    'Payment Failed ',
+                    `Something went wrong`,
+                    'error'
+                );
+            }
+        })
+    };
+
+    // payment button click event
+    $("#pay-btn").click(paymentBtnClickEvent);
+
 });
 
 
