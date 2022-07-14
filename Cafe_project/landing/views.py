@@ -1,5 +1,5 @@
 import flask
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, Response, jsonify
 from database.manager import db
 from models import models
 from models.models import Order
@@ -123,7 +123,7 @@ def cart():
     if request.method == "GET":
         # show cart items
 
-        receipt_id = request.args.get("receipt_id")     # read request queries
+        receipt_id = request.args.get("receipt_id")  # read request queries
 
         receipt_obj = db.read(models.Receipt, int(receipt_id))
         orders = receipt_obj.get_orders(db)
