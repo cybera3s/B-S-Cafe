@@ -27,7 +27,7 @@ app.add_url_rule("/about_us", "about_us", about_us, methods=["GET"])
 app.add_url_rule("/contact_us", "contact_us", contact_us, methods=["GET", "POST"])
 app.add_url_rule("/order/<table_id>", "order", order, methods=["GET", "POST", "DELETE"])
 app.add_url_rule("/cart", "cart", cart, methods=["GET", "POST", "DELETE"])
-
+app.add_url_rule('/tables', 'tables', available_tables, methods=["GET"])
 # #  -----------  Cashier Panel---------------------- #
 
 app.add_url_rule("/admin", "login", login, methods=["GET", "POST"])
