@@ -174,6 +174,22 @@ $( document ).ready(function() {
     // payment button click event
     $("#pay-btn").click(paymentBtnClickEvent);
 
+    // get empty tables
+    function getAvailableTables(){
+        let URL = BASE_URL + '/tables';
+
+        $.ajax({
+            method: 'GET',
+            url: URL,
+            accept: 'application/json',
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
 });
 
 
