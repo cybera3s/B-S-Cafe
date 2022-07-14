@@ -61,15 +61,8 @@ src: url("../../fonts/BYekan.woff") format("woff");
 .nav-link{
     font-size: 14px;
 }
-.tables{
-    background-color: rgb(169, 53, 0);
-    color: rgb(255, 223, 147);
-    text-align: center;
-    cursor: pointer;
-}
-.tables:hover{
-    background-color: rgb(91, 28, 0);
-}
+
+
 .customize-modal{
     background-color: rgba(7, 7, 7, 0.68) !important;
     color: white !important;
@@ -131,5 +124,27 @@ src: url("../../fonts/BYekan.woff") format("woff");
 #cart-float-btn:hover{
     transform: scale(1.07,1.07);
 }
+.menuItem-card:hover {
+    transition: all ease-out 300ms;
+}
+.menuItem-card:hover{
+    transform: scale(1.02,1.02);
+}
+.tables:hover{
+    background-color: rgb(0, 0, 0);
+}
+.table-item{
+    position: relative;
+    border-radius: 15px;
+    cursor: pointer;
+}
 
-
+.table-bg{
+    width: 100%;
+    height: 100%;
+    opacity:0.25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px
+}
