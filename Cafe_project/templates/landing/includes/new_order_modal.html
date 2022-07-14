@@ -7,21 +7,29 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="row justify-content-between">
+                    <div class="row justify-content-center">
                         {% if tables|length > 0 %}
                             {% for table in tables %}
 
-                                <div class="col-3 m-1 tables table-item p-2 rounded" data-bs-dismiss="modal"
-                                    id="{{ table.id }}">
-                                    <h6 class="text-dark">Table #{{ table.id }}</h6>
-                                    <h6>Capacity : {{ table.capacity }}</h6>
+                                <div class="col-7 col-md-6 col-lg-4 m-1 tables table-item p-2" data-bs-dismiss="modal"
+                                     style="color: whitesmoke;height:10rem;"
+                                     id="{{ table.id }}">
+                                    <img class="table-bg" src="{{ url_for('static', filename='images/table.png') }}"
+                                         alt="table-bg">
+                                    <h1 class="text-center">#{{ table.id }}</h1>
+                                    <h4 class="text-center">Capacity : {{ table.capacity }}</h4>
+
+<!--                                    <img src="{{ url_for('static', filename='images/table.png') }}"-->
+<!--                                         alt="">-->
+
                                 </div>
 
                             {% endfor %}
                         {% else %}
-                             <div class="bg-dark text-light">
-                                <p class="text-center p-2 m-0 rounded fw-bold">There is no free table right now please wait!</p>
-                            </div>
+                        <div class="bg-dark text-light">
+                            <p class="text-center p-2 m-0 rounded fw-bold">There is no free table right now please
+                                wait!</p>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
