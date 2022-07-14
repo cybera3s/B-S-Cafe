@@ -88,15 +88,14 @@ def order(table_id):
 
         # Add To Cart
         elif data.get('action') == 'add_to_cart':
-
+            receipt_id = request.cookies.get('receipt_id')
+            # current_receipt = db.read(models.Receipt, receipt_id)
             # if order already exists
             menu_item_id = data.get('itemId')
-            existing_order = db.read_by(Order, ('menu_item_id', menu_item_id))
+            existing_order = db.find_by(Order, receipt_id=receipt_id, menu_item_id=menu_item_id)
             item_count = data.get('itemCount')
 
             if existing_order:
-
-                existing_order = existing_order[0]
                 existing_order.count += item_count
                 db.update(existing_order)
 
