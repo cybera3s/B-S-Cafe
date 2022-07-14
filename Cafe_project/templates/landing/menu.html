@@ -1,11 +1,18 @@
-<div class="row justify-content-center p-5 m-0">
+<div class="row justify-content-center p-2 m-0">
     {% for item in items %}
-        <div class="card m-3 bg-dark" style="width: 10rem;height:15rem; justify-content:center;">
+        <div class="card col-7 col-md-6 col-lg-4 m-3 bg-dark rounded menuItem-card"
+             style="height:350px; justify-content:center;box-shadow: 1px 1px 30px #150f0f;"
+        >
             <div class="m-0 p-0 item-image">
-                <img class="card-img-top mt-2 img-thumbnail border-none" src="../static/images/{{ item.picture_link }}"
-                     alt="not">
+                <a href="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                   target="_blank">
+                    <img class="card-img-top mt-2 img-thumbnail border-none"
+                         style="height:200px;"
+                         src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                         alt="{{ item.name }}">
+                </a>
             </div>
-            <h4 class="text-center text-warning">{{ item.name }}</h4>
+            <h5 class="text-center text-warning mt-3">{{ item.name }}</h5>
             {% if item.discount_id != 1 %}
                 <p class="text-center text-light" style="text-decoration: line-through;">{{ item.price }}</p>
                 {% for discount in discounts %}
@@ -14,7 +21,7 @@
                     {% endif %}
                 {% endfor %}
             {% else %}
-                <p class="text-center text-light">{{ item.price }}</p>
+                <p class="text-center text-light">${{ item.price }}</p>
             {% endif %}
         </div>
     {% endfor %}
