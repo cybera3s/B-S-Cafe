@@ -8,15 +8,21 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row justify-content-between">
-                        {% for table in tables %}
+                        {% if tables|length > 0 %}
+                            {% for table in tables %}
 
-                            <div class="col-3 m-1 tables table-item p-2 rounded" data-bs-dismiss="modal"
-                                id="{{ table.id }}">
-                                <h6 class="text-dark">Table #{{ table.id }}</h6>
-                                <h6>Capacity : {{ table.capacity }}</h6>
+                                <div class="col-3 m-1 tables table-item p-2 rounded" data-bs-dismiss="modal"
+                                    id="{{ table.id }}">
+                                    <h6 class="text-dark">Table #{{ table.id }}</h6>
+                                    <h6>Capacity : {{ table.capacity }}</h6>
+                                </div>
+
+                            {% endfor %}
+                        {% else %}
+                             <div class="bg-dark text-light">
+                                <p class="text-center p-2 m-0 rounded fw-bold">There is no free table right now please wait!</p>
                             </div>
-
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
