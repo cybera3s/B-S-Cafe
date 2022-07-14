@@ -69,6 +69,7 @@ def order(table_id):
             response = flask.make_response(
                 render_template("landing/order.html", data=data, items=items, discounts=discounts)
             )
+            # check if table is empty
             table = db.find_by(models.Table, id=table_id, status=False)
             if table is None:
                 return Response("Table is Busy", status=400)
