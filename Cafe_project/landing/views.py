@@ -16,6 +16,12 @@ base_variables = {
 }
 
 
+def available_tables():
+    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
+    serialized_tables = list(map(lambda t: vars(t), tables))
+    return jsonify(serialized_tables)
+
+
 def index():
     data = base_variables
     data["current_page"] = "index"
