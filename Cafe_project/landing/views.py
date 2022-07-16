@@ -59,33 +59,11 @@ def menu():
 
 
 def order(table_id):
-    data = base_variables
-    data["current_page"] = "order"
-    items = db.read_all(models.MenuItems)
-    discounts = db.read_all(models.Discount)
 
     # table selecting
     if request.method == "GET":
 
-        response = make_response(render_template("landing/order.html", data=data, items=items, discounts=discounts))
-        # check if table is empty
-        table = db.find_by(models.Table, id=table_id, status=False)
-        if not table:
-            return Response("Table is Busy", status=400)
-
-        receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
-
-        # if receipt is already exists
-        # print(models.Order.next_id(db))
-        if receipt is not None:
-            receipt_id = receipt.id
-        else:
-            # create new receipt
-            new_receipt = models.Receipt(int(table_id))
-            receipt_id = db.create(new_receipt)
-
-        response.headers['receipt_id'] = receipt_id
-        return response
+        return table_select()
 
     elif request.method == "POST":
         data = request.get_json()
@@ -93,6 +71,32 @@ def order(table_id):
         # Add To Cart
         if data.get('action') == 'add_to_cart':
             return add_to_cart(request)
+
+
+def table_select(table_id) -> Response:
+    data = base_variables
+    data["current_page"] = "order"
+    items = db.read_all(models.MenuItems)
+    discounts = db.read_all(models.Discount)
+    response = make_response(render_template("landing/order.html", data=data, items=items, discounts=discounts))
+    # check if table is empty
+    table = db.find_by(models.Table, id=table_id, status=False)
+    if not table:
+        return Response("Table is Busy", status=400)
+
+    receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
+
+    # if receipt is already exists
+    # print(models.Order.next_id(db))
+    if receipt is not None:
+        receipt_id = receipt.id
+    else:
+        # create new receipt
+        new_receipt = models.Receipt(int(table_id))
+        receipt_id = db.create(new_receipt)
+
+    response.headers['receipt_id'] = receipt_id
+    return response
 
 
 def add_to_cart(request: Request) -> Response:
@@ -114,7 +118,7 @@ def add_to_cart(request: Request) -> Response:
         #13 : json serialize orders
         #14 : set receipt_id as key in cookies with serialized orders as value
     """
-    data = request.get_json()   # 1
+    data = request.get_json()  # 1
     # 2
     menu_item_id = data.get('itemId')
     item_count = data.get('itemCount')
@@ -123,19 +127,19 @@ def add_to_cart(request: Request) -> Response:
         return Response("menu item id or count not provided!", status=400)
 
     response = make_response({'msg': 'ok'})  # 4
-    receipt_id = request.cookies.get('receipt_id')   # 5
+    receipt_id = request.cookies.get('receipt_id')  # 5
     # 6
     if not receipt_id:
         return Response("Receipt id is not in cookies", status=400)
 
-    cookie_receipt = request.cookies.get(str(receipt_id))   # 7
+    cookie_receipt = request.cookies.get(str(receipt_id))  # 7
     # 8
     if cookie_receipt:
         orders = json.loads(cookie_receipt)  # 9
         # 10
         if orders.get(str(menu_item_id)):
             orders[str(menu_item_id)]['count'] += item_count
-        else:   # 11
+        else:  # 11
             orders[str(menu_item_id)] = {"count": item_count}
     # 12
     else:
