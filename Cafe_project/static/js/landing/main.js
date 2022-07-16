@@ -4,19 +4,17 @@ $( document ).ready(function() {
     console.log("Document is ready!");
     const BASE_URL = 'http://127.0.0.1:5000';
 
-    // Table select click event
-    $(".table-item").click(function () {
-
+    function tableSelect() {
+        /*
+            Send a get request with provided table id
+            if request is successful then append the returned data from server to #page_loader element
+        */
         let tableId = $(this).attr('id');
         let target_url =  BASE_URL + '/order/' + tableId;
-        console.log(`table ${tableId} clicked`);
 
         $.ajax({
             url: target_url,
-            method: 'post',
-            data: {
-                'action': "select_table"
-            },
+            method: 'get',
             success: function (data, status, xhr){
                 if (xhr.status === 200){
                     $("#page-loader").empty();
@@ -40,7 +38,10 @@ $( document ).ready(function() {
                  swal("Failed", errorMsg, "error");
             }
         })
-    });
+    }
+
+    // Table select click event
+    $(".table-item").click(tableSelect);
 
     //  nav bar link on click event
     $(".nav-link-spa").click( function(e) {
