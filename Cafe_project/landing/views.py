@@ -1,5 +1,7 @@
+import json
+
 import flask
-from flask import request, render_template, redirect, url_for, Response, jsonify
+from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request
 from database.manager import db
 from models import models
 from models.models import Order
@@ -89,35 +91,58 @@ def order(table_id):
 
         # Add To Cart
         elif data.get('action') == 'add_to_cart':
-            receipt_id = request.cookies.get('receipt_id')
-            # current_receipt = db.read(models.Receipt, receipt_id)
-            # if order already exists
-            menu_item_id = data.get('itemId')
-            existing_order = db.find_by(Order, receipt_id=receipt_id, menu_item_id=menu_item_id)
-            item_count = data.get('itemCount')
+            return add_to_cart(request)
 
-            if existing_order:
-                existing_order.count += item_count
-                db.update(existing_order)
 
-                return {
-                    'status': 200,
-                    'msg': 'item updated successfully'
-                }
+def add_to_cart(request: Request) -> Response:
+    """
+        :param request : a flask request object\n
+        :returns a Response object\n
+        #1 : get json data\n
+        #2 : get menu item id and count of that from data -> int, int\n
+        #3 : if menu item id and count is None returns Bad Request Response\n
+        #4 : set default response json -> Response, 200 OK\n
+        #5 : get receipt id from cookies -> str\n
+        #6 : if receipt id from cookies is none then return Bad Request response\n
+        #7 : get orders of corresponding receipt id from cookies -> json or None\n
+        #8 : check if orders of receipt id exist in cookies then -> #9 , #10, #11\n
+        #9 : deserialize json orders from receipt -> orders: dict\n
+        #10 : if menu item id exist in orders then add count of existing item with item_count in orders\n
+        #11 : create new menu item id key with item_count as value in orders\n
+        #12 : orders of receipt id does NOT exist in cookies then create new orders -> dict\n
+        #13 : json serialize orders
+        #14 : set receipt_id as key in cookies with serialized orders as value
+    """
+    data = request.get_json()   # 1
+    # 2
+    menu_item_id = data.get('itemId')
+    item_count = data.get('itemCount')
+    # 3
+    if not item_count or not menu_item_id:
+        return Response("menu item id or count not provided!", status=400)
 
-            # create new order
-            new_order = models.Order(
-                menu_item_id=menu_item_id,
-                receipt_id=data.get('receiptId'),
-                status_code_id=1,
-                count=item_count
-            )
-            db.create(new_order)
+    response = make_response({'msg': 'ok'})  # 4
+    receipt_id = request.cookies.get('receipt_id')   # 5
+    # 6
+    if not receipt_id:
+        return Response("Receipt id is not in cookies", status=400)
 
-            return {
-                'status': 201,
-                'msg': 'Added to cart successfully'
-            }
+    cookie_receipt = request.cookies.get(str(receipt_id))   # 7
+    # 8
+    if cookie_receipt:
+        orders = json.loads(cookie_receipt)  # 9
+        # 10
+        if orders.get(str(menu_item_id)):
+            orders[str(menu_item_id)]['count'] += item_count
+        else:   # 11
+            orders[str(menu_item_id)] = {"count": item_count}
+    # 12
+    else:
+        orders = {menu_item_id: {'count': item_count}}
+
+    dumped_orders = json.dumps(orders)  # 13
+    response.set_cookie(str(receipt_id), dumped_orders)  # 14
+    return response
 
 
 def cart():
