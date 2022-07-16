@@ -47,6 +47,7 @@ def home():
         return render_template("landing/home/home.html", **context)
 
 
+# TODO: Refactor here
 def menu():
     discounts = db.read_all(models.Discount)
     data = base_variables
@@ -178,6 +179,7 @@ def about_us():
         return render_template("landing/about_us/about_us.html", data=data)
 
 
+# TODO: add functionality to contact_us form
 def contact_us():
     data = base_variables
     data["current_page"] = "contact_us"
