@@ -87,22 +87,19 @@ $( document ).ready(function() {
 
             success: function (data){
 
-                    if (data.status === 200){
-                        swal("Successful", "Updated Cart!", "success", {
-                            buttons: false,
-                            timer: 1500,
-                        });
-                    } else if (data.status === 201) {
-                        swal("Successful", "Added to Cart!", "success", {
-                            buttons: false,
-                            timer: 1500,
-                        });
-                    }
+                swal("Successful", "Added To Cart!", "success", {
+                    buttons: false,
+                    timer: 1500,
+                });
 
-                    console.log(data.msg);
             },
             error: function(err){
                 console.log(err);
+                swal("Failed", err.responseText, "error")
+                    .then(res => {
+                        window.location.reload();
+                    })
+
             }
          });
 
