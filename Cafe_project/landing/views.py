@@ -64,34 +64,34 @@ def order(table_id):
     items = db.read_all(models.MenuItems)
     discounts = db.read_all(models.Discount)
 
-    if request.method == "POST":
-        data = request.form or request.get_json()
+    # table selecting
+    if request.method == "GET":
 
-        # table selecting
-        if data.get('action') == 'select_table':
-            response = flask.make_response(
-                render_template("landing/order.html", data=data, items=items, discounts=discounts)
-            )
-            # check if table is empty
-            table = db.find_by(models.Table, id=table_id, status=False)
-            if table is None:
-                return Response("Table is Busy", status=400)
+        response = make_response(render_template("landing/order.html", data=data, items=items, discounts=discounts))
+        # check if table is empty
+        table = db.find_by(models.Table, id=table_id, status=False)
+        if not table:
+            return Response("Table is Busy", status=400)
 
-            receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
-            # if receipt is already exists
-            print(models.Order.next_id(db))
-            if receipt is not None:
-                receipt_id = receipt.id
-            else:
-                # create new receipt
-                new_receipt = models.Receipt(int(table_id))
-                receipt_id = db.create(new_receipt)
+        receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
 
-            response.headers['receipt_id'] = receipt_id
-            return response
+        # if receipt is already exists
+        # print(models.Order.next_id(db))
+        if receipt is not None:
+            receipt_id = receipt.id
+        else:
+            # create new receipt
+            new_receipt = models.Receipt(int(table_id))
+            receipt_id = db.create(new_receipt)
+
+        response.headers['receipt_id'] = receipt_id
+        return response
+
+    elif request.method == "POST":
+        data = request.get_json()
 
         # Add To Cart
-        elif data.get('action') == 'add_to_cart':
+        if data.get('action') == 'add_to_cart':
             return add_to_cart(request)
 
 
