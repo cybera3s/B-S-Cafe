@@ -63,7 +63,7 @@ def order(table_id):
     # table selecting
     if request.method == "GET":
 
-        return table_select()
+        return table_select(table_id)
 
     elif request.method == "POST":
         data = request.get_json()
@@ -84,7 +84,11 @@ def table_select(table_id) -> Response:
     if not table:
         return Response("Table is Busy", status=400)
 
+    cookie_receipt = request.cookies.get('receipt')
     receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
+
+    if not cookie_receipt:
+        response.set_cookie('receipt', 'pending')
 
     # if receipt is already exists
     # print(models.Order.next_id(db))
