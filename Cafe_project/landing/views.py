@@ -1,6 +1,4 @@
 import json
-
-import flask
 from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request
 from database.manager import db
 from models import models
