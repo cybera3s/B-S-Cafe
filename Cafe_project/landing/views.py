@@ -135,31 +135,40 @@ def add_to_cart(request: Request) -> Response:
     # 2
     menu_item_id = data.get('itemId')
     item_count = data.get('itemCount')
+    item_name = data.get('itemName')
+    item_price = data.get('itemPrice')
     # 3
     if not item_count or not menu_item_id:
         return Response("menu item id or count not provided!", status=400)
 
     response = make_response({'msg': 'ok'})  # 4
-    receipt_id = request.cookies.get('receipt_id')  # 5
+    receipt = request.cookies.get('receipt')  # 5
     # 6
-    if not receipt_id:
-        return Response("Receipt id is not in cookies", status=400)
+    if not receipt:
+        return Response("You have no Receipt yet!", status=400)
 
-    cookie_receipt = request.cookies.get(str(receipt_id))  # 7
+    cookie_orders = request.cookies.get('orders')  # 7
     # 8
-    if cookie_receipt:
-        orders = json.loads(cookie_receipt)  # 9
+    if cookie_orders:
+        orders = json.loads(cookie_orders)  # 9
         # 10
         if orders.get(str(menu_item_id)):
             orders[str(menu_item_id)]['count'] += item_count
         else:  # 11
-            orders[str(menu_item_id)] = {"count": item_count}
+            orders[str(menu_item_id)] = {"count": item_count, "name": item_name, "price": item_price}
     # 12
     else:
-        orders = {menu_item_id: {'count': item_count}}
+
+        orders = {
+            menu_item_id: {
+                'count': item_count,
+                "name": item_name,
+                "price": item_price
+            }
+        }
 
     dumped_orders = json.dumps(orders)  # 13
-    response.set_cookie(str(receipt_id), dumped_orders)  # 14
+    response.set_cookie('orders', dumped_orders)  # 14
     return response
 
 
