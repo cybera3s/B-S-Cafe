@@ -66,19 +66,18 @@ def menu():
         return render_template("landing/menu.html", **context)
 
 
-def order(table_id):
-
+def order(table_id: int):
+    """
+        select table on GET request
+        add to cart on POST request
+    """
     # table selecting
     if request.method == "GET":
-
         return table_select(table_id)
 
+    # Add To Cart
     elif request.method == "POST":
-        data = request.get_json()
-
-        # Add To Cart
-        if data.get('action') == 'add_to_cart':
-            return add_to_cart(request)
+        return add_to_cart(request)
 
 
 def table_select(table_id) -> Response:
