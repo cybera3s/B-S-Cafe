@@ -48,15 +48,22 @@ def home():
         return render_template("landing/home/home.html", **context)
 
 
-# TODO: Refactor here
 def menu():
+    """
+        show menu items on GET request
+    """
     discounts = db.read_all(models.Discount)
     data = base_variables
     data["current_page"] = "menu"
     items = db.read_all(models.MenuItems)
     if request.method == "GET":
         data["title"] = "menu"
-        return render_template("landing/menu.html", items=items, data=data, discounts=discounts)
+        context = {
+            'items': items,
+            'data': data,
+            'discounts': discounts
+        }
+        return render_template("landing/menu.html", **context)
 
 
 def order(table_id):
