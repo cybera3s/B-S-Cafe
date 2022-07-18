@@ -107,8 +107,12 @@ $( document ).ready(function() {
 
     };
 
-    function showCart(event){
-         let target_url = BASE_URL + '/cart';
+    function showCart(e){
+        /*
+            send GET request to load orders on cart
+        */
+        e.preventDefault();
+        let target_url = BASE_URL + '/cart';
 
         $.get(target_url)
             .done(function( data ) {
@@ -117,11 +121,8 @@ $( document ).ready(function() {
             })
             .fail(function( err ) {
                 console.log(err.responseText)
-
                 swal("Failed",err.responseText, "error")
-
             });
-
     };
 
     function paymentBtnClickEvent() {
