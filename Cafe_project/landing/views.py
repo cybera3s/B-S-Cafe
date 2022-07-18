@@ -173,18 +173,34 @@ def add_to_cart(request: Request) -> Response:
 
 
 def cart():
+    """
+        GET request: get orders from cookies
+        POST request: complete payment
+    """
+    # get orders of cart
     if request.method == "GET":
         # show cart items
+        cookie_orders = request.cookies.get('orders')
+        if not cookie_orders:
+            return Response("There is no orders", status=400)
 
-        receipt_id = request.args.get("receipt_id")  # read request queries
+        orders = json.loads(cookie_orders)
+        if orders:
+            orders = orders.values()
 
-        receipt_obj = db.read(models.Receipt, int(receipt_id))
-        orders = receipt_obj.get_orders(db)
-        total_price, final_price = receipt_obj.price(db)
+        total_price = 0
 
-        return render_template(
-            "landing/cart.html", orders=orders, total_price=total_price, final_price=final_price
-        )
+        for o in orders:
+            total_price += o['count'] * o['price']
+
+        context = {
+            'orders': orders,
+            'total_price': total_price,
+        }
+        return render_template("landing/cart.html", **context)
+
+    # TODO: Develop here
+    # payment
     elif request.method == "POST":
         cookie = request.get_json()
         table_id = int(cookie["table"])
