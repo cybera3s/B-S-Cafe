@@ -5,23 +5,30 @@ $( document ).ready(function() {
     const BASE_URL = 'http://127.0.0.1:5000';
 
     function spaLoadData(e) {
+        /*
+            send a GET request to load content on page without refreshing
+        */
         e.preventDefault();
-        console.log("nav link clicked");
+
         let title = $(this).data("title");
         let endPoint = $(this).data("endpoint");
-        $("#page-loader").empty();
 
         let target_url = 'http://127.0.0.1:5000/' + endPoint;
         $.ajax({
             url: target_url,
             type: "GET",
             success: function (response) {
+                $("#page-loader").empty();
                 $("#page-loader").append(response);
-                $(document).attr("title", title);
+                $(document).attr("title", title);   // set title of page
+            },
+            error: function (err){
+                let errMsg = 'Something went wrong on loading content, try again later'
+                 swal("Failed", errMsg, "error");
             }
-    });
+        });
 
-};
+    };
 
     function tableSelect() {
         /*
