@@ -77,7 +77,6 @@ $( document ).ready(function() {
         const url = BASE_URL + "/order/" + itemId
         // define data for post request
         let data = {
-            action: 'add_to_cart',
             itemId: +itemId,
             itemName: itemName,
             itemCount: +itemCount,
