@@ -80,33 +80,35 @@ def order(table_id: int):
         return add_to_cart(request)
 
 
-def table_select(table_id) -> Response:
+def table_select(table_id: int) -> Response:
+    """
+       if table is free and receipt is pending in cookies then returns
+       response with table id as cookie
+       else if table is full returns 400 response
+
+    """
+    # get data from db for response
     data = base_variables
     data["current_page"] = "order"
     items = db.read_all(models.MenuItems)
     discounts = db.read_all(models.Discount)
-    response = make_response(render_template("landing/order.html", data=data, items=items, discounts=discounts))
+    context = {
+        'data': data,
+        'items': items,
+        'discounts': discounts
+    }
+    response = make_response(render_template("landing/order.html", **context))
     # check if table is empty
     table = db.find_by(models.Table, id=table_id, status=False)
     if not table:
         return Response("Table is Busy", status=400)
 
     cookie_receipt = request.cookies.get('receipt')
-    receipt = db.find_by(models.Receipt, table_id=table_id, is_paid=False)
-
+    # if receipt is not pending then pend it
     if not cookie_receipt:
         response.set_cookie('receipt', 'pending')
 
-    # if receipt is already exists
-    # print(models.Order.next_id(db))
-    if receipt is not None:
-        receipt_id = receipt.id
-    else:
-        # create new receipt
-        new_receipt = models.Receipt(int(table_id))
-        receipt_id = db.create(new_receipt)
-
-    response.headers['receipt_id'] = receipt_id
+    response.set_cookie('table_id', str(table_id))
     return response
 
 
