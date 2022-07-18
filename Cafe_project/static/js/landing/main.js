@@ -35,7 +35,7 @@ $( document ).ready(function() {
             Send a get request with provided table id
             if request is successful then append the returned data from server to #page_loader element
         */
-        let tableId = $(this).attr('id');
+        let tableId = +$(this).attr('id');
         let target_url =  BASE_URL + '/order/' + tableId;
 
         $.ajax({
