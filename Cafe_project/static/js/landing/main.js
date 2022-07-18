@@ -4,47 +4,7 @@ $( document ).ready(function() {
     console.log("Document is ready!");
     const BASE_URL = 'http://127.0.0.1:5000';
 
-    function tableSelect() {
-        /*
-            Send a get request with provided table id
-            if request is successful then append the returned data from server to #page_loader element
-        */
-        let tableId = $(this).attr('id');
-        let target_url =  BASE_URL + '/order/' + tableId;
-
-        $.ajax({
-            url: target_url,
-            method: 'get',
-            success: function (data, status, xhr){
-                if (xhr.status === 200){
-                    $("#page-loader").empty();
-                    $("#page-loader").append(data);
-
-                    let receipt_id = xhr.getResponseHeader('receipt_id');
-                    $.cookie('receipt_id', receipt_id);
-                    $.cookie('table_id', tableId)
-
-                };
-
-            },
-            error: function (err, status) {
-                console.log(err, status);
-                if (err.status === 400){
-                    let errorMsg = `${err.responseText}`;
-                    swal("Failed", errorMsg, "error");
-                    return;
-                }
-                let errorMsg = `Something went wrong\n${err.status} \n${err.statusText}`;
-                 swal("Failed", errorMsg, "error");
-            }
-        })
-    }
-
-    // Table select click event
-    $(".table-item").click(tableSelect);
-
-    //  nav bar link on click event
-    $(".nav-link-spa").click( function(e) {
+    function spaLoadData(e) {
         e.preventDefault();
         console.log("nav link clicked");
         let title = $(this).data("title");
@@ -61,23 +21,58 @@ $( document ).ready(function() {
             }
     });
 
-});
+};
 
-    ///////////       Add to cart button click event      ////////////////
-    $("#page-loader").on( "click", "button.add-to-cart-btn", function(event) {
+    function tableSelect() {
+        /*
+            Send a get request with provided table id
+            if request is successful then append the returned data from server to #page_loader element
+        */
+        let tableId = $(this).attr('id');
+        let target_url =  BASE_URL + '/order/' + tableId;
+
+        $.ajax({
+            url: target_url,
+            method: 'get',
+            success: function (data, status, xhr){
+                if (xhr.status === 200){
+                    $("#page-loader").empty();
+                    $("#page-loader").append(data);
+
+                };
+
+            },
+            error: function (err, status) {
+                console.log(err, status);
+                if (err.status === 400){
+                    let errorMsg = `${err.responseText}`;
+                    swal("Failed", errorMsg, "error");
+                    return;
+                }
+                let errorMsg = `Something went wrong\n${err.status} \n${err.statusText}`;
+                 swal("Failed", errorMsg, "error");
+            }
+        })
+    };
+
+    function addToCart(event) {
         event.preventDefault();
 
-        let itemId = $(this).prev().data('itemid');
-        let itemCount = $(this).prev().val();
-        let receiptId = $.cookie('receipt_id');
+        let itemId = $(this).data('itemid');
+        let itemCount = $(this).siblings(".itemCount").val();
+        let itemName = $(this).siblings(".itemName").text();
+        let itemPrice = $(this).siblings(".itemPrice").text();
+        itemPrice = itemPrice.replace("$", '')   // remove $ sign from text
+
         const url = BASE_URL + "/order/" + itemId
         // console.log(`${itemCount} of ${itemId}`);
         // define data for post request
         let data = {
             action: 'add_to_cart',
-            itemId: itemId,
+            itemId: +itemId,
+            itemName: itemName,
             itemCount: +itemCount,
-            receiptId: +receiptId,
+            itemPrice: +itemPrice
         }
           $.ajax({
             url: url,
@@ -106,24 +101,24 @@ $( document ).ready(function() {
 
 
 
-    });
+    };
 
-    ///////////////      show cart modal click event        ////////////
-    $("#page-loader").on( "click", "#cart-float-btn", function(event){
-        // console.log('Cart Item clicked');
-        let receiptId = $.cookie('receipt_id');
-         let target_url = BASE_URL + '/cart' + `?receipt_id=${receiptId}`;
+    function showCart(event){
+         let target_url = BASE_URL + '/cart';
 
-        $.get(
-            target_url,
-            function (data) {
+        $.get(target_url)
+            .done(function( data ) {
                 $('#cart-loader').empty();
                 $('#cart-loader').append(data);
-            }
-        );
+            })
+            .fail(function( err ) {
+                console.log(err.responseText)
 
-    });
+                swal("Failed",err.responseText, "error")
 
+            });
+
+    };
 
     function paymentBtnClickEvent() {
         /*
@@ -169,9 +164,6 @@ $( document ).ready(function() {
         })
     };
 
-    // payment button click event
-    $("#pay-btn").click(paymentBtnClickEvent);
-
     // get empty tables
     function getAvailableTables(){
         let URL = BASE_URL + '/tables';
@@ -188,6 +180,22 @@ $( document ).ready(function() {
             }
         })
     }
+
+    //  nav bar link on click event
+    $(".nav-link-spa").click(spaLoadData);
+
+    // Table select click event
+    $(".table-item").click(tableSelect);
+
+    //    Add to cart button click event
+    $("#page-loader").on( "click", "button.add-to-cart-btn", addToCart);
+
+    //     show cart modal click event
+    $("#page-loader").on( "click", "#cart-float-btn", showCart);
+
+    // payment button click event
+    $("#pay-btn").click(paymentBtnClickEvent);
+
 });
 
 
