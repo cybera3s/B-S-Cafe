@@ -125,13 +125,10 @@ $( document ).ready(function() {
             });
     };
 
-    function paymentBtnClickEvent() {
+    function payment() {
         /*
             send post request to cart view to finalize the payment
         */
-
-
-        // console.log('pay btn clicked');
 
         let table_id = $.cookie("table_id");
         let receipt = $.cookie("receipt_id");
@@ -199,7 +196,7 @@ $( document ).ready(function() {
     $("#page-loader").on( "click", "#cart-float-btn", showCart);
 
     // payment button click event
-    $("#pay-btn").click(paymentBtnClickEvent);
+    $("#pay-btn").click(payment);
 
 });
 
