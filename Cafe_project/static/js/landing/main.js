@@ -63,8 +63,11 @@ $( document ).ready(function() {
     };
 
     function addToCart(event) {
+        /*
+            get orders data from page then send post request to add order to cart
+        */
         event.preventDefault();
-
+        // get order data
         let itemId = $(this).data('itemid');
         let itemCount = $(this).siblings(".itemCount").val();
         let itemName = $(this).siblings(".itemName").text();
@@ -72,7 +75,6 @@ $( document ).ready(function() {
         itemPrice = itemPrice.replace("$", '')   // remove $ sign from text
 
         const url = BASE_URL + "/order/" + itemId
-        // console.log(`${itemCount} of ${itemId}`);
         // define data for post request
         let data = {
             action: 'add_to_cart',
@@ -81,7 +83,7 @@ $( document ).ready(function() {
             itemCount: +itemCount,
             itemPrice: +itemPrice
         }
-          $.ajax({
+        $.ajax({
             url: url,
             type: "post",
             dataType: "json",
@@ -94,19 +96,14 @@ $( document ).ready(function() {
                     buttons: false,
                     timer: 1500,
                 });
-
             },
             error: function(err){
-                console.log(err);
                 swal("Failed", err.responseText, "error")
                     .then(res => {
                         window.location.reload();
                     })
-
             }
-         });
-
-
+        });
 
     };
 
