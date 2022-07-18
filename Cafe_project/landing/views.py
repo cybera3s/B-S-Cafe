@@ -17,6 +17,9 @@ base_variables = {
 
 
 def available_tables():
+    """
+        return serialized free tables on get request
+    """
     tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
     serialized_tables = list(map(lambda t: vars(t), tables))
     return jsonify(serialized_tables)
