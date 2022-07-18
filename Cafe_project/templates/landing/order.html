@@ -13,9 +13,9 @@
             </div>
 
             <div class="card-block text-center mt-3">
-            <h4 class="text-center text-warning">{{ item.name }}</h4>
-            <p class="text-center text-light">${{ item.price }}</p>
-            <input class="form-input w-100" id="count-item-input" type="number" step="1"
+            <h4 class="text-center text-warning itemName">{{ item.name }}</h4>
+            <p class="text-center text-light itemPrice">${{ item.price }}</p>
+            <input class="form-input w-100 itemCount" id="count-item-input" type="number" step="1"
                    data-itemid="{{ item.id }}"
                    min="1"
                    max="100"
