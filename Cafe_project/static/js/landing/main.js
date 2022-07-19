@@ -71,8 +71,16 @@ $( document ).ready(function() {
         let itemId = $(this).data('itemid');
         let itemCount = $(this).siblings(".itemCount").val();
         let itemName = $(this).siblings(".itemName").text();
-        let itemPrice = $(this).siblings(".itemPrice").text();
-        itemPrice = itemPrice.replace("$", '')   // remove $ sign from text
+        let itemPrice = $(this).siblings(".itemPrice");
+        let priceData = itemPrice.children().length > 0 ? itemPrice.data() : itemPrice.text()
+        // extract final price and original price
+        let finalPrice=1, price;
+        if (typeof priceData === 'object'){
+            finalPrice = priceData.finalprice;
+            price = priceData.price;
+        } else{
+            price = priceData.replace("$", '');
+        }
 
         const url = BASE_URL + "/order/" + itemId
         // define data for post request
@@ -80,7 +88,8 @@ $( document ).ready(function() {
             itemId: +itemId,
             itemName: itemName,
             itemCount: +itemCount,
-            itemPrice: +itemPrice
+            itemPrice: +price,
+            finalPrice: +finalPrice
         }
         $.ajax({
             url: url,
@@ -128,21 +137,11 @@ $( document ).ready(function() {
         /*
             send post request to cart view to finalize the payment
         */
-
-        let table_id = $.cookie("table_id");
-        let receipt = $.cookie("receipt_id");
         let target_url = BASE_URL + '/cart';
-
-        let postData = {
-            receipt: receipt,
-            table: table_id
-        }
 
         $.ajax({
             url: target_url,
             type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(postData),
             success: function (response) {
                 $('#page-loader').empty();
                 $('#page-loader').append(response);
