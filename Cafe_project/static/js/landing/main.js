@@ -72,9 +72,9 @@ $( document ).ready(function() {
         let itemCount = $(this).siblings(".itemCount").val();
         let itemName = $(this).siblings(".itemName").text();
         let itemPrice = $(this).siblings(".itemPrice");
-        let priceData = itemPrice.children().length > 0 ? itemPrice.data() : itemPrice.text()
+        let priceData = itemPrice.children().length > 0 ? itemPrice.data() : itemPrice.text()  // {...} or $5
         // extract final price and original price
-        let finalPrice=1, price;
+        let finalPrice=0, price;
         if (typeof priceData === 'object'){
             finalPrice = priceData.finalprice;
             price = priceData.price;
@@ -137,11 +137,19 @@ $( document ).ready(function() {
         /*
             send post request to cart view to finalize the payment
         */
+        let totalPrice = $("#totalPrice").text();
+        let finalPrice = $("#finalPrice").text();
+
         let target_url = BASE_URL + '/cart';
+
 
         $.ajax({
             url: target_url,
             type: 'POST',
+            data: {
+                totalPrice: totalPrice,
+                finalPrice: finalPrice,
+            },
             success: function (response) {
                 $('#page-loader').empty();
                 $('#page-loader').append(response);
@@ -150,8 +158,6 @@ $( document ).ready(function() {
                     `Receipt Number : ${$.cookie('receipt_id')}`,
                     'success'
                 );
-                $.removeCookie("receipt_id", {path: '/'});
-
             },
             error: function (error) {
                 console.log(error);
