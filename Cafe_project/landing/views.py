@@ -48,6 +48,10 @@ def home():
         return render_template("landing/home/home.html", **context)
 
 
+def set_final_price(item):
+    item.final_price = item.final_price(db)
+    return item
+
 def menu():
     """
         show menu items on GET request
@@ -56,10 +60,12 @@ def menu():
     data = base_variables
     data["current_page"] = "menu"
     items = db.read_all(models.MenuItems)
+    modified_items = map(set_final_price, items)
+
     if request.method == "GET":
         data["title"] = "menu"
         context = {
-            'items': items,
+            'items': modified_items,
             'data': data,
             'discounts': discounts
         }
@@ -91,10 +97,12 @@ def table_select(table_id: int) -> Response:
     data = base_variables
     data["current_page"] = "order"
     items = db.read_all(models.MenuItems)
+    modified_items = map(set_final_price, items)
+
     discounts = db.read_all(models.Discount)
     context = {
         'data': data,
-        'items': items,
+        'items': modified_items,
         'discounts': discounts
     }
     response = make_response(render_template("landing/order.html", **context))
@@ -137,6 +145,7 @@ def add_to_cart(request: Request) -> Response:
     item_count = data.get('itemCount')
     item_name = data.get('itemName')
     item_price = data.get('itemPrice')
+    item_final_price = data.get('finalPrice')
     # 3
     if not item_count or not menu_item_id:
         return Response("menu item id or count not provided!", status=400)
@@ -155,7 +164,12 @@ def add_to_cart(request: Request) -> Response:
         if orders.get(str(menu_item_id)):
             orders[str(menu_item_id)]['count'] += item_count
         else:  # 11
-            orders[str(menu_item_id)] = {"count": item_count, "name": item_name, "price": item_price}
+            orders[str(menu_item_id)] = {
+                "count": item_count,
+                "name": item_name,
+                "price": item_price,
+                "item_final_price": item_final_price
+            }
     # 12
     else:
 
@@ -163,7 +177,8 @@ def add_to_cart(request: Request) -> Response:
             menu_item_id: {
                 'count': item_count,
                 "name": item_name,
-                "price": item_price
+                "price": item_price,
+                "item_final_price": item_final_price
             }
         }
 
@@ -189,29 +204,67 @@ def cart():
             orders = orders.values()
 
         total_price = 0
+        final_price = 0
 
         for o in orders:
             total_price += o['count'] * o['price']
+            final_price += o['count'] * (o['item_final_price'] or o['price'])
 
         context = {
             'orders': orders,
             'total_price': total_price,
+            'final_price': final_price
         }
         return render_template("landing/cart.html", **context)
 
-    # TODO: Develop here
     # payment
     elif request.method == "POST":
-        cookie = request.get_json()
-        table_id = int(cookie["table"])
-        receipt_id = int(cookie["receipt"])
-        current_table = db.read(models.Table, table_id)
-        current_receipt = db.read(models.Receipt, receipt_id)
-        current_receipt.is_paid = True
+        data = request.form
+        total_price = data.get('totalPrice')
+        final_price = data.get('finalPrice')
+        receipt = request.cookies.get('receipt')
+        table_id = request.cookies.get('table_id')
+        orders = request.cookies.get('orders')
+
+        if not total_price or not final_price:
+            return Response("total price or final price is not provided", status=400)
+
+        current_table = db.find_by(models.Table, id=table_id, status=False)
+        if not current_table:
+            return Response("Table is not empty, try Another Table", status=400)
+        if not receipt:
+            return Response("You have no Receipt yet!", status=400)
+        if not orders:
+            return Response("You have no Orders yet!", status=400)
+
+        orders = json.loads(orders)
+        # register Receipt
+        receipt = models.Receipt(table_id=int(table_id))
+        receipt.is_paid = True
+        receipt.total_price = total_price
+        receipt.final_price = final_price
+        receipt_id = db.create(receipt)
+
+        # register order objects
+        for item_id, detail in orders.items():
+            order_obj = models.Order(
+                menu_item_id=item_id,
+                status_code_id=2,
+                count=detail['count'],
+                receipt_id=receipt_id
+            )
+            db.create(order_obj)
+
+        # update and save table status
         current_table.status = True
-        db.update(current_receipt)
         db.update(current_table)
-        return redirect(url_for("home"))
+        # prepare response and delete old cookies
+        response = make_response(redirect(url_for("home")))
+        response.set_cookie('receipt', 'paid')
+        response.set_cookie('receipt_id', str(receipt_id))
+        response.delete_cookie('orders')
+
+        return response
 
 
 def about_us():
