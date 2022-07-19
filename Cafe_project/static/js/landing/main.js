@@ -99,7 +99,6 @@ $( document ).ready(function() {
             data: JSON.stringify(data),
 
             success: function (data){
-
                 swal("Successful", "Added To Cart!", "success", {
                     buttons: false,
                     timer: 1500,
@@ -151,11 +150,12 @@ $( document ).ready(function() {
                 finalPrice: finalPrice,
             },
             success: function (response) {
+                let receiptId = $.cookie('receipt_id');     // get receipt id from cookie
                 $('#page-loader').empty();
                 $('#page-loader').append(response);
                 swal(
-                    'payment successful ',
-                    `Receipt Number : ${$.cookie('receipt_id')}`,
+                    'Successful',
+                    `Payment Was Successful!\nReceipt Number : ${receiptId}`,
                     'success'
                 );
             },
