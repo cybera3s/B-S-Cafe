@@ -5,21 +5,29 @@
         >
             <div class="m-0 p-0 item-image">
                 <a href="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
-                   target="_blank">
+                   target="_blank"
+                   class="position-relative"
+                >
+                    {% if item.final_price %}
+                    <span
+                        class="position-absolute translate-middle badge rounded-pill bg-danger"
+                        style="font-size:1rem;"
+                    >
+                        {{ item.price - item.final_price }}%
+                    </span>
+                    {% endif %}
                     <img class="card-img-top mt-2 img-thumbnail border-none"
                          style="height:200px;"
                          src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
                          alt="{{ item.name }}">
                 </a>
             </div>
-            <h5 class="text-center text-warning mt-3">{{ item.name }}</h5>
+            <h5 class="text-center text-warning mt-3">{{ item.name }} <span></span></h5>
             {% if item.discount_id != 1 %}
-                <p class="text-center text-light" style="text-decoration: line-through;">{{ item.price }}</p>
-                {% for discount in discounts %}
-                    {% if item.discount_id == discount.id %}
-                        <p class="text-center text-light" >{{ (item.price) - ((item.price * discount.value)//100) }}</p>
-                    {% endif %}
-                {% endfor %}
+
+                <p class="text-center text-light" style="text-decoration: line-through;">${{ item.price }}</p>
+                <p class="text-center text-light" >${{ item.final_price }}</p>
+
             {% else %}
                 <p class="text-center text-light">${{ item.price }}</p>
             {% endif %}
