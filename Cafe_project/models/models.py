@@ -48,8 +48,8 @@ class MenuItems(DBModel):  # Menu items model
         discount_value = discount.value
 
         if discount_value:
-            return int((self.price * discount_value / 100) - discount_value)
-        return self.price
+            return discount_value - int((self.price * discount_value) / 100)
+        return False
 
     def __repr__(self):
         return f"<menuItem_class {self.id}:{self.name}>"
