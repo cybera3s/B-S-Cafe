@@ -147,7 +147,7 @@ class DBManager:
                 res = [model_class(**item) for item in res]
                 return res
 
-    def find_by(self, model_class: type, **kwargs):
+    def find_by(self, model_class: type, **kwargs) -> None | DBModel:
         """
             find records in table where kwargs conditions match
             :param model_class: a model Class type
