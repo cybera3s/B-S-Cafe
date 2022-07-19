@@ -13,12 +13,12 @@ class DBManager:
     DEFAULT_PORT = dbConfig["DEFAULT_PORT"]
 
     def __init__(
-        self,
-        database=DEFAULT_DATABASE_NAME,
-        user=DEFAULT_USER,
-        host=DEFAULT_HOST,
-        port=DEFAULT_PORT,
-        password=DEFAULT_PASSWORD,
+            self,
+            database=DEFAULT_DATABASE_NAME,
+            user=DEFAULT_USER,
+            host=DEFAULT_HOST,
+            port=DEFAULT_PORT,
+            password=DEFAULT_PASSWORD,
     ) -> None:
         self.database = database
         self.user = user
@@ -55,7 +55,7 @@ class DBManager:
             )  # generate %s, %s,... string with suitable length
             model_values_tuple = tuple(
                 model_vars.values()
-            )  # get model values in a tuple-> ('akbar', 'babaii', ...)
+            )  # get model values in a tuple
             with curs:
                 curs.execute(
                     f"""INSERT INTO {model_instance.TABLE}({model_fields_str}) VALUES ({model_values_str}) RETURNING ID;""",
@@ -180,5 +180,6 @@ class DBManager:
                 curs.execute(
                     f"""UPDATE {model_class.TABLE} SET {key} = {key} || {value} WHERE {model_class.PK} = {pk}"""
                 )
+
 
 db = DBManager()
