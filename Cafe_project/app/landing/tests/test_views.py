@@ -13,3 +13,13 @@ def test_post_request_index_should_fail(client):
     url = url_for('landing.index')
     response = client.post(url)
     assert response.status_code == 405
+
+
+def test_get_request_index_should_have_table_context(client, captured_templates):
+    url = url_for('landing.index')
+    response = client.get(url)
+
+    template, context = captured_templates[0]
+
+    assert 'tables' in context
+    assert template.name == "landing/index.html"
