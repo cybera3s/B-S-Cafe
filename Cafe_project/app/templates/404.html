@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404</title>
+    <style>
+        body{
+            background-image: url({{ url_for('static', filename='404.jpg') }});
+            background-size: 100% 100%  ;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+        }
+        a{
+            position: absolute;
+            top: 29%;
+            right: 20%;
+            padding: 0.7rem;
+            border-radius: 10px;
+            background-color: #8cc5cc;
+            color: black;
+            font-family: system-ui;
+            text-decoration: none;
+        }
+        a:hover{
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Back to home page</a>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<div class="row justify-content-center bg-dark m-0 p-0">
+    <div class="col-12 text-center">
+        <!--  slider      -->
+        {% include 'landing/home/slider.html' %}
+    </div>
+</div>
+
+
+
+<div class="row m-0" id="index-page-home-pictures">
+
+    <div class="col-12 col-sm-6">
+
+        <div class="row bg-dark h-50 rounded m-3 index-page-home">
+            <img src="{{ url_for('.static', filename='images/home_page_pic/nema-cafe1.jpg') }}" alt="home_image1">
+        </div>
+
+
+        <div class="row bg-dark h-50 rounded m-3 index-page-home">
+            <img src="{{ url_for('.static', filename='images/home_page_pic/nema-cafe2.jpg') }}" alt="home_image2">
+        </div>
+
+    </div>
+
+    <div class="col-12 col-sm-6">
+
+        <div class="row bg-dark h-50 rounded m-3 index-page-home">
+            <img src="{{ url_for('.static', filename='images/home_page_pic/nema-cafe3.jpg') }}" alt="home_image3">
+        </div>
+
+        <div class="row bg-dark h-50 rounded m-3 index-page-home">
+            <img src="{{ url_for('.static', filename='images/home_page_pic/nema-cafe4.jpg') }}" alt="home_image4">
+        </div>
+
+    </div>
+</div>
