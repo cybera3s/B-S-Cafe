@@ -1,7 +1,7 @@
 import json
 from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request
 
-from app import db
+from app.database.manager import db
 from app import models
 
 base_variables = {
