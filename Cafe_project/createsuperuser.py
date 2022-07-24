@@ -1,6 +1,5 @@
 import argparse
-from app.database.manager import db
-from app.models import Cashier
+from app.new_models import Cashier
 from app.utils.utils import Validator
 
 if __name__ == "__main__":
@@ -32,8 +31,8 @@ if __name__ == "__main__":
                 email
             ), "password must be more than four characters !"
 
-            cashier = Cashier(firstname, lastname, phone_number, email, password)
-            db.create(cashier)
+            new_cashier = Cashier(firstname, lastname, phone_number, email, password)
+            new_cashier.create()
             print("new cashier_panel created !")
 
         except Exception as e:
