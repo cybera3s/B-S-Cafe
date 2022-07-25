@@ -107,9 +107,9 @@
                             <label for="discount" class="col-sm-4 control-label">discount</label>
                             <div class="col-sm-12">
                                 <select id="discount" name="discount" class="form-control" required>
-                                    <option value="" disabled="" selected="">Select your discount</option>
-                                    {% for i in discounts %}
-                                    <option>{{ i.value }}</option>
+                                    <option value="0" disabled="" selected="">Select your discount</option>
+                                    {% for discount in discounts %}
+                                    <option value="{{ discount.id }}">{{ discount.value }}</option>
                                     {% endfor %}
 
                                 </select>
@@ -119,10 +119,10 @@
                             <label for="category" class="col-sm-4 control-label">category</label>
                             <div class="col-sm-12">
                                 <select id="category" name="category" class="form-control" required>
-                                    <option value="" disabled="" selected="">Select your discount</option>
+                                    <option value="0" disabled="" selected="">Select your discount</option>
 
                                     {% for c in categorys %}
-                                    <option>{{ c.category_name }}</option>
+                                    <option value="{{ c.id }}">{{ c.category_name }}</option>
                                     {% endfor %}
 
                                 </select>
