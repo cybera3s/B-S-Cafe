@@ -4,11 +4,10 @@ from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
 from flask.views import MethodView
-from app.new_models import *
+from app.models import *
 from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
-from sqlalchemy import select
 from app.database import db
 from .forms import AddNewTableForm
 

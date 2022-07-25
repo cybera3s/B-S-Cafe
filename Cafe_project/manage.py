@@ -1,6 +1,6 @@
 from run import app
 from app.database import db
-from app.new_models import *
+from app.models import *
 
 
 @app.shell_context_processor

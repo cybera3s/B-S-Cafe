@@ -1,4 +1,4 @@
-from app.new_models import *
+from app.models import *
 from .conftest import *
 
 

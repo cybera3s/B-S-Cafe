@@ -1,5 +1,5 @@
 import argparse
-from app.new_models import Cashier
+from app.models import Cashier
 from app.utils.utils import Validator
 
 if __name__ == "__main__":
