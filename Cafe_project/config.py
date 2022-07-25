@@ -33,10 +33,10 @@ class DevConfig(Config):
     SECRET_KEY = urandom(24)
 
 
-# class TestConfig(Config):
-#     DEBUG = True
-#     DEBUG_TB_ENABLED = False
-#     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-#     SQLALCHEMY_TRACK_MODIFICATIONS = False
-#     CACHE_TYPE = 'null'
-#     WTF_CSRF_ENABLED = False
+class TestConfig(Config):
+    DEBUG = True
+    DEBUG_TB_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CACHE_TYPE = 'null'
+    WTF_CSRF_ENABLED = False
