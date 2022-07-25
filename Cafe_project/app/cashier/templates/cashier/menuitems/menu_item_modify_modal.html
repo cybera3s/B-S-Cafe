@@ -111,7 +111,8 @@
             );
             $(this).focus()
             return;
-        };
+        }
+        ;
 
         let tempURL = URL.createObjectURL(file);
 
@@ -130,31 +131,40 @@
         // create new form data instance for storing image file
         let form_data = new FormData();
         let file = fileInput.prop('files')[0]
-        form_data.append('file', file);
+        if (file) {
+            form_data.append('file', file);
+            return $.ajax({
+                type: 'POST',
+                url: "{{ url_for('.cashier_list_menu') }}",
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    console.log("uploading was successful: ", data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                let url = $("#picture_link").attr('value');
+                if (url.split('/').splice(-1)[0] == 'None') {
+                    reject('Menu Item has No Picture');
+                } else {
+                    resolve(url.split('/').splice(-1)[0]);
+                }
+            });
+        }
 
-        // console.log(file);
-
-        return $.ajax({
-            type: 'POST',
-            url: '/cashier_panel/list_menu',
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-                console.log("uploading was successful: ", data);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
     }
 
     let changed = false;
     let formItemsList = ['#item_id', '#name', '#Price', '#serving_time', '#estimated', '#discount', '#category',
         "#picture_link"]
 
-    $("#staticBackdrop").on( "input", formItemsList.join(','), ()=>{
+    $("#staticBackdrop").on("input", formItemsList.join(','), () => {
         changed = true;
         console.log(changed)
     });
@@ -171,7 +181,7 @@
         let category = $('#category').val()
         let picture_link = $("#picture_link");
 
-        if (changed){
+        if (changed) {
             try {
 
                 sendImage(picture_link)
@@ -189,7 +199,7 @@
                             category: +category,
                             image: data
                         }
-
+                        console.log("data on edit btn : \n", DataSend)
                         $.ajax({
                             url: `${target_url}`,
                             type: 'POST',
