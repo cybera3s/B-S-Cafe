@@ -30,7 +30,7 @@ cashier.add_url_rule(
     "/cashier_panel/list_menu",
     "cashier_list_menu",
     cashier_list_menu,
-    methods=["POST", "GET"],
+    methods=["POST", "GET", 'DELETE'],
 )
 cashier.add_url_rule(
     "/cashier_panel/add_category",
@@ -46,5 +46,9 @@ cashier.add_url_rule(
 )
 cashier.add_url_rule(
     "/cashier_panel/tables", "cashier_table", cashier_table, methods=["GET", "POST"]
+)
+
+cashier.add_url_rule(
+    "/cashier_panel/tables/add", "cashier_add_table", cashier_add_table, methods=["GET", "POST"]
 )
 cashier.add_url_rule("/cashier_panel/logout", "logout", logout, methods=["GET", "POST"])
