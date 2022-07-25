@@ -1,8 +1,8 @@
 import json
 from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request
 
-from app.database.manager import db
-from app import models
+from app.data.manager import db
+from app.new_models import *
 
 base_variables = {
     "pages": {
@@ -20,7 +20,7 @@ def available_tables():
     """
         return serialized free tables on get request
     """
-    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
+    tables = Table.query.filter(status, False).all()  # read tables that are empty
     serialized_tables = list(map(lambda t: vars(t), tables))
     return jsonify(serialized_tables)
 
@@ -28,7 +28,7 @@ def available_tables():
 def index():
     data = base_variables
     data["current_page"] = "index"
-    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
+    tables = Table.query.filter(Table.status == False).all()  # read tables that are empty
     context = {
         'data': data,
         'tables': tables
@@ -41,7 +41,7 @@ def index():
 def home():
     data = base_variables
     data["current_page"] = "index"
-    tables = db.read_by(models.Table, ("status", "FALSE"))  # read tables that are empty
+    tables = Table.query.filter(status, False).all()  # read tables that are empty
 
     context = {
         'data': data,
@@ -60,10 +60,10 @@ def menu():
     """
         show menu items on GET request
     """
-    discounts = db.read_all(models.Discount)
+    discounts = Discount.query.all()
     data = base_variables
     data["current_page"] = "menu"
-    items = db.read_all(models.MenuItems)
+    items = MenuItem.query.all()
     modified_items = map(set_final_price, items)
 
     if request.method == "GET":
@@ -100,18 +100,18 @@ def table_select(table_id: int) -> Response:
     # get data from db for response
     data = base_variables
     data["current_page"] = "order"
-    items = db.read_all(models.MenuItems)
+    items = MenuItem.query.all()
     modified_items = map(set_final_price, items)
 
-    discounts = db.read_all(models.Discount)
+    discounts = Discount.query.all()
     context = {
         'data': data,
         'items': modified_items,
         'discounts': discounts
     }
-    response = make_response(render_template("landing/order.html", **context))
+    response = make_response(render_template("landing/order-index.html", **context))
     # check if table is empty
-    table = db.find_by(models.Table, id=table_id, status=False)
+    table = Table.query.filter((Table.id == table_id) & (Table.status == False)).all()
     if not table:
         return Response("Table is Busy", status=400)
 
@@ -233,7 +233,7 @@ def cart():
         if not total_price or not final_price:
             return Response("total price or final price is not provided", status=400)
 
-        current_table = db.find_by(models.Table, id=table_id, status=False)
+        current_table = Table.query.filter((Table.id == table_id) & (Table.status == False)).first()
         if not current_table:
             return Response("Table is not empty, try Another Table", status=400)
         if not receipt:
@@ -243,11 +243,11 @@ def cart():
 
         orders = json.loads(orders)
         # register Receipt
-        receipt = models.Receipt(table_id=int(table_id))
+        receipt = Receipt(table_id=int(table_id))
         receipt.is_paid = True
         receipt.total_price = total_price
         receipt.final_price = final_price
-        receipt_id = db.create(receipt)
+        receipt_id = receipt.create()
 
         # register order objects
         for item_id, detail in orders.items():
@@ -255,13 +255,13 @@ def cart():
                 menu_item_id=item_id,
                 status_code_id=2,
                 count=detail['count'],
-                receipt_id=receipt_id
+                receipt_id=receipt_id.id
             )
-            db.create(order_obj)
+            order_obj.create()
 
         # update and save table status
         current_table.status = True
-        db.update(current_table)
+        db.session.commit()
         # prepare response and delete old cookies
         response = make_response(redirect(url_for(".home")))
         response.set_cookie('receipt', 'paid')
