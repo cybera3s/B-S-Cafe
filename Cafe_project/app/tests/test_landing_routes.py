@@ -3,9 +3,8 @@ from flask import url_for
 
 
 def test_(client, app):
-    with app.test_request_context():
-        res = client.get('/')
-        print(res)
+    res = client.get('/')
+    print(res)
 
 
 # def test_get_request_index_should_succeed(client):
