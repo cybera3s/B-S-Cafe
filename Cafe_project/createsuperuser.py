@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
             new_cashier = Cashier(firstname, lastname, phone_number, email, password)
             new_cashier.create()
-            print("new cashier_panel created !")
+            print("new cashier created !")
 
         except Exception as e:
             print(e)
