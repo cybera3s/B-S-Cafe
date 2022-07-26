@@ -51,7 +51,7 @@ def home():
 
 
 def set_final_price(item):
-    item.final_price = item.final_price(db)
+    item.final_price = item.final_price()
     return item
 
 
