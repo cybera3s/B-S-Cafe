@@ -1,0 +1,84 @@
+{% extends "cashier/_base.html" %}
+{% block title %}About Setting{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content_title %}About Setting{% endblock %}
+
+
+{% block content_body %}
+<div class="row">
+
+    <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6 mx-auto border rounded">
+
+        <form action="{{ url_for('cashier.about_setting') }}" method="post">
+            <div class="mb-3">
+                <label for="paragraph1" class="form-label">Paragraph 1</label>
+                <textarea class="form-control" id="paragraph1" name="paragraph1" placeholder="paragraph 1 here"
+                          rows="3">{{ data.about_setting.paragraph1 }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="paragraph2" class="form-label">Paragraph 2</label>
+                <textarea class="form-control" id="paragraph2" name="paragraph2" placeholder="paragraph 2 here"
+                          rows="3">{{ data.about_setting.paragraph2 }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="paragraph3" class="form-label">Paragraph 3</label>
+                <textarea class="form-control" id="paragraph3" name="paragraph3" placeholder="paragraph 3 here"
+                          rows="3">{{ data.about_setting.paragraph3 }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="bannerUrl" class="form-label">Banner Url</label>
+                <input type="url" class="form-control" id="bannerUrl" name="bannerUrl"
+                       placeholder="Banner Url here" value="{{ data.about_setting.banner_url }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="manager1" class="form-label">Manager 1</label>
+                <input type="text" class="form-control" id="manager1" name="manager1" placeholder="manager 1 here"
+                    value="{{ data.about_setting.manager1 }}"
+                >
+            </div>
+            <div class="mb-3">
+                <label for="manager2" class="form-label">Manager 2</label>
+                <input type="text" class="form-control" id="manager2" name="manager2" placeholder="manager 2 here"
+                    value="{{ data.about_setting.manager2 }}"
+                >
+            </div>
+            <div class="mb-3">
+                <label for="manager3" class="form-label">Manager 3</label>
+                <input type="text" class="form-control" id="manager3" name="manager3" placeholder="manager 3 here"
+                    value="{{ data.about_setting.manager3 }}"
+                >
+            </div>
+            <div class="mb-3">
+                <label for="manager4" class="form-label">Manager 4</label>
+                <input type="text" class="form-control" id="manager4" name="manager4" placeholder="manager 4 here"
+                    value="{{ data.about_setting.manager4 }}"
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Set Setting</button>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_footer %}
+<script>
+    var alertList = document.querySelectorAll('.alert')
+    alertList.forEach(function (alert) {
+        new bootstrap.Alert(alert)
+    })
+</script>
+
+{% endblock %}
+
