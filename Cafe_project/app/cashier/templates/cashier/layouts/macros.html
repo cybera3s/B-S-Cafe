@@ -1,0 +1,23 @@
+{% macro sidebar_root(url, icon_class, title, has_children=False) %}
+
+    <a href="{{ url }}" class="nav-link {% if has_children %}active{% endif %}">
+        <i class="{{ icon_class }}"></i>
+        <p>
+            {{ title }}
+            {% if has_children %}
+                <i class="right fas fa-angle-left"></i>
+            {% endif %}
+
+        </p>
+    </a>
+
+{% endmacro %}
+
+{% macro sidebar_child(url, icon_class, title, active=False) %}
+    <li class="nav-item">
+        <a href="{{ url }}" class="nav-link {% if active %}active{% endif %}">
+            <i class="{{ icon_class }}"></i>
+            <p>{{ title }}</p>
+        </a>
+    </li>
+{% endmacro %}
