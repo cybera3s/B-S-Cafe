@@ -209,6 +209,8 @@ def test_post_order_with_empty_order_in_cookies_should_pass(client, init_db):
     assert response.status_code == 200
 
 
+# Cart View Tests
+
 def test_add_to_cart_repetitive_item_should_increase_count(client, init_db):
     """
       GIVEN a Flask application and database session
@@ -248,6 +250,7 @@ def test_add_to_cart_repetitive_item_should_increase_count(client, init_db):
     assert cookies_orders['1']['count'] == 4
 
 
+@pytest.mark.skip
 def test_get_cart_with_no_cookies_should_fail(client, init_db):
     """
       GIVEN a Flask application and database session
@@ -301,8 +304,15 @@ def test_post_cart_with_no_body_should_fail(client, init_db):
       WHEN the '/cart' page is requested (POST) with no body
       THEN check the response is valid -> 400
     """
-
-    client.set_cookie('localhost', 'orders', json.dumps({}))
+    orders = {
+        '1': {
+            'count': 1,
+            "name": 'Tea',
+            "price": 10,
+            "item_final_price": 10
+        }
+    }
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
     response = client.post(url_for('landing.cart'))
 
     assert response.status_code == 400
@@ -321,3 +331,27 @@ def test_post_cart_request_body_args(client, init_db):
 
     assert response.status_code == 400
     assert response.data == b'Invalid Type for total price or final price(expected Integer)'
+
+
+@pytest.mark.skip
+def test_post_cart_request_with_no_table_id_should_fail(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (POST) with no table id in cookies
+      THEN check the response is valid -> 400
+    """
+
+    orders = {
+        '1': {
+            'count': 1,
+            "name": 'Tea',
+            "price": 10,
+            "item_final_price": 10
+        }
+    }
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
+    data = {'totalPrice': 4, 'finalPrice': 4}
+    response = client.post(url_for('landing.cart'), data=data)
+
+    assert response.status_code == 400
+    assert b'Table id is not Provided in cookies' in response.data
