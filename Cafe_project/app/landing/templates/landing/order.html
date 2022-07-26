@@ -32,7 +32,7 @@
         <div class="card-block text-center mt-3 detail-item">
             <h4 class="text-center text-warning itemName">{{ item.name }}</h4>
             <!--                <p class="text-center text-light itemPrice">${{ item.price }}</p>-->
-            {% if item.discount_id != 1 %}
+            {% if item.discount %}
 
                 <p class="text-center text-light itemPrice" data-price="{{ item.price }}"
                    data-finalprice="{{ item.final_price }}">
