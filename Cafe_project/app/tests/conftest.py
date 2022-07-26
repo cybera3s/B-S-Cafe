@@ -45,16 +45,6 @@ def captured_templates(app):
         template_rendered.disconnect(record, app)
 
 
-
-@pytest.fixture()
-def db(app):
-    """Returns session-wide initialized data"""
-    with app.app_context():
-        _db.create_all()
-        yield _db
-        _db.drop_all()
-
-
 @pytest.fixture(scope='session')
 def test_client():
     flask_app = create_app('config.TestConfig')
