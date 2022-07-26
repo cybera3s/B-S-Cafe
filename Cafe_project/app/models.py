@@ -74,7 +74,7 @@ class MenuItem(BaseModel):
         """
             calculate final price for items that has discount
         """
-        if self.discount.value:
+        if self.discount:
             return self.price - (self.discount.value * self.price) / 100
         return self.price
 
