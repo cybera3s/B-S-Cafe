@@ -1,0 +1,18 @@
+{% macro paragraph(value) %}
+    {% if value %}
+        <p class="p-2" style="box-shadow: 3px 2px 13px black;">
+            <i class="fal fa-coffee bg-light rounded p-1 mt-2"
+                style="background-color: inherit!important;"
+            ></i>
+            {{ value }}
+        </p>
+    {% endif %}
+{% endmacro %}
+
+{% macro manager(value) %}
+
+    {% if value %}
+        <li class="list-group-item bg-light">{{ value }}</li>
+    {% endif %}
+
+{% endmacro %}
