@@ -181,7 +181,29 @@ def test_post_request_order_with_right_body_should_succeed(client, init_db):
     response = client.post(url_for('landing.order', table_id=new_table.id), json=body)
 
     assert response.status_code == 200
-    res = client.get('/')   # to catch cookies from request
+    res = client.get('/')  # to catch cookies from request
     assert 'orders' in res.request.cookies
     cookies_orders = json.loads(res.request.cookies.get('orders'))
     assert cookies_orders['1']['name'] == 'tea'
+
+
+def test_post_order_with_empty_order_in_cookies_should_pass(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/order/new_table_id' page is requested (POST) with empty orders in cookies
+      THEN check the response is valid -> 200 and orders set in cookies
+   """
+
+    new_table = Table(capacity=4, position='any', status=True)
+    new_table.create()
+    body = {
+        'itemId': 1,
+        'itemCount': 3,
+        'itemName': 'tea',
+        'itemPrice': 10,
+        'finalPrice': 10
+    }
+    client.set_cookie('localhost', 'receipt', 'pending')
+    client.set_cookie('orders', json.dumps([]))  # set empty orders in cookies
+    response = client.post(url_for('landing.order', table_id=new_table.id), json=body)
+    assert response.status_code == 200
