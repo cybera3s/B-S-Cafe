@@ -1,16 +1,15 @@
 # Import flask and template operators
 from flask import Flask, render_template
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from .core.template_filters import format_datetime
 from app.database import db
 from app.landing.routes import landing
 from app.cashier.routes import cashier
 
+migrate = Migrate()
 
-# Import SQLAlchemy
-# from flask.ext.sqlalchemy import SQLAlchemy
-# Import a module / component using its blueprint handler variable (mod_auth)
 
 # 404 HTTP error handling
 def page_not_found(error):
@@ -21,7 +20,7 @@ def create_app(object_name="config.DevConfig"):
     app = Flask(__name__)
     app.config.from_object(object_name)
     db.init_app(app)
-
+    migrate.init_app(app, db)
     # template filters
     app.add_template_filter(format_datetime, "format_date")
 
