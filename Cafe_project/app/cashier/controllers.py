@@ -436,6 +436,7 @@ def about_setting(user):
     data = {
         "user": user,
         'about_setting': about_setting,
+        'page_title': 'About Page Setting'
     }
     if request.method == "GET":
         return render_template("cashier/site_setting/about_setting.html", data=data, form=form)
