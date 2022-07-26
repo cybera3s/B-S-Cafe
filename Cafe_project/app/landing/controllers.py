@@ -1,5 +1,5 @@
 import json
-from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request
+from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request, abort
 
 from app.models import *
 
@@ -40,7 +40,7 @@ def index():
 def home():
     data = base_variables
     data["current_page"] = "index"
-    tables = Table.query.filter(status, False).all()  # read tables that are empty
+    tables = Table.query.filter(Table.status == False).all()  # read tables that are empty
 
     context = {
         'data': data,
