@@ -152,7 +152,7 @@ def add_to_cart(request: Request) -> Response:
     item_price = data.get('itemPrice')
     item_final_price = data.get('finalPrice')
     # 3
-    if not all(i for i in [item_count, menu_item_id, item_name,item_price,item_final_price]):
+    if not all(i for i in [item_count, menu_item_id, item_name, item_price, item_final_price]):
         err_msg = "one of the (menu item id,count,name,price,final price) is not provided!"
         return Response(err_msg, status=400)
 
@@ -198,16 +198,21 @@ def cart():
         GET request: get orders from cookies
         POST request: complete payment
     """
+
+    # cookies orders validation
+    cookie_orders = request.cookies.get('orders')
+    if not cookie_orders:
+        return Response("There is no orders", status=400)
+
+    orders = json.loads(cookie_orders)
+    if not isinstance(orders, dict) or not orders:
+        return Response("Empty or Bad Orders Type", status=400)
+
     # get orders of cart
     if request.method == "GET":
         # show cart items
-        cookie_orders = request.cookies.get('orders')
-        if not cookie_orders:
-            return Response("There is no orders", status=400)
 
-        orders = json.loads(cookie_orders)
-        if orders:
-            orders = orders.values()
+        orders = orders.values()
 
         total_price = 0
         final_price = 0
@@ -226,22 +231,37 @@ def cart():
     # payment
     elif request.method == "POST":
         data = request.form
+        # check request body
+        if not data:
+            return Response("Request Body is not provided", status=400)
+
         total_price = data.get('totalPrice')
         final_price = data.get('finalPrice')
         receipt = request.cookies.get('receipt')
         table_id = request.cookies.get('table_id')
         orders = request.cookies.get('orders')
 
-        if not total_price or not final_price:
-            return Response("total price or final price is not provided", status=400)
+        # convert to numbers
+        try:
+            final_price = float(final_price)
+            total_price = float(total_price)
+            if not total_price or not final_price:
+                return Response("total price or final price is not provided", status=400)
+        except Exception as e:
+            print(e)
+            # check type of total and final price body args
+            return Response("Invalid Type for total price or final price(expected Integer or Float)", status=400)
+
+        # check table id exist in cookies and its type
+        if not table_id:
+            return Response("Table id is not Provided in cookies", status=400)
 
         current_table = Table.query.filter((Table.id == table_id) & (Table.status == False)).first()
         if not current_table:
             return Response("Table is not empty, try Another Table", status=400)
-        if not receipt:
+        if not receipt or receipt != 'pending':
             return Response("You have no Receipt yet!", status=400)
-        if not orders:
-            return Response("You have no Orders yet!", status=400)
+
 
         orders = json.loads(orders)
         # register Receipt
@@ -249,15 +269,22 @@ def cart():
         receipt.is_paid = True
         receipt.total_price = total_price
         receipt.final_price = final_price
-        receipt_id = receipt.create()
+        receipt.create()
 
         # register order objects
         for item_id, detail in orders.items():
-            order_obj = models.Order(
+            menu_item = MenuItem.query.get(item_id)
+            if not menu_item:
+                return Response("Invalid Menu Item!", status=400)
+
+            if not detail['count'] or detail['count'] <= 0:
+                return Response("Invalid Count for Item!", status=400)
+
+            order_obj = Order(
                 menu_item_id=item_id,
                 status_code_id=2,
                 count=detail['count'],
-                receipt_id=receipt_id.id
+                receipt_id=receipt.id
             )
             order_obj.create()
 
@@ -267,7 +294,7 @@ def cart():
         # prepare response and delete old cookies
         response = make_response(redirect(url_for(".home")))
         response.set_cookie('receipt', 'paid')
-        response.set_cookie('receipt_id', str(receipt_id))
+        response.set_cookie('receipt_id', str(receipt.id))
         response.delete_cookie('orders')
 
         return response
