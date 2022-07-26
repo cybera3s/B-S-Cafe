@@ -151,7 +151,7 @@ class Order(BaseModel):
     receipt_id = db.Column(db.Integer, db.ForeignKey("receipts.id"), nullable=False)
     status_code_id = db.Column(db.Integer, db.ForeignKey("status.id"), nullable=False)
 
-    menu_item = db.relationship('MenuItem', backref='item')
+    menu_item = db.relationship('MenuItem', back_populates='order')
 
     @classmethod
     def read_by_receipt_with_menu_items_status(cls, receipt_id: int, db) -> dict:
