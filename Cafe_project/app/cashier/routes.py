@@ -52,3 +52,4 @@ cashier.add_url_rule(
     "/cashier_panel/tables/add", "cashier_add_table", cashier_add_table, methods=["GET", "POST"]
 )
 cashier.add_url_rule("/cashier_panel/logout", "logout", logout, methods=["GET", "POST"])
+cashier.add_url_rule('/cashier_panel/site-setting/about', "about_setting", about_setting, methods=["GET", "POST"])

@@ -10,6 +10,7 @@ from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.database import db
 from .forms import AddNewTableForm
+from .models import AboutSetting
 
 base_variables = {
     "page": {"lang": "en-US", "title": ""},
@@ -426,3 +427,32 @@ def logout(user):
     resp = make_response(redirect(url_for(".login")))
     resp.delete_cookie("user")
     return resp
+
+
+@login_required
+def about_setting(user):
+
+    about_setting = AboutSetting.query.get(1)
+
+    data = {
+        "user": user,
+        'about_setting': about_setting
+    }
+    if request.method == "GET":
+        return render_template("cashier/site_setting/about_setting.html", data=data)
+    if request.method == "POST":
+        data = request.form
+        if not about_setting:
+            about_setting = AboutSetting()
+
+        about_setting.paragraph1 = data.get('paragraph1')
+        about_setting.paragraph2 = data.get('paragraph2')
+        about_setting.paragraph3 = data.get('paragraph3')
+        about_setting.banner_url = data.get('bannerUrl')
+        about_setting.manager1 = data.get('manager1')
+        about_setting.manager2 = data.get('manager2')
+        about_setting.manager3 = data.get('manager3')
+        about_setting.manager4 = data.get('manager4')
+        db.session.add(about_setting)
+        db.session.commit()
+        return redirect(request.url)
