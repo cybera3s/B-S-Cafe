@@ -256,7 +256,7 @@ class Discount(BaseModel):
 
     value = db.Column(db.Integer, nullable=False, unique=True)
 
-    menuitem = db.relationship(
+    menu_items = db.relationship(
         'MenuItem',
         backref='discount',
         lazy=True
