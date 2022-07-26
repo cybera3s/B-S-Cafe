@@ -8,7 +8,7 @@ import pytest
 @pytest.mark.skip
 def test_get_request_index_should_have_table_context(client, captured_templates):
     url = url_for('landing.index')
-    response = client.get(url)
+    client.get(url)
 
     template, context = captured_templates[0]
 
@@ -330,7 +330,7 @@ def test_post_cart_request_body_args(client, init_db):
     response = client.post(url_for('landing.cart'), data=data)
 
     assert response.status_code == 400
-    assert response.data == b'Invalid Type for total price or final price(expected Integer)'
+    assert b'Invalid Type for total price or final price' in response.data
 
 
 @pytest.mark.skip
@@ -380,3 +380,65 @@ def test_post_cart_with_non_exist_item_should_fail(client, init_db):
     assert b'Invalid Menu Item!' in response.data
     assert response.status_code == 400
 
+
+def test_post_cart_with_correct_parameters_should_succeed(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (POST) with correct parameters
+      THEN check the response is valid -> 200 and all cookies set and models created in database
+    """
+    # create models
+    new_table = Table(capacity=4, position='any', status=False)
+    new_table.create()
+    category = Category(category_name='drink')
+    category.create()
+    new_menuitem = MenuItem(
+        name='tea',
+        price=10,
+        serving_time_period='all',
+        estimated_cooking_time=2,
+        category_id=category.id
+    )
+    new_menuitem.create()
+    # create cookies
+    orders = {
+        str(new_menuitem.id): {
+            'count': 2,
+            "name": new_menuitem.name,
+            "price": new_menuitem.price,
+            "item_final_price": new_menuitem.final_price()
+        }
+    }
+
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
+    client.set_cookie('localhost', 'table_id', str(new_table.id))
+    client.set_cookie('localhost', 'receipt', 'pending')
+    data = {'totalPrice': new_menuitem.price, 'finalPrice': new_menuitem.final_price()}
+    response = client.post(url_for('landing.cart'), data=data, follow_redirects=True)
+
+    assert response.status_code == 200
+    # Check that there was one redirect response.
+    assert len(response.history) == 1
+    # check that response of redirect
+    assert response.history[0].status_code == 302
+    assert response.request.path == '/home'
+
+    # check created receipt in database
+
+    receipt = Receipt.query.get(1)
+    assert receipt.table_id == new_table.id
+    assert receipt.is_paid == True
+    assert receipt.final_price == new_menuitem.final_price()
+    assert receipt.total_price == new_menuitem.price
+    # check created orders in database
+    assert Order.query.count() == 1
+    order = Order.query.get(1)
+    assert order.count == orders[str(new_menuitem.id)]['count']
+    assert order.menu_item_id == new_menuitem.id
+    assert order.receipt_id == receipt.id
+    assert order.status_code_id == 2
+    # check cookies after redirect
+    cookies = response.request.cookies
+    assert cookies.get('receipt') == 'paid'
+    assert cookies.get('receipt_id') == str(receipt.id)
+    assert 'orders' not in cookies
