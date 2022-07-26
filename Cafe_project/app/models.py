@@ -1,10 +1,8 @@
 from app.database import db
 from datetime import datetime, timedelta
-# from app import create_app
 from sqlalchemy import extract, desc
 
 
-# app = create_app()
 
 
 class BaseModel(db.Model):
