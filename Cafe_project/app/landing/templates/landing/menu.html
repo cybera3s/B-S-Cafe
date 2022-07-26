@@ -13,7 +13,7 @@
                         class="position-absolute translate-middle badge rounded-pill bg-danger"
                         style="font-size:1rem;"
                     >
-                        {{ item.price - item.final_price }}%
+                        {{ item.discount.value }}%
                     </span>
                     {% endif %}
                     <img class="card-img-top mt-2 img-thumbnail border-none"
@@ -23,7 +23,7 @@
                 </a>
             </div>
             <h5 class="text-center text-warning mt-3">{{ item.name }} <span></span></h5>
-            {% if item.discount_id != 1 %}
+            {% if item.discount %}
 
                 <p class="text-center text-light" style="text-decoration: line-through;">${{ item.price }}</p>
                 <p class="text-center text-light" >${{ item.final_price }}</p>
