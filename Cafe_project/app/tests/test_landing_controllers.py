@@ -340,7 +340,6 @@ def test_post_cart_request_with_no_table_id_should_fail(client, init_db):
       WHEN the '/cart' page is requested (POST) with no table id in cookies
       THEN check the response is valid -> 400
     """
-
     orders = {
         '1': {
             'count': 1,
@@ -355,3 +354,29 @@ def test_post_cart_request_with_no_table_id_should_fail(client, init_db):
 
     assert response.status_code == 400
     assert b'Table id is not Provided in cookies' in response.data
+
+
+def test_post_cart_with_non_exist_item_should_fail(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (POST) with non exist menu item
+      THEN check the response is valid -> 400
+    """
+    new_table = Table(capacity=4, position='any', status=False)
+    new_table.create()
+    orders = {
+        '1': {
+            'count': 1,
+            "name": 'Tea',
+            "price": 10,
+            "item_final_price": 10
+        }
+    }
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
+    client.set_cookie('localhost', 'table_id', str(new_table.id))
+    client.set_cookie('localhost', 'receipt', 'pending')
+    data = {'totalPrice': 4, 'finalPrice': 4}
+    response = client.post(url_for('landing.cart'), data=data)
+    assert b'Invalid Menu Item!' in response.data
+    assert response.status_code == 400
+
