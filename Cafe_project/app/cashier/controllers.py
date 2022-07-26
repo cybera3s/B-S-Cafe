@@ -9,7 +9,7 @@ from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.database import db
-from .forms import AddNewTableForm
+from .forms import AddNewTableForm, AboutSettingForm
 from .models import AboutSetting
 
 base_variables = {
@@ -431,28 +431,29 @@ def logout(user):
 
 @login_required
 def about_setting(user):
-
     about_setting = AboutSetting.query.get(1)
-
+    form = AboutSettingForm(obj=about_setting)
     data = {
         "user": user,
-        'about_setting': about_setting
+        'about_setting': about_setting,
     }
     if request.method == "GET":
-        return render_template("cashier/site_setting/about_setting.html", data=data)
+        return render_template("cashier/site_setting/about_setting.html", data=data, form=form)
     if request.method == "POST":
-        data = request.form
-        if not about_setting:
-            about_setting = AboutSetting()
+        # data = request.form
+        if form.validate_on_submit():
+            if not about_setting:
+                about_setting = AboutSetting()
 
-        about_setting.paragraph1 = data.get('paragraph1')
-        about_setting.paragraph2 = data.get('paragraph2')
-        about_setting.paragraph3 = data.get('paragraph3')
-        about_setting.banner_url = data.get('bannerUrl')
-        about_setting.manager1 = data.get('manager1')
-        about_setting.manager2 = data.get('manager2')
-        about_setting.manager3 = data.get('manager3')
-        about_setting.manager4 = data.get('manager4')
-        db.session.add(about_setting)
-        db.session.commit()
+            about_setting.paragraph1 = form.paragraph1.data
+            about_setting.paragraph2 = form.paragraph2.data
+            about_setting.paragraph3 = form.paragraph3.data
+            about_setting.banner_url = form.banner_url.data
+            about_setting.manager1 = form.manager1.data
+            about_setting.manager2 = form.manager2.data
+            about_setting.manager3 = form.manager3.data
+            about_setting.manager4 = form.manager4.data
+            db.session.add(about_setting)
+            db.session.commit()
+
         return redirect(request.url)
