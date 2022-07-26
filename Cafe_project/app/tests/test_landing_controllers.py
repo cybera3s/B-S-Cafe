@@ -207,3 +207,42 @@ def test_post_order_with_empty_order_in_cookies_should_pass(client, init_db):
     client.set_cookie('orders', json.dumps([]))  # set empty orders in cookies
     response = client.post(url_for('landing.order', table_id=new_table.id), json=body)
     assert response.status_code == 200
+
+
+def test_add_to_cart_repetitive_item_should_increase_count(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/order/new_table_id' page is requested (POST) with orders and repetitive item in cookies
+      THEN check the response is valid -> 200 and  repetitive item has increased it's count
+   """
+
+    new_table = Table(capacity=4, position='any', status=True)
+    new_table.create()
+    body = {
+        'itemId': 1,
+        'itemCount': 3,
+        'itemName': 'tea',
+        'itemPrice': 10,
+        'finalPrice': 10
+    }
+    # set cookies
+    client.set_cookie('localhost', 'receipt', 'pending')
+    orders = {
+        str(body['itemId']): {
+            'count': 1,
+            "name": body['itemName'],
+            "price": body['itemPrice'],
+            "item_final_price": body['finalPrice']
+        }
+    }
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
+
+    response = client.post(url_for('landing.order', table_id=new_table.id), json=body)
+
+    assert response.status_code == 200
+    res = client.get('/')  # to catch cookies from request
+    assert 'orders' in res.request.cookies
+    cookies_orders = json.loads(res.request.cookies.get('orders'))
+    assert cookies_orders['1']['name'] == 'tea'
+    # increased count
+    assert cookies_orders['1']['count'] == 4
