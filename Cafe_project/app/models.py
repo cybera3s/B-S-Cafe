@@ -71,6 +71,15 @@ class MenuItem(BaseModel):
         nullable=True,
     )
 
+
+    def final_price(self):
+        """
+            calculate final price for items that has discount
+        """
+        if self.discount.value:
+            return self.price - (self.discount.value * self.price) / 100
+        return self.price
+
     order = db.relationship(
         'Order',
         lazy=True,
