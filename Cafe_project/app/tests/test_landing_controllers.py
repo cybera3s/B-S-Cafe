@@ -259,3 +259,15 @@ def test_get_cart_with_no_cookies_should_fail(client, init_db):
     assert b"There is no orders" in response.data
 
 
+def test_get_cart_with_bad_cookies_should_fail(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (GET) with empty orders in cookies
+      THEN check the response is valid -> 400
+    """
+    client.set_cookie('localhost', 'orders', json.dumps({}))
+    response = client.get(url_for('landing.cart'))
+
+    assert response.status_code == 400
+    assert b'Empty or Bad Orders Type' in response.data
+
