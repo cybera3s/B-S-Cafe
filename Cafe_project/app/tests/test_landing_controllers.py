@@ -307,3 +307,17 @@ def test_post_cart_with_no_body_should_fail(client, init_db):
 
     assert response.status_code == 400
     assert b"Request Body is not provided" in response.data
+
+
+def test_post_cart_request_body_args(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (POST) with bad body arguments
+      THEN check the response is valid -> 400
+    """
+
+    data = {'totalPrice': '4', 'finalPrice': 'test'}
+    response = client.post(url_for('landing.cart'), data=data)
+
+    assert response.status_code == 400
+    assert response.data == b'Invalid Type for total price or final price(expected Integer)'
