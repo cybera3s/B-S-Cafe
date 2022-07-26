@@ -83,7 +83,7 @@ class MenuItem(BaseModel):
     order = db.relationship(
         'Order',
         lazy=True,
-        backref='menuitem'
+        back_populates='menu_item'
     )
 
     def __repr__(self):
