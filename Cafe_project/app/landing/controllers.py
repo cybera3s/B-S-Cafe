@@ -80,16 +80,17 @@ def order(table_id: int):
         select table on GET request
         add to cart on POST request
     """
+    table = Table.query.get_or_404(table_id, description="Table Not Found!")
     # table selecting
     if request.method == "GET":
-        return table_select(table_id)
+        return table_select(table_id, table)
 
     # Add To Cart
     elif request.method == "POST":
         return add_to_cart(request)
 
 
-def table_select(table_id: int) -> Response:
+def table_select(table_id: int, table: Table) -> Response:
     """
        if table is free and receipt is pending in cookies then returns
        response with table id as cookie
@@ -108,10 +109,9 @@ def table_select(table_id: int) -> Response:
         'items': modified_items,
         'discounts': discounts
     }
-    response = make_response(render_template("landing/order-index.html", **context))
+    response = make_response(render_template("landing/order.html", **context))
     # check if table is empty
-    table = Table.query.filter((Table.id == table_id) & (Table.status == False)).all()
-    if not table:
+    if table.status:
         return Response("Table is Busy", status=400)
 
     cookie_receipt = request.cookies.get('receipt')
@@ -127,7 +127,7 @@ def add_to_cart(request: Request) -> Response:
     """
         :param request : a flask request object\n
         :returns a Response object\n
-        #1 : get json data\n
+        #1 : check request json body then get json data\n
         #2 : get menu item id and count of that from data -> int, int\n
         #3 : if menu item id and count is None returns Bad Request Response\n
         #4 : set default response json -> Response, 200 OK\n
@@ -143,6 +143,8 @@ def add_to_cart(request: Request) -> Response:
         #14 : set receipt_id as key in cookies with serialized orders as value
     """
     data = request.get_json()  # 1
+    if not data:
+        abort(400, description="Request Body is not provided")
     # 2
     menu_item_id = data.get('itemId')
     item_count = data.get('itemCount')
@@ -150,8 +152,9 @@ def add_to_cart(request: Request) -> Response:
     item_price = data.get('itemPrice')
     item_final_price = data.get('finalPrice')
     # 3
-    if not item_count or not menu_item_id:
-        return Response("menu item id or count not provided!", status=400)
+    if not all(i for i in [item_count, menu_item_id, item_name,item_price,item_final_price]):
+        err_msg = "one of the (menu item id,count,name,price,final price) is not provided!"
+        return Response(err_msg, status=400)
 
     response = make_response({'msg': 'ok'})  # 4
     receipt = request.cookies.get('receipt')  # 5
