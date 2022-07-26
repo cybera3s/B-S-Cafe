@@ -293,3 +293,17 @@ def test_get_cart_with_right_cookies_should_succeed(client, init_db):
     assert b"Final Price" in response.data
     assert b"Total Price" in response.data
     assert response.mimetype == 'text/html'
+
+
+def test_post_cart_with_no_body_should_fail(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (POST) with no body
+      THEN check the response is valid -> 400
+    """
+
+    client.set_cookie('localhost', 'orders', json.dumps({}))
+    response = client.post(url_for('landing.cart'))
+
+    assert response.status_code == 400
+    assert b"Request Body is not provided" in response.data
