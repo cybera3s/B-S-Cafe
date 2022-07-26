@@ -271,3 +271,25 @@ def test_get_cart_with_bad_cookies_should_fail(client, init_db):
     assert response.status_code == 400
     assert b'Empty or Bad Orders Type' in response.data
 
+
+def test_get_cart_with_right_cookies_should_succeed(client, init_db):
+    """
+      GIVEN a Flask application and database session
+      WHEN the '/cart' page is requested (GET) with correct orders in cookies
+      THEN check the response is valid -> 200
+    """
+    orders = {
+        '1': {
+            'count': 1,
+            "name": 'Tea',
+            "price": 10,
+            "item_final_price": 10
+        }
+    }
+    client.set_cookie('localhost', 'orders', json.dumps(orders))
+    response = client.get(url_for('landing.cart'))
+
+    assert response.status_code == 200
+    assert b"Final Price" in response.data
+    assert b"Total Price" in response.data
+    assert response.mimetype == 'text/html'
