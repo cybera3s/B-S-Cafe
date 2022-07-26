@@ -1,6 +1,7 @@
 import json
 from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request, abort
 
+from app.cashier.models import AboutSetting
 from app.models import *
 
 base_variables = {
@@ -303,8 +304,9 @@ def cart():
 def about_us():
     data = base_variables
     data["current_page"] = "about_us"
+    about_setting = AboutSetting.query.get(1)
     if request.method == "GET":
-        return render_template("landing/about_us/about_us.html", data=data)
+        return render_template("landing/about_us/about_us.html", data=data, about_setting=about_setting)
 
 
 # TODO: add functionality to contact_us form
