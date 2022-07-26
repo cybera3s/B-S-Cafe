@@ -9,7 +9,7 @@ from app.database import db as _db
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
-@pytest.fixture()
+@pytest.fixture(scope='function')
 def app():
     app = create_app('config.TestConfig')
 
@@ -44,11 +44,42 @@ def captured_templates(app):
     finally:
         template_rendered.disconnect(record, app)
 
-#
-# @pytest.fixture()
-# def db(app):
-#     """Returns session-wide initialized data"""
-#     with app.app_context():
-#         _db.create_all()
-#         yield _db
-#         _db.drop_all()
+
+
+@pytest.fixture()
+def db(app):
+    """Returns session-wide initialized data"""
+    with app.app_context():
+        _db.create_all()
+        yield _db
+        _db.drop_all()
+
+
+@pytest.fixture(scope='session')
+def test_client():
+    flask_app = create_app('config.TestConfig')
+
+    # Flask provides a way to test your application by exposing the Werkzeug test Client
+    # and handling the context locals for you.
+    testing_client = flask_app.test_client()
+
+    # Establish an application context before running the tests.
+    # ctx = flask_app.app_context()
+    rctx = flask_app.test_request_context()
+    # ctx.push()
+    rctx.push()
+
+    yield testing_client  # this is where the testing happens!
+
+    # ctx.pop()
+    rctx.pop()
+
+
+@pytest.fixture(scope='module')
+def init_database():
+    # Create the database and the database table
+    db.create_all()
+
+    yield db  # this is where the testing happens!
+
+    db.drop_all()
