@@ -48,28 +48,27 @@ def captured_templates(app):
 @pytest.fixture(scope='session')
 def test_client():
     flask_app = create_app('config.TestConfig')
-
+    db.app = flask_app
     # Flask provides a way to test your application by exposing the Werkzeug test Client
     # and handling the context locals for you.
     testing_client = flask_app.test_client()
 
     # Establish an application context before running the tests.
-    # ctx = flask_app.app_context()
-    rctx = flask_app.test_request_context()
-    # ctx.push()
-    rctx.push()
+    app_context = flask_app.app_context()
+    request_context = flask_app.test_request_context()
+    app_context.push()
+    request_context.push()
 
     yield testing_client  # this is where the testing happens!
+    app_context.pop()
+    request_context.pop()
+    db.session.remove()
 
-    # ctx.pop()
-    rctx.pop()
 
-
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def init_database():
     # Create the database and the database table
     db.create_all()
 
     yield db  # this is where the testing happens!
-
     db.drop_all()
