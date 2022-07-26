@@ -146,8 +146,8 @@ $( document ).ready(function() {
             url: target_url,
             type: 'POST',
             data: {
-                totalPrice: totalPrice,
-                finalPrice: finalPrice,
+                totalPrice: +totalPrice,
+                finalPrice: +finalPrice,
             },
             success: function (response) {
                 let receiptId = $.cookie('receipt_id');     // get receipt id from cookie
