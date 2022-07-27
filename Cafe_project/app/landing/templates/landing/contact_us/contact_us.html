@@ -2,7 +2,7 @@
     <div class="col-12 col-lg-5 mt-3">
         <div class="rounded text-light h-100 p-4" style="box-shadow: 3px 2px 13px black;">
             <h3 class="text-center text-warning "> {{ data['site_name'] }} Cafe</h3>
-            <h5 class="pt-2">working hours: </h5>
+            <h5 class="pt-2">Working Hours: </h5>
             <p>Everyday 9AM - 11PM</p>
 
             <h5>Support</h5>
@@ -17,27 +17,7 @@
         </div>
     </div>
     <div class="col-12 col-lg-5 mt-3 ">
-
-        <form class="rounded text-light h-100 p-3" style="box-shadow: 3px 2px 13px black;">
-            <div class="mb-3">
-                <label for="text" class="form-label">First Name:</label>
-                <input type="text" class="form-control" id="firstname" name="firstname">
-            </div>
-            <div class="mb-3">
-                <label for="text" class="form-label">Last Name:</label>
-                <input type="text" class="form-control" id="text" name="lastname">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
-            <div class="mb-3">
-                <label for="text" class="form-label">FeedBack</label>
-                <textarea class="form-control" id="TextArea" rows="19" name="Message"></textarea>
-            </div>
-            <input type="submit" class="btn w-100 btn-success" value="Send">
-
-        </form>
+        {% include 'landing/contact_us/contact-us-form.html' %}
     </div>
 
 </div>
