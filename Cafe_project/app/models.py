@@ -159,32 +159,6 @@ class Order(BaseModel):
 
     menu_item = db.relationship('MenuItem', back_populates='order')
 
-    @classmethod
-    def read_by_receipt_with_menu_items_status(cls, receipt_id: int, db) -> dict:
-        """
-            return orders joined by menu item name and status
-        """
-        res = db.raw_query(
-            f"""select orders.*, name as item_name, status from orders
-               inner join menu_items on orders.menu_item_id = menu_items.id
-               inner join status on orders.status_code_id = status.id
-               where receipt_id = {receipt_id};"""
-        )
-        return res
-
-    @classmethod
-    def read_by_joined_status(cls, status_id: int, db) -> dict:
-        """
-            return a order by provided status_code_id and status table joined
-        """
-        res = db.raw_query(
-            f"""select orders.*, status, name as item_name from orders
-                       inner join menu_items on orders.menu_item_id = menu_items.id
-                       inner join status on orders.status_code_id = status.id
-                       where orders.status_code_id = {status_id};"""
-        )
-        return res
-
     def __repr__(self):
         return f"<Class {self.__class__.__name__} : {self.id}>"
 
@@ -212,28 +186,6 @@ class Receipt(BaseModel):
             .filter(extract('day', Receipt.date_created) == date)\
             .first()[0]
 
-    def get_orders(self, db):
-        """return current orders"""
-        res = db.raw_query(
-            f"""select orders.*, name, price, value as discount from orders inner join menu_items
-                    on orders.menu_item_id = menu_items.id
-                    join discounts on menu_items.discount_id = discounts.id
-                    where orders.receipt_id = {self.id};"""
-        )
-        return res
-
-    def price(self, db):
-        """
-            calculate final and total price
-            :param db: DBManager type
-            :return: a tuple consist of total_price and final_price => (total, final)
-        """
-        orders = self.get_orders(db)
-        total = sum(list(map(lambda o: o['count'] * o['price'], orders)))
-        discounts = sum(list(map(lambda o: o['discount'], orders)))
-        final = total - discounts
-
-        return total, final
 
     @staticmethod
     def last_week_report() -> list:
