@@ -1,6 +1,32 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, TextAreaField, URLField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import StringField, IntegerField, TextAreaField, URLField, EmailField, PasswordField
+from wtforms.validators import DataRequired, NumberRange, Length
+from app.models import Cashier
+
+
+class LoginForm(FlaskForm):
+    email = EmailField('Email', [DataRequired(), Length(max=255)])
+    password = PasswordField('Password', [DataRequired()])
+
+    def validate(self):
+        check_validate = super(LoginForm, self).validate()
+        # if our validators do not pass
+        if not check_validate:
+            return False
+        # Does our user exist
+        cashier = Cashier.query.filter_by(email=self.email.data).first()
+        err_msg = 'Invalid Email Or Password'
+        if not cashier:
+            self.email.errors.append(err_msg)
+            return False
+        # Do the passwords match
+        if cashier.password.decode('utf-8') != self.password.data:
+            self.email.errors.append(err_msg)
+            return False
+        return True
+
+
+
 
 
 class AddNewTableForm(FlaskForm):
