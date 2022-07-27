@@ -39,7 +39,10 @@ class DevConfig(Config):
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
-
+    # Celery configuration
+    CELERY_BROKER_URL = "redis://default:06029842@localhost:6379"
+    CELERY_RESULT_BACKEND = "redis://default:06029842@localhost:6379"
+    CELERY_IMPORTS = ("app.landing.tasks",)
 
 
 class TestConfig(Config):
