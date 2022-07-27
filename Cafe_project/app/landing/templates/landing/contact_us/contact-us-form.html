@@ -1,5 +1,5 @@
-<form method="post" action="{{ url_for('.contact_us') }}" class="rounded text-light h-100 p-3"
-      style="box-shadow: 3px 2px 13px black;">
+<form class="rounded text-light h-100 p-3"
+      style="box-shadow: 3px 2px 13px black;" id="contactUsForm">
     {{ form.csrf_token }}
     {% if get_flashed_messages() %}
     <div class="alert alert-success alert-dismissible fade show" role="alert">
