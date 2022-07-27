@@ -1,8 +1,11 @@
 import json
-from flask import request, render_template, redirect, url_for, Response, jsonify, make_response, Request, abort
+from flask import request, render_template, redirect, url_for,\
+    Response, jsonify, make_response, Request, abort, flash
 
 from app.cashier.models import AboutSetting
 from app.models import *
+from .forms import ContactUsForm
+
 
 base_variables = {
     "pages": {
@@ -309,9 +312,13 @@ def about_us():
         return render_template("landing/about_us/about_us.html", data=data, about_setting=about_setting)
 
 
-# TODO: add functionality to contact_us form
 def contact_us():
     data = base_variables
+    form = ContactUsForm()
     data["current_page"] = "contact_us"
     if request.method == "GET":
-        return render_template("landing/contact_us/contact_us.html", data=data)
+        return render_template("landing/contact_us/contact_us.html", data=data, form=form)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            flash('Thanks for Your feedback')
+            return redirect(url_for(".index"))
