@@ -227,6 +227,7 @@ $(document).ready(function () {
             },
             error: function (err) {
                 console.log(err);
+                swal("Failed", err, "error");
             }
         });
     };
