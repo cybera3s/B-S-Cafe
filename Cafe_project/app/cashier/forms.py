@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
             self.email.errors.append(err_msg)
             return False
         # Do the passwords match
-        if cashier.password.decode('utf-8') != self.password.data:
+        if not cashier.check_password(self.password.data):
             self.email.errors.append(err_msg)
             return False
         return True
