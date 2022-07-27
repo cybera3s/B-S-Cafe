@@ -7,6 +7,7 @@ from .core.template_filters import format_datetime
 from app.database import db
 from app.landing.routes import landing
 from app.cashier.routes import cashier
+from .models import bcrypt
 
 migrate = Migrate()
 
@@ -21,6 +22,7 @@ def create_app(object_name="config.DevConfig"):
     app.config.from_object(object_name)
     db.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
     # template filters
     app.add_template_filter(format_datetime, "format_date")
 
