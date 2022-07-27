@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-$( document ).ready(function() {
+$(document).ready(function () {
 
     console.log("Document is ready!");
     const BASE_URL = 'http://127.0.0.1:5000';
@@ -22,9 +22,9 @@ $( document ).ready(function() {
                 $("#page-loader").append(response);
                 $(document).attr("title", title);   // set title of page
             },
-            error: function (err){
+            error: function (err) {
                 let errMsg = 'Something went wrong on loading content, try again later'
-                 swal("Failed", errMsg, "error");
+                swal("Failed", errMsg, "error");
             }
         });
 
@@ -36,28 +36,29 @@ $( document ).ready(function() {
             if request is successful then append the returned data from server to #page_loader element
         */
         let tableId = +$(this).attr('id');
-        let target_url =  BASE_URL + '/order/' + tableId;
+        let target_url = BASE_URL + '/order/' + tableId;
 
         $.ajax({
             url: target_url,
             method: 'get',
-            success: function (data, status, xhr){
-                if (xhr.status === 200){
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
                     $("#page-loader").empty();
                     $("#page-loader").append(data);
 
-                };
+                }
+                ;
 
             },
             error: function (err, status) {
                 console.log(err, status);
-                if (err.status === 400){
+                if (err.status === 400) {
                     let errorMsg = `${err.responseText}`;
                     swal("Failed", errorMsg, "error");
                     return;
                 }
                 let errorMsg = `Something went wrong\n${err.status} \n${err.statusText}`;
-                 swal("Failed", errorMsg, "error");
+                swal("Failed", errorMsg, "error");
             }
         })
     };
@@ -74,11 +75,11 @@ $( document ).ready(function() {
         let itemPrice = $(this).siblings(".itemPrice");
         let priceData = itemPrice.children().length > 0 ? itemPrice.data() : itemPrice.text()  // {...} or $5
         // extract final price and original price
-        let finalPrice=0, price;
-        if (typeof priceData === 'object'){
+        let finalPrice = 0, price;
+        if (typeof priceData === 'object') {
             finalPrice = priceData.finalprice;
             price = priceData.price;
-        } else{
+        } else {
             price = priceData.replace("$", '');
         }
 
@@ -98,13 +99,13 @@ $( document ).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(data),
 
-            success: function (data){
+            success: function (data) {
                 swal("Successful", "Added To Cart!", "success", {
                     buttons: false,
                     timer: 1500,
                 });
             },
-            error: function(err){
+            error: function (err) {
                 swal("Failed", err.responseText, "error")
                     .then(res => {
                         window.location.reload();
@@ -114,7 +115,7 @@ $( document ).ready(function() {
 
     };
 
-    function showCart(e){
+    function showCart(e) {
         /*
             send GET request to load orders on cart
         */
@@ -122,13 +123,13 @@ $( document ).ready(function() {
         let target_url = BASE_URL + '/cart';
 
         $.get(target_url)
-            .done(function( data ) {
+            .done(function (data) {
                 $('#cart-loader').empty();
                 $('#cart-loader').append(data);
             })
-            .fail(function( err ) {
+            .fail(function (err) {
                 console.log(err.responseText)
-                swal("Failed",err.responseText, "error")
+                swal("Failed", err.responseText, "error")
             });
     };
 
@@ -171,7 +172,7 @@ $( document ).ready(function() {
     };
 
     // get empty tables
-    function getAvailableTables(){
+    function getAvailableTables() {
         let URL = BASE_URL + '/tables';
 
         $.ajax({
@@ -194,13 +195,44 @@ $( document ).ready(function() {
     $(".table-item").click(tableSelect);
 
     //    Add to cart button click event
-    $("#page-loader").on( "click", "button.add-to-cart-btn", addToCart);
+    $("#page-loader").on("click", "button.add-to-cart-btn", addToCart);
 
     //     show cart modal click event
-    $("#page-loader").on( "click", "#cart-float-btn", showCart);
+    $("#page-loader").on("click", "#cart-float-btn", showCart);
 
     // payment button click event
     $("#pay-btn").click(payment);
+
+
+    // Contact us Page
+    function sendContactUsForm(e) {
+        e.preventDefault();
+
+        let url = "/contact_us"; // send the form data here.
+        let csrfToken = $(this).children('#csrf_token').val();  // get contact us form csrf token
+
+        $.ajax({
+            // Inject our CSRF token into our AJAX request.
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrfToken)
+                }
+            },
+            type: "POST",
+            url: url,
+            data: $(this).serialize(), // serializes the form's elements.
+            success: function (data) {
+                swal("Successful", data, "success");
+                $("form")[0].reset();   // clear form inputs
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    };
+
+    $("#page-loader").on("submit", "#contactUsForm", sendContactUsForm);
+
 
 });
 
