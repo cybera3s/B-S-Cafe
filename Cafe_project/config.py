@@ -31,6 +31,15 @@ class DevConfig(Config):
 
     # Secret key for signing cookies
     SECRET_KEY = urandom(24)
+    # email configuration
+    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_USERNAME = 'cybera.3s@gmail.com'
+    MAIL_PASSWORD = 'cbxjmongmfbrqdxl'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+
 
 
 class TestConfig(Config):
