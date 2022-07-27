@@ -1,7 +1,9 @@
 from app.database import db
 from datetime import datetime, timedelta
 from sqlalchemy import extract, desc
+from flask_bcrypt import Bcrypt
 
+bcrypt = Bcrypt()
 
 
 
@@ -31,6 +33,12 @@ class Cashier(BaseModel):
     phone_number = db.Column(db.String(13), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password)
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
     def __repr__(self):
         return f"<Class Cashier : {self.email}>"
