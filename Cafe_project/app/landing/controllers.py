@@ -1,11 +1,11 @@
 import json
-from flask import request, render_template, redirect, url_for,\
-    Response, jsonify, make_response, Request, abort, flash
+from flask import request, render_template, redirect, url_for, \
+    Response, jsonify, make_response, Request, abort
 
 from app.cashier.models import AboutSetting
 from app.models import *
 from .forms import ContactUsForm
-
+from .tasks import send_email
 
 base_variables = {
     "pages": {
@@ -266,7 +266,6 @@ def cart():
         if not receipt or receipt != 'pending':
             return Response("You have no Receipt yet!", status=400)
 
-
         orders = json.loads(orders)
         # register Receipt
         receipt = Receipt(table_id=int(table_id))
@@ -320,5 +319,18 @@ def contact_us():
         return render_template("landing/contact_us/contact_us.html", data=data, form=form)
     if request.method == "POST":
         if form.validate_on_submit():
-            flash('Thanks for Your feedback')
-            return redirect(url_for(".index"))
+            data = {
+                'first_name': form.first_name.data,
+                'last_name': form.last_name.data,
+                'email': form.email.data,
+                'feedback': form.feedback.data
+            }
+            try:
+
+                send_email.delay(data)
+                return Response("Thanks for your Feedback", status=200)
+            except Exception as e:
+                print(e)
+                return Response("Something Went Wrong on Sending Feedback, Try again later", status=200)
+
+        return Response("Invalid Submission of Form", status=400)
