@@ -1,5 +1,5 @@
 from flask import url_for, request, redirect, render_template, \
-    make_response, flash, Response, Request, current_app as app
+    make_response, flash, Response, Request, current_app as app, session
 from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
@@ -9,7 +9,7 @@ from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.database import db
-from .forms import AddNewTableForm, AboutSettingForm
+from .forms import AddNewTableForm, AboutSettingForm, LoginForm
 from .models import AboutSetting
 
 base_variables = {
@@ -42,13 +42,13 @@ def get_current_user() -> Cashier:
     """
     return current Cashier object from data if exist in cookies
     """
-    user_res = None
+    user = None
 
-    if "user" in request.cookies:
-        user_email = request.cookies["user"]
-        user_res = Cashier.query.filter_by(email=user_email).first()
+    if "user_email" in session:
+        user_email = session.get('user_email')
+        user = Cashier.query.filter_by(email=user_email).first()
 
-    return user_res
+    return user
 
 
 def login_required(view):
@@ -65,27 +65,32 @@ def login_required(view):
     return wrapper
 
 
-# TODO: ADD flask-wtf here
 def login():
     """login view"""
+    form = LoginForm()
+
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+        if form.validate_on_submit():
+            cashier = Cashier.query.filter_by(email=form.email.data).first()
+            session['user_email'] = cashier.email  # set user email in session
+            return redirect(url_for('cashier.cashier_dashboard'))
 
-        cashier = Cashier.query.filter(Cashier.email == email).first()
-
-        # user does not exist
-        if not cashier or cashier.password != password:
-            flash("wrong email or password !", "warning")
-            return render_template("cashier/login/login.html")
-
-        # user exists
-        res = make_response(redirect(url_for(".cashier_dashboard")))
-        res.set_cookie("user", email)
-        return res
-
+        # flash form error messages
+        if form.errors['email']:
+            flash(form.errors['email'][0])
     # Handle get request
-    return render_template("cashier/login/login.html")
+    context = {
+        'page_title': 'Login'
+    }
+    return render_template("cashier/login/login.html", form=form, **context)
+
+
+@login_required
+def logout(user):
+    """log out"""
+    print(user)
+    session.pop('user_email', None)
+    return redirect(url_for(".login"))
 
 
 # TODO: ADD flask-wtf here
@@ -418,15 +423,6 @@ def cashier_new_discount(user):
 
         flash(msg, status)
         return redirect(request.url)
-
-
-@login_required
-def logout(user):
-    """log out"""
-    print(user)
-    resp = make_response(redirect(url_for(".login")))
-    resp.delete_cookie("user")
-    return resp
 
 
 @login_required
