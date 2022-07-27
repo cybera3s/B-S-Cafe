@@ -31,7 +31,8 @@ if __name__ == "__main__":
                 email
             ), "password must be more than four characters !"
 
-            new_cashier = Cashier(firstname, lastname, phone_number, email, password)
+            new_cashier = Cashier(firstname, lastname, phone_number, email)
+            new_cashier.set_password(password)
             new_cashier.create()
             print("new cashier created !")
 
