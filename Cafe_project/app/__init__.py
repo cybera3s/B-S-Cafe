@@ -1,28 +1,24 @@
-# Import flask and template operators
-from flask import Flask, render_template
-from flask_cors import CORS
-from flask_migrate import Migrate
 
-from .core.template_filters import format_datetime
-from app.database import db
-from app.landing.routes import landing
-from app.cashier.routes import cashier
-from .models import bcrypt
+def create_app(object_name="config.DevConfig", register_blueprints=True):
+    from flask_cors import CORS
+    from flask import Flask, render_template
+    # local imports
+    from .extensions import mail, migrate
+    from .core.template_filters import format_datetime
+    from app.database import db
+    from .models import bcrypt
 
-migrate = Migrate()
+    # 404 HTTP error handling
+    def page_not_found(error):
+        return render_template('404.html'), 404
 
-
-# 404 HTTP error handling
-def page_not_found(error):
-    return render_template('404.html'), 404
-
-
-def create_app(object_name="config.DevConfig"):
     app = Flask(__name__)
     app.config.from_object(object_name)
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    mail.init_app(app)
+
     # template filters
     app.add_template_filter(format_datetime, "format_date")
 
@@ -31,7 +27,10 @@ def create_app(object_name="config.DevConfig"):
 
     app.register_error_handler(404, page_not_found)
     # Register blueprint(s)
-    app.register_blueprint(landing)
-    app.register_blueprint(cashier)
+    if register_blueprints:
+        from app.landing import create_module as landing_create_module
+        from app.cashier import create_module as cashier_create_module
+        landing_create_module(app)
+        cashier_create_module(app)
 
     return app
