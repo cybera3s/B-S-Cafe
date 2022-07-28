@@ -30,7 +30,7 @@ class Cashier(BaseModel):
 
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(13), nullable=False)
+    phone_number = db.Column(db.String(13), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
