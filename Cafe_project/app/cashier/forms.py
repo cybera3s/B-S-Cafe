@@ -19,11 +19,11 @@ class LoginForm(FlaskForm):
         cashier = Cashier.query.filter_by(email=self.email.data).first()
         err_msg = 'Invalid Email Or Password'
         if not cashier:
-            self.email.errors.append(err_msg)
+            self.form_errors.append(err_msg)
             return False
         # Do the passwords match
         if not cashier.check_password(self.password.data):
-            self.email.errors.append(err_msg)
+            self.form_errors.append(err_msg)
             return False
         return True
 
