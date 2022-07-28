@@ -331,6 +331,6 @@ def contact_us():
                 return Response("Thanks for your Feedback", status=200)
             except Exception as e:
                 print(e)
-                return Response("Something Went Wrong on Sending Feedback, Try again later", status=200)
+                return Response("Something Went Wrong on Sending Feedback, Try again later", status=400)
 
         return Response("Invalid Submission of Form", status=400)
