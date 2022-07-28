@@ -100,6 +100,7 @@ def cashier_dashboard(user):
     report = Receipt.last_week_report()
 
     data = {
+        "page_title": "Dashboard",
         "user": user,
         "today_earnings": Receipt.calculate_earnings_of_day(),
         "customer_count": len(today_receipts),
