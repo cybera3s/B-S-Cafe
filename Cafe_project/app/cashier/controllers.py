@@ -77,8 +77,9 @@ def login():
             return redirect(url_for('cashier.cashier_dashboard'))
 
         # flash form error messages
-        if form.errors['email']:
-            flash(form.errors['email'][0])
+        if form.errors:
+            errors = "\n".join(form.errors)
+            flash(errors)
     # Handle get request
     context = {
         'page_title': 'Login'
@@ -137,15 +138,19 @@ def cashier_order(user):
     # cache receipt query
     bakery = baked.bakery()
     receipts_query = bakery(lambda s: s.query(Receipt))
+    status_query = bakery(lambda s: s.query(Status))
 
+    context = {
+        "status": status_query(s).all(),
+    }
     if request.method == "GET":
-        context = {
+        context.update({
             "data": {
                 "user": user
             },
             "receipts": receipts_query(s).all(),
-            "page_title": "Orders"
-        }
+            "page_title": "Orders",
+        })
         # get receipt orders by receipt id from query parameters
         if receipt_id := request.args.get('receipt_id'):
             if receipt := receipts_query(s).get(receipt_id):
@@ -157,27 +162,22 @@ def cashier_order(user):
         # Handle GET request with no query parameters
         return render_template("cashier/orders/order-index.html", **context)
 
-    if request.method == "POST":
+    elif request.method == "PUT":
         # get json payload of request
-        request_data = request.get_json()
-
-        context = {
-            "status": Status.query.all(),
-        }
-
+        data = request.get_json()
         # change order status of a receipt
-        if request_data["view"] == "status_req":
-            receipt_id = request_data["order"]
-            status_id = request_data["status_id"]
+        order_id = data["orderId"]
+        status_id = data["statusId"]
 
-            Order.query.filter_by(receipt_id=receipt_id).update({
-                'status_code_id': int(status_id)
-            })
-            db.session.commit()
-            return render_template(
-                "cashier/orders/receipt-modify.html",
-                **context
-            )
+        # Update order status
+        order = Order.query.get(order_id)
+        order.status_code_id = int(status_id)
+        db.session.commit()
+
+        return render_template(
+            "cashier/orders/receipt-modify.html",
+            **context
+        )
 
 
 @login_required
