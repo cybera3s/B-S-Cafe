@@ -1,9 +1,8 @@
 from flask import url_for, request, redirect, render_template, \
-    make_response, flash, Response, Request, current_app as app, session
+    make_response, flash, Response, Request, current_app as app, session, jsonify
 from datetime import datetime, timedelta
 import os
 from werkzeug.utils import secure_filename
-from flask.views import MethodView
 from app.models import *
 from datetime import datetime
 from app.utils.utils import allowed_file
@@ -104,10 +103,6 @@ def cashier_dashboard(user):
         "user": user,
         "today_earnings": Receipt.calculate_earnings_of_day(),
         "customer_count": len(today_receipts),
-        "chart": {
-            "labels": list(map(lambda i: i[1], report)),
-            "sum_receipts": list(map(lambda i: i[0], report)),
-        },
     }
 
     if request.method == "POST":
@@ -116,7 +111,16 @@ def cashier_dashboard(user):
         data["user"] = cashier
         return render_template("cashier/dashboard.html", data=data)
 
-    return render_template("cashier/dashboard/dashboard.html", data=data)
+    elif request.method == "GET":
+        if request.args.get('getChartInfo'):
+
+            chart = {
+                "labels": list(map(lambda i: i[1], report)),
+                "sum_receipts": list(map(lambda i: i[0], report)),
+            }
+            return jsonify(chart)
+
+        return render_template("cashier/dashboard/dashboard.html", data=data)
 
 
 @login_required
