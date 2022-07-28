@@ -31,23 +31,14 @@
                     has_children=True) }}
 
                     <ul class="nav nav-treeview">
-                        {{ macros.sidebar_child(url_for('.cashier_order'), "fas fa-list mr-1", "Orders List",
-                        active=True) }}
+                        {{ macros.sidebar_child(url_for('.cashier_order'), "fas fa-list mr-1", "Orders
+                        List",active=True) }}
+                        <!-- loop through all order statuses -->
+                        {% for status in all_status %}
+                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=status.id), "fas fa-list
+                        mr-1", status.status|capitalize~' Orders') }}
+                        {% endfor %}
 
-                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=1), "fas fa-plus mr-1", "New
-                        order") }}
-
-                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=2), "far fa-circle nav-icon",
-                        "Served order") }}
-
-                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=3), "far fa-circle nav-icon",
-                        "Deleted order") }}
-
-
-                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=4), "far fa-circle nav-icon",
-                        "cooking order") }}
-                        {{ macros.sidebar_child(url_for('.cashier_order_status', status_id=5), "far fa-circle nav-icon",
-                        "Paid order") }}
 
                     </ul>
                 </li>
