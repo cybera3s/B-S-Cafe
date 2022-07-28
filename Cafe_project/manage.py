@@ -1,5 +1,5 @@
 from run import app
-from app.database import db
+from app.extensions import db
 from app.models import *
 from app import migrate
 from app.cashier.models import *

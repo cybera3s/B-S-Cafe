@@ -5,7 +5,7 @@ def create_app(object_name="config.DevConfig", register_blueprints=True):
     # local imports
     from .extensions import mail, migrate
     from .core.template_filters import format_datetime
-    from app.database import db
+    from app.extensions import db
     from .models import bcrypt
 
     # 404 HTTP error handling

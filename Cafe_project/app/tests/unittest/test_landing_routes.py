@@ -1,7 +1,7 @@
 from flask import url_for
 from unittest import TestCase
 from app import create_app
-from app.database import db
+from app.extensions import db
 from app.models import *
 
 

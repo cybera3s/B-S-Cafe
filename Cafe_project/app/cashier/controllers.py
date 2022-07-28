@@ -8,7 +8,7 @@ from app.models import *
 from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
-from app.database import db
+from app.extensions import db
 from .forms import AddNewTableForm, AboutSettingForm, LoginForm
 from .models import AboutSetting
 

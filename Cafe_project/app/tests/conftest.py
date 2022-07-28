@@ -3,8 +3,8 @@ import pytest
 from flask import template_rendered
 
 from app import create_app
-from app.database import db
-from app.database import db as _db
+from app.extensions import db
+from app.extensions import db as _db
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
