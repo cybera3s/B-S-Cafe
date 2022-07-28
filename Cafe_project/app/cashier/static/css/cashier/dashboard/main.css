@@ -1,0 +1,14 @@
+.make-bright {
+    transition: ease 500ms;
+}
+
+.make-bright:hover {
+    filter: brightness(1.2);
+}
+
+#user_info {
+    transition: ease 1500ms;
+}
+#today_Earnings. #total_customer{
+    box-shadow: 2px 6px 17px black;
+}
