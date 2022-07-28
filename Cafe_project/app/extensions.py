@@ -4,6 +4,3 @@ from flask_mail import Mail
 
 mail = Mail()
 migrate = Migrate()
-@celery.task()
-def test():
-    return 'ok'
