@@ -24,40 +24,8 @@
 {% endblock %}
 
 {% block extra_footer %}
-<script>
-    var xValues = {
-    {
-        data.chart.labels | safe
-    }
-    }
-    ;
-    var yValues = {
-    {
-        data.chart.sum_receipts | safe
-    }
-    }
-    ;
 
-    new Chart("myChart", {
-        type: "line",
-        data: {
-            labels: xValues,
-            datasets: [{
-                data: yValues,
-                borderColor: "blue",
-                fill: true,
-                label: 'income of last seventh days'
-            }]
-        },
-        min: 0,
-        options: {
-            legend: {display: true},
-            responsive: true,
-        }
-
-    });
-
-</script>
+<!-- Bootstrap v5.0.2 CDN  -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
@@ -67,19 +35,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $('form input').on('focus', () => {
-        $('#save').removeClass('d-none')
-    });
-</script>
-<script>
-    $('#user_info').on('mouseenter', () => {
-        $('#user_info').css('box-shadow', '2px 2px 5px black')
+<!-- local js file -->
+<script src="{{ url_for('.static', filename='js/cashier/dashboard/dashboard.js') }}"></script>
 
-    }).on('mouseleave', () => {
-        $('#user_info').css('box-shadow', '2px 2px 12px gray')
-    });
-
-</script>
 {% endblock %}
