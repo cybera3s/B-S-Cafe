@@ -1,15 +1,14 @@
-import argparse
-from app.models import Cashier
-from app.utils.utils import Validator
+import click
+from getpass import getpass
 
-if __name__ == "__main__":
+from .models import Cashier
+from .extensions import db
+from .utils.utils import Validator
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(dest="createcashier", help="create a new cashier_panel")
-    args = parser.parse_args()
 
-    if args.createcashier == "createcashier":
-
+def register(app):
+    @app.cli.command('create_new_cashier')
+    def create_user():
         try:
             firstname = input("enter your first name: ")
             msg = "Your last name must be in alphabetical order and more than 3 characters"
@@ -26,17 +25,15 @@ if __name__ == "__main__":
             email = input("enter your email address: ")
             assert Validator.validate_email(email), "invalid email format !"
 
-            password = input("Enter your password :")
-            assert Validator.validate_email(
-                email
+            password = getpass('Enter your password :')
+            assert Validator.validate_password(
+                password
             ), "password must be more than four characters !"
 
-            new_cashier = Cashier(firstname, lastname, phone_number, email)
+            new_cashier = Cashier(first_name=firstname, last_name=lastname, phone_number=phone_number, email=email)
             new_cashier.set_password(password)
             new_cashier.create()
-            print("new cashier created !")
+            print(f"New Cashier {email} Created!")
 
         except Exception as e:
             print(e)
-    else:
-        print("Wrong argument !")
