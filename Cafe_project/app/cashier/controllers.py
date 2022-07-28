@@ -10,6 +10,8 @@ from sqlalchemy.sql import func
 from app.extensions import db
 from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile
 from .models import AboutSetting
+from sqlalchemy.ext import baked
+from sqlalchemy.orm import Session
 
 base_variables = {
     "page": {"lang": "en-US", "title": ""},
@@ -107,8 +109,8 @@ def cashier_dashboard(user):
     if request.method == "POST":
         if form.validate_on_submit():
             form = CashierProfile(request.form, obj=user)
-            form.populate_obj(user)     # update cashier info by form data
-            user.set_password(form.password.data)   # hash password
+            form.populate_obj(user)  # update cashier info by form data
+            user.set_password(form.password.data)  # hash password
             db.session.commit()
         else:
             err = "\n".join(form.form_errors) if form.form_errors else "Invalid Submission!"
@@ -120,7 +122,6 @@ def cashier_dashboard(user):
     elif request.method == "GET":
         # send chart info to frontend
         if request.args.get('getChartInfo'):
-
             chart = {
                 "labels": list(map(lambda i: i[1], report)),
                 "sum_receipts": list(map(lambda i: i[0], report)),
@@ -132,16 +133,28 @@ def cashier_dashboard(user):
 
 @login_required
 def cashier_order(user):
-    if request.method == "GET":
-        receipts = Receipt.query.all()
+    s = Session(bind=db.engine)     # create db session
+    # cache receipt query
+    bakery = baked.bakery()
+    receipts_query = bakery(lambda s: s.query(Receipt))
 
+    if request.method == "GET":
         context = {
             "data": {
                 "user": user
             },
-            "receipts": receipts
+            "receipts": receipts_query(s).all(),
+            "page_title": "Orders"
         }
+        # get receipt orders by receipt id from query parameters
+        if receipt_id := request.args.get('receipt_id'):
+            if receipt := receipts_query(s).get(receipt_id):
+                context['orders'] = receipt.orders
+                return render_template("cashier/orders/receipt-modify.html", **context)
+            else:
+                return Response('Receipt Not Found', status=404)
 
+        # Handle GET request with no query parameters
         return render_template("cashier/orders/order-index.html", **context)
 
     if request.method == "POST":
@@ -152,13 +165,8 @@ def cashier_order(user):
             "status": Status.query.all(),
         }
 
-        # get receipt orders
-        if request_data["view"] == "receipt_req":
-            context['orders'] = Order.query.filter_by(receipt_id=request_data["receipt_id"]).all()
-            return render_template("cashier/orders/receipt-modify.html", **context)
-
         # change order status of a receipt
-        elif request_data["view"] == "status_req":
+        if request_data["view"] == "status_req":
             receipt_id = request_data["order"]
             status_id = request_data["status_id"]
 
