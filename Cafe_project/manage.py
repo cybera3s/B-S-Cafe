@@ -1,7 +1,6 @@
 from run import app
-from app.extensions import db
+from app.extensions import db, migrate
 from app.models import *
-from app import migrate
 from app.cashier.models import *
 
 
