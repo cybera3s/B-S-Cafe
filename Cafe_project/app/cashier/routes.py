@@ -10,7 +10,7 @@ cashier.add_url_rule(
     "/cashier_panel/dashboard", "cashier_dashboard", cashier_dashboard, methods=["GET", "POST"]
 )
 cashier.add_url_rule(
-    "/cashier_panel/order", "cashier_order", cashier_order, methods=["GET", "POST"]
+    "/cashier_panel/order", "cashier_order", cashier_order, methods=["GET", "POST", "PUT"]
 )
 
 cashier.add_url_rule(
