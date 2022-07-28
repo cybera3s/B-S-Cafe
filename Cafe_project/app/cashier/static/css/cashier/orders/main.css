@@ -1,0 +1,16 @@
+.item tr:hover td {
+    background-color: #333;
+    color: white !important;
+}
+
+.receipt-item {
+    cursor: pointer;
+}
+
+.status-item {
+    cursor: pointer;
+}
+
+.status-item:hover {
+    background-color: #34a0b2;
+}
