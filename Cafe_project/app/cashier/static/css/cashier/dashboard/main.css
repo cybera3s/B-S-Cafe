@@ -5,10 +5,14 @@
 .make-bright:hover {
     filter: brightness(1.2);
 }
-
+/* Cashier info form  */
 #user_info {
     transition: ease 1500ms;
+    border-left:2px solid gray;
+    border-top:2px solid gray;
+    box-shadow: 3px 15px 16px grey;
 }
+
 #today_Earnings. #total_customer{
     box-shadow: 2px 6px 17px black;
 }
