@@ -56,7 +56,7 @@ class CashierProfile(FlaskForm):
     phone_number = StringField('Phone Number', validators=[DataRequired(), Length(max=150)])
     password = PasswordField(
         "Password",
-        validators=[DataRequired(), NumberRange(min=4, max=100, message="Password must be between 4 and 100")]
+        validators=[DataRequired(), Length(min=4, max=100, message="Password must be between 4 and 100")]
     )
 
     def validate(self):
@@ -79,7 +79,6 @@ class CashierProfile(FlaskForm):
             if c:
                 self.id.errors.append("Duplicate Phone Number!")
                 return False
-        # hash password
-        cashier.set_password(self.password.data)
+
 
         return True
