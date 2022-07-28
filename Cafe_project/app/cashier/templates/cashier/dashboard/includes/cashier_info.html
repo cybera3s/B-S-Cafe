@@ -1,45 +1,43 @@
 <div class="row my-4 justify-content-center" id="cashier_info">
     <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
 
-        <form method="post" action="{{ url_for('.cashier_dashboard') }}" id='user_info' class="p-4 rounded"
-              style="border-left:2px solid gray;border-top:2px solid gray;box-shadow: 3px 15px 16px grey;">
+        <form novalidate method="post" action="{{ url_for('.cashier_dashboard') }}" id='user_info' class="p-4 rounded">
+            {{ form.csrf_token }}
             <h3 class="text-center">Cashier Info</h3>
-            <!--  firstname               -->
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <label for="first_name">First name</label>
-                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name"
-                       value={{ data.user.first_name }} required>
+            {% if get_flashed_messages() %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ get_flashed_messages()[0] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+                 {{ form.id }}
+            <div class="mb-3">
+                {{ form.first_name.label(class='form-label') }}
+                {{ form.first_name(class='form-control') }}
             </div>
 
-            <!--  last name               -->
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <label for="last_name">Last name</label>
-                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" value={{
-                       data.user.last_name }} required>
+            <div class="mb-3">
+                {{ form.last_name.label(class='form-label') }}
+                {{ form.last_name(class='form-control') }}
             </div>
 
-
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" value={{
-                       data.user.email }} required>
+            <div class="mb-3">
+                {{ form.email.label(class='form-label') }}
+                {{ form.email(class='form-control') }}
             </div>
 
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <label for="phone_number">Phone Number</label>
-                <input type="text" class="form-control" name="phone_number" id="phone_number" value={{
-                       data.user.phone_number }} required>
+            <div class="mb-3">
+                {{ form.phone_number.label(class='form-label') }}
+                {{ form.phone_number(class='form-control') }}
             </div>
 
-
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <label for="password">Change Password</label>
-                <input type="text" class="form-control" id="password" name="password" value={{ data.user.password }}
-                       required>
+            <div class="mb-3">
+                {{ form.password.label(class='form-label') }}
+                {{ form.password(class='form-control') }}
             </div>
 
-            <div class="col-12 col-sm-11 col-md-9 col-lg-8 mb-3 mx-auto">
-                <input id='save' type="submit" class="btn btn-dark w-100 d-none" value="Save changes">
+            <div class="w-100 mb-3">
+                <input id='save' type="submit" class="btn btn-dark w-100 d-none" value="Save Changes">
             </div>
         </form>
 
