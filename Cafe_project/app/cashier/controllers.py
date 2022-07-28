@@ -8,7 +8,7 @@ from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.extensions import db
-from .forms import AddNewTableForm, AboutSettingForm, LoginForm
+from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile
 from .models import AboutSetting
 
 base_variables = {
@@ -92,12 +92,11 @@ def logout(user):
     return redirect(url_for(".login"))
 
 
-# TODO: ADD flask-wtf here
 @login_required
 def cashier_dashboard(user):
     today_receipts = Receipt.today_receipts()
     report = Receipt.last_week_report()
-
+    form = CashierProfile(obj=user)
     data = {
         "page_title": "Dashboard",
         "user": user,
@@ -106,12 +105,20 @@ def cashier_dashboard(user):
     }
 
     if request.method == "POST":
-        cashier = Cashier(**dict(request.form), id=user.id)
-        db.update(cashier)
-        data["user"] = cashier
-        return render_template("cashier/dashboard.html", data=data)
+        if form.validate_on_submit():
+            form = CashierProfile(request.form, obj=user)
+            form.populate_obj(user)     # update cashier info by form data
+            user.set_password(form.password.data)   # hash password
+            db.session.commit()
+        else:
+            err = "\n".join(form.form_errors) if form.form_errors else "Invalid Submission!"
+            flash(err, category='error')
+
+        return redirect(url_for('.cashier_dashboard'))
+
 
     elif request.method == "GET":
+        # send chart info to frontend
         if request.args.get('getChartInfo'):
 
             chart = {
@@ -120,7 +127,7 @@ def cashier_dashboard(user):
             }
             return jsonify(chart)
 
-        return render_template("cashier/dashboard/dashboard.html", data=data)
+        return render_template("cashier/dashboard/dashboard.html", data=data, form=form)
 
 
 @login_required
