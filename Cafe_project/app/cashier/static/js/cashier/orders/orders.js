@@ -6,17 +6,15 @@ $(document).ready(function () {
 
 
     function getReceiptDetail(event, url = "http://127.0.0.1:5000/admin/cashier_panel/order") {
+        /*
+            Send GET request to get receipt detail by ID
+        */
         event.preventDefault();
-        let DataSend = {
-            view: 'receipt_req',
-            receipt_id: +this.id
-        };
+        url += `?receipt_id=${+this.id}`;   // set query parameter
 
         $.ajax({
             url: url,
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(DataSend),
+            type: "GET",
             success: function (response) {
                 $("#receipt_modal").empty();
                 $("#receipt_modal").append(response)
