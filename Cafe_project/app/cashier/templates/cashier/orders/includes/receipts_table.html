@@ -1,0 +1,22 @@
+<table class="table table-responsive-md item">
+    <thead>
+    <tr>
+        <th style="width:80px;"><strong>#</strong></th>
+        <th><strong>RECEIPT</strong></th>
+        <th><strong>CREATE TIME</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for receipt in receipts %}
+    <tr class="data receipt-item" id="{{ receipt.id }}" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop">
+        <td><strong>{{ loop.index }}</strong></td>
+        <td>{{ receipt.id }}</td>
+        <td>{{ receipt.date_created|format_date }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+
+</table>
