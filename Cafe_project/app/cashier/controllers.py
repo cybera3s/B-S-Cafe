@@ -185,29 +185,10 @@ def cashier_order_status(user, status_id):
     data = base_variables
     data["user"] = user
 
-    match status_id:
-        case 1:
-            data["page"]["title"] = "New Orders"
-            status = status_id
-            items = Order.query.filter_by(status_code_id=1).all()
-        case 2:
-            data["page"]["title"] = "Cooking Orders"
-            status = status_id
-            items = Order.query.filter_by(status_code_id=2).all()
-        case 3:
-            data["page"]["title"] = "Served orders"
-            status = status_id
-            items = Order.query.filter_by(status_code_id=3).all()
-        case 4:
-            data["page"]["title"] = "Delete Orders"
-            status = status_id
-            items = Order.query.filter_by(status_code_id=4).all()
-        case 5:
-            data["page"]["title"] = "Paid Orders"
-            status = status_id
-            items = Order.query.filter_by(status_code_id=5).all()
-        case _:
-            return "<h1>Wrong Status code</h1>"
+    status = Status.query.get_or_404(status_id)
+    data["page"]["title"] = status.status.capitalize() + ' Orders'
+    items = status.orders
+
     # static section
     context = {
         'data': data,
