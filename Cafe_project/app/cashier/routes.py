@@ -17,7 +17,7 @@ cashier.add_url_rule(
     "/cashier_panel/order/status/<int:status_id>",
     "cashier_order_status",
     cashier_order_status,
-    methods=["GET"],
+    methods=["GET", "POST"],
 )
 
 cashier.add_url_rule(
