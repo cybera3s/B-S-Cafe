@@ -77,8 +77,8 @@ def login():
             return redirect(url_for('cashier.cashier_dashboard'))
 
         # flash form error messages
-        if form.errors:
-            errors = "\n".join(form.errors)
+        if form.form_errors:
+            errors = "\n".join(form.form_errors)
             flash(errors)
     # Handle get request
     context = {
