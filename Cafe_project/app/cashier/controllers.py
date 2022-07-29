@@ -187,14 +187,20 @@ def cashier_order_status(user, status_id):
 
     status = Status.query.get_or_404(status_id)
     data["page"]["title"] = status.status.capitalize() + ' Orders'
-    items = status.orders
+    orders = status.orders
 
     # static section
     context = {
         'data': data,
-        'items': items,
-        'status': status
+        'orders': orders,
+        'status': status,
+
     }
+    # update statuses
+    if request.method == "POST":
+        if request.form.get('updateTable'):
+            return render_template("cashier/orders/includes/table_body.html", **context)
+
     return render_template("cashier/orders/Cashier_order_status.html", **context)
 
 
