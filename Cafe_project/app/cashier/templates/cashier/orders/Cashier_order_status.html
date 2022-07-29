@@ -14,28 +14,29 @@
 
 
         {% if orders|length > 0 %}
-            <input type="text" class="w-100" id="search-btn" placeholder="Search for Order..">
-            <table class="mt-2 rounded table table-dark table-responsive-sm table-hover thead-dark" id="Table">
-                <thead>
-                <tr>
-                    <th class="text-center black ">ID</th>
-                    <th class="text-center black">Menu Item</th>
-                    <th class="text-center black">Count</th>
-                    <th class="text-center black">Receipt</th>
-                    <th class="text-center black">Create time</th>
-                </tr>
-                </thead>
+        <input type="text" class="w-100" id="search-btn" placeholder="Search for Order..">
+        <button id="update-btn" type="button" class="btn btn-dark w-100 my-2">Update Table
+        </button>
+        <table class="mt-2 rounded table table-dark table-responsive-sm table-hover thead-dark" id="Table">
+            <thead>
+            <tr>
+                <th class="text-center black ">ID</th>
+                <th class="text-center black">Menu Item</th>
+                <th class="text-center black">Count</th>
+                <th class="text-center black">Receipt</th>
+                <th class="text-center black">Create time</th>
+            </tr>
+            </thead>
 
-                <tbody id="row_table">
+            <tbody id="row_table">
 
-                    {% include 'cashier/orders/includes/table_body.html' %}
+            {% include 'cashier/orders/includes/table_body.html' %}
 
-                </tbody>
-            </table>
-            <button id="update-btn" type="button" class="btn btn-primary w-100 btn-block">Update
-            </button>
+            </tbody>
+        </table>
+
         {% else %}
-            <div class="alert alert-info my-2">There is no Orders Yet!</div>
+        <div class="alert alert-info my-2">There is no Orders Yet!</div>
         {% endif %}
 
     </div>
