@@ -1,0 +1,9 @@
+{% for order in orders %}
+<tr class="order-item">
+    <td class="text-center">{{ order.id }}</td>
+    <td class="text-center">{{ order.menu_item.name }}</td>
+    <td class="text-center">{{ order.count }}</td>
+    <td class="text-center">{{ order.receipt_id }}</td>
+    <td class="text-center">{{ order.date_created|format_date }}</td>
+</tr>
+{% endfor %}
