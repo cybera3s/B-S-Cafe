@@ -156,8 +156,8 @@ def add_to_cart(request: Request) -> Response:
     item_price = data.get('itemPrice')
     item_final_price = data.get('finalPrice')
     # 3
-    if not all(i for i in [item_count, menu_item_id, item_name, item_price, item_final_price]):
-        err_msg = "one of the (menu item id,count,name,price,final price) is not provided!"
+    if not all(i for i in [item_count, menu_item_id, item_name, item_price]):
+        err_msg = "one of the (menu item id,count,name,price) is not provided!"
         return Response(err_msg, status=400)
 
     response = make_response({'msg': 'ok'})  # 4
@@ -285,7 +285,7 @@ def cart():
 
             order_obj = Order(
                 menu_item_id=item_id,
-                status_code_id=2,
+                status_code_id=1,
                 count=detail['count'],
                 receipt_id=receipt.id
             )
@@ -296,9 +296,9 @@ def cart():
         db.session.commit()
         # prepare response and delete old cookies
         response = make_response(redirect(url_for(".home")))
-        response.set_cookie('receipt', 'paid')
         response.set_cookie('receipt_id', str(receipt.id))
         response.delete_cookie('orders')
+        response.delete_cookie('receipt')
 
         return response
 
