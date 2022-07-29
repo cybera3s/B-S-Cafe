@@ -199,9 +199,9 @@ def cashier_order_status(user, status_id):
     # update statuses
     if request.method == "POST":
         if request.form.get('updateTable'):
-            return render_template("cashier/orders/includes/table_body.html", **context)
+            return render_template("cashier/orders_status/table_body.html", **context)
 
-    return render_template("cashier/orders/Cashier_order_status.html", **context)
+    return render_template("cashier/orders_status/cashier_order_status.html", **context)
 
 
 # TODO: ADD flask-wtf here
