@@ -86,7 +86,10 @@
 <!-- ajax CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Extra Footer -->
-
+    <script>
+        // share url root to use in js file
+        let url_root = {{ request.url_root|tojson }};
+    </script>
 {% block extra_footer %}{% endblock %}
 </body>
 </html>
