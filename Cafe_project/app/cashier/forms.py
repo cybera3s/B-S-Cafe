@@ -89,7 +89,7 @@ class CashierProfile(FlaskForm):
 class MenuItemForm(FlaskForm):
     DISCOUNTS = [(0, "Choose Your Discount...")]
     CATEGORIES = [(0, "Choose Your Category...")]
-
+    id = IntegerField(widget=HiddenInput())
     name = StringField('Name', validators=[DataRequired(), Length(max=150)])
     price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)],)
 
