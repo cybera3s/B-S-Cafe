@@ -1,12 +1,12 @@
-{% macro render_form_field(form_field, field_class='form-control', description=False) %}
-{# render a bootstrap form field with corresponding field, class, description and its errors  #}
+{% macro render_form_field(form_field, field_class='form-control') %}
+{# render a bootstrap form field with corresponding field, class and its errors  #}
 
 <div class="form-group">
+
     {% if form_field.errors %}
     {{ form_field.label(class='form-label') }}
-    {% if form_field.description %}
     <span class="d-inline form-text">{{ form_field.description }}</span>
-    {% endif %}
+    <span class="form-text">{{ form_field.description }}</span>
     {{ form_field(class=field_class~' is-invalid') }}
 
     <div class="invalid-feedback">
@@ -17,7 +17,8 @@
 
     {% else %}
     {{ form_field.label(class='form-label') }}
-    {{ form_field(class=field_class) }}
+    <span class="d-inline form-text">{{ form_field.description }}</span>
+    {{ form_field(class=field_class, placeholder=form_field.label.text|capitalize~' Here...') }}
     {% endif %}
 </div>
 
