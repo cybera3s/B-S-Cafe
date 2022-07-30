@@ -8,7 +8,7 @@ from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.extensions import db
-from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile
+from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile, MenuItemForm
 from .models import AboutSetting
 from sqlalchemy.ext import baked
 from sqlalchemy.orm import Session
@@ -32,9 +32,13 @@ def save_and_validate_file(req: Request, key: str):
     if file.filename == "":
         raise FileNotFoundError('No image selected for uploading!')
 
-    # check if uploaded file has correct extensions and file is not none
+    # check if uploaded file has correct extensions and file is not none -> app.config['ALLOWED_EXTENSIONS']
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        # check if upload folder not exists make it
+        if not os.path.exists(app.config['UPLOAD_FOLDER']):
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return filename
 
@@ -134,7 +138,7 @@ def cashier_dashboard(user):
 
 @login_required
 def cashier_order(user):
-    s = Session(bind=db.engine)     # create db session
+    s = Session(bind=db.engine)  # create db session
     # cache receipt query
     bakery = baked.bakery()
     receipts_query = bakery(lambda s: s.query(Receipt))
@@ -204,53 +208,47 @@ def cashier_order_status(user, status_id):
     return render_template("cashier/orders_status/cashier_order_status.html", **context)
 
 
-# TODO: ADD flask-wtf here
 @login_required
 def cashier_add_item(user):
-    data = {
-        "user": user,
-    }
-    discount = Discount.query.all()
-    category = Category.query.all()
+    data = base_variables
+    form = MenuItemForm()
+    # set discount and category choices => <option value="model_id">model_value</option>
+    form.discount.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+    form.category.choices += ([(c.id, c.category_name) for c in Category.query.all()])
+
+    data |= {"user": user, }
 
     if request.method == "POST":
+        if form.validate_on_submit():
 
-        try:
-            filename = save_and_validate_file(request, 'file')
-        except Exception as e:
-            flash(str(e))
+            file = form.image.data
+            filename = secure_filename(file.filename)   # remove unsafe characters from image name
+            # check if upload folder exists else make it
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            new_item = MenuItem(
+                name=form.name.data,
+                price=form.price.data,
+                category_id=form.category.data,
+                serving_time_period=form.serving_time_period.data,
+                estimated_cooking_time=form.estimated_cooking_time.data,
+                picture_link=filename,
+                discount_id=form.discount.data,
+            )
+
+            new_item.create()
+            flash("Menu Item successfully Added !", category='success')
             return redirect(request.url)
-        data = request.form
+        else:
+            flash("Please Correct Below Errors!", "danger")
 
-        image_url = filename
-        name = data["name"]
-        price = data["price"]
-        serving_time_period = data["serving"]
-        estimated_cooking_time = data["estimated"]
-        discount_id = data.get('discount') or None
-        category_id = request.form["category"]
-
-        new_item = MenuItem(
-            name=name,
-            price=price,
-            category_id=category_id,
-            serving_time_period=serving_time_period,
-            estimated_cooking_time=estimated_cooking_time,
-            picture_link=image_url,
-            discount_id=discount_id,
-        )
-
-        new_item.create()
-        flash("Menu Item successfully Added !")
-        return redirect(request.url)
-
-    elif request.method == "GET":
-        return render_template(
-            "cashier/menuitems/cashier_add_item.html",
-            discounts=discount,
-            categorys=category,
-            data=data,
-        )
+    return render_template(
+        "cashier/menuitems/cashier_add_item.html",
+        data=data, form=form
+    )
 
 
 @login_required
