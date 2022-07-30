@@ -1,0 +1,51 @@
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+/* Font ROBOTO */
+.roboto {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* custom background for panel  */
+.container {
+    padding-top: 50px !important;
+}
+
+/* custom background header panel */
+.custom-header-panel {
+    border-color: #004b8e !important;
+    color: white;
+}
+
+.no-margin-form-group {
+    margin: 0 !important;
+}
+
+.btn-orange-md {
+    background: #FF791F !important;
+    border-bottom: 3px solid #ae4d13 !important;
+    color: white;
+}
+
+.btn-orange-md:hover {
+    background: #d86016 !important;
+    color: white !important;
+}
