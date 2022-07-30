@@ -8,7 +8,7 @@ from datetime import datetime
 from app.utils.utils import allowed_file
 from sqlalchemy.sql import func
 from app.extensions import db
-from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile, MenuItemForm
+from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile, MenuItemForm, AddCategoryForm
 from .models import AboutSetting
 from sqlalchemy.ext import baked
 from sqlalchemy.orm import Session
@@ -308,38 +308,36 @@ def cashier_list_menu(user):
         return "200"
 
 
-# TODO: ADD flask-wtf here
 @login_required
 def cashier_add_category(user):
     data = {
         "user": user,
+        "page_title": "Add Category"
     }
-    items_category = Category.query.all()
-    items_discount = Discount.query.all()
+    form = AddCategoryForm()
+    form.discount_id.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+    form.category_root.choices += ([(c.id, c.category_name) for c in Category.query.all()])
 
     context = {
-        'items_category': items_category,
-        'items_discount': items_discount,
         'data': data,
+        'form': form
     }
     if request.method == "GET":
         return render_template("cashier/categories/cashier_add_category.html", **context)
 
     elif request.method == "POST":
+        if form.validate_on_submit():
+            new_category = Category(
+                category_name=form.category_name.data,
+                category_root=form.category_root.data,
+                discount_id=form.discount_id.data
+            )
+            new_category.create()
 
-        category_name = request.form.get("category")
-        root_id = request.form.get("root_id")
-        discount_id = int(request.form.get("discount_id")) or None
+            flash("New Category Added !", category='success')
+            return render_template("cashier/categories/cashier_add_category.html", **context)
 
-        new_category = Category(category_name=category_name, category_root=root_id, discount_id=discount_id)
-        new_category.create()
-
-        context = {
-            'items_category': items_category,
-            'items_discount': items_discount,
-            'data': data,
-        }
-        flash("New Category Added !")
+        flash("Something went wrong", category='danger')
         return render_template("cashier/categories/cashier_add_category.html", **context)
 
 
