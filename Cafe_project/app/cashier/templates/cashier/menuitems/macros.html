@@ -25,3 +25,18 @@
 {% endmacro %}
 
 
+{% macro render_form_edit(form_field, field_class='form-control') %}
+
+<div class="form-group">
+
+    {{ form_field.label(class='form-label') }}
+    <span class="d-inline form-text">{{ form_field.description }}</span>
+    {{ form_field(class=field_class, placeholder=form_field.label.text|capitalize~' Here...') }}
+    <div class="invalid-feedback">
+    </div>
+
+</div>
+
+{% endmacro %}
+
+
