@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, TextAreaField, URLField, EmailField, PasswordField
+from wtforms import StringField, IntegerField, TextAreaField, URLField, EmailField, PasswordField, FloatField, \
+    SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, Length
 from wtforms.widgets import HiddenInput
+from flask_wtf.file import FileField, FileRequired, FileAllowed, FileSize
+from wtforms.validators import ValidationError
 
 from app.models import Cashier
 
@@ -80,5 +83,40 @@ class CashierProfile(FlaskForm):
                 self.id.errors.append("Duplicate Phone Number!")
                 return False
 
+        return True
+
+
+class MenuItemForm(FlaskForm):
+    DISCOUNTS = [(0, "Choose Your Discount...")]
+    CATEGORIES = [(0, "Choose Your Category...")]
+
+    name = StringField('Name', validators=[DataRequired(), Length(max=150)])
+    price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)],)
+
+    serving_time_period = StringField('Serving Time', validators=[DataRequired(), Length(min=3)],
+                                      description=' e.g: Always, Morning...',)
+
+    estimated_cooking_time = IntegerField('Estimated Cooking Time', validators=[DataRequired(), NumberRange(min=1)],
+                                          description='in Minutes',)
+
+
+    discount = SelectField('Discount', choices=DISCOUNTS, coerce=int, description="(Optional)")
+    category = SelectField('Category', choices=CATEGORIES, validators=[DataRequired()], coerce=int)
+    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')
+        , FileSize(max_size=5 * 1000 * 1000)])
+    submit = SubmitField("Add Item")
+
+    def validate(self):
+        check_validate = super(MenuItemForm, self).validate()
+        # if our validators do not pass
+        if not check_validate:
+            return False
+
+        if self.category.data == 0:
+            self.category.errors.append('Please Select a Category')
+            return False
+
+        if self.discount.data == 0:
+            self.discount.data = None
 
         return True
