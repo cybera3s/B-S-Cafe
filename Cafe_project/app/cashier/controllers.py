@@ -261,6 +261,7 @@ def cashier_list_menu(user):
     categories = Category.query.all()
     context = {
         'data': data,
+        'page_title': 'Menu Items',
     }
     if request.method == "GET":
         # get menu item by id
