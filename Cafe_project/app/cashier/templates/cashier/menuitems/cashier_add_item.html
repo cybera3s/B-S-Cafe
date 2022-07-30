@@ -1,144 +1,82 @@
 {% extends "cashier/_base.html" %}
+{% import 'cashier/menuitems/macros.html' as macros %}
+
 {% block title %}add item{% endblock %}
 
 {% block extra_head %}
-<style>
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
-
-    /* Font ROBOTO */
-    .roboto {
-        font-family: 'Roboto', sans-serif !important;
-    }
-
-    /* custom background for panel  */
-    .container {
-        padding-top: 50px !important;
-    }
-
-    /* custom background header panel */
-    .custom-header-panel {
-        border-color: #004b8e !important;
-        color: white;
-    }
-
-    .no-margin-form-group {
-        margin: 0 !important;
-    }
-
-    .btn-orange-md {
-        background: #FF791F !important;
-        border-bottom: 3px solid #ae4d13 !important;
-        color: white;
-    }
-
-    .btn-orange-md:hover {
-        background: #d86016 !important;
-        color: white !important;
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/cashier/menu_items/add_menu_item.css') }}">
 {% endblock %}
 {% block content_title %}Add Menu Item{% endblock %}
 {% block content_body %}
-<div class="row">
-    <form id="data-form" method="post" role="form" action="{{ url_for('.cashier_add_item') }}"
-          enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-md-offset-2 col-md-8">
-                <div class="panel">
-                    <div class="panel-body">
-
-                        {% if get_flashed_messages() %}
-
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-
-                            {{ get_flashed_messages()[0] }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-
-                        </div>
-                        {% endif %}
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="name"> Item Name </label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" name="name" id="name" value="" required
-                                       maxlength="70">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="name"> Price </label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" name="price" id="Price" value="" required
-                                       maxlength="70">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="name"> serving time </label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" name="serving" id="serving" value="" required
-                                       maxlength="70">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="name"> estimated cooking time (minute)</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" name="estimated" id="estimated" value=""
-                                       required maxlength="70">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="discount" class="col-sm-4 control-label">discount</label>
-                            <div class="col-sm-12">
-                                <select id="discount" name="discount" class="form-control" required>
-                                    <option value="0" disabled="" selected="">Select your discount</option>
-                                    {% for discount in discounts %}
-                                    <option value="{{ discount.id }}">{{ discount.value }}</option>
-                                    {% endfor %}
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category" class="col-sm-4 control-label">category</label>
-                            <div class="col-sm-12">
-                                <select id="category" name="category" class="form-control" required>
-                                    <option value="0" disabled="" selected="">Select your discount</option>
-
-                                    {% for c in categorys %}
-                                    <option value="{{ c.id }}">{{ c.category_name }}</option>
-                                    {% endfor %}
-
-                                </select>
-                            </div>
-                        </div>
-                        <span class="btn btn-primary btn-block btn-lg btn-file">
-                                    Browse image <input type="file" name="file">
-                                </span>
-                        <input type="submit" name="send" class="btn btn-primary btn-block btn-lg btn-file">
-                    </div>
-                </div>
-            </div>
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </form>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form id="data-form" method="post" role="form" action="{{ url_for('.cashier_add_item') }}"
+              enctype="multipart/form-data" novalidate>
+            {{ form.csrf_token }}
+            <!--  Name          -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.name) }}
+            </div>
+            <!--   Price         -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.price) }}
+            </div>
+            <!--   Serving Time Period     -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.serving_time_period) }}
+            </div>
+            <!--   Estimated Cooking time     -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.estimated_cooking_time) }}
+            </div>
+            <!--   category         -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.category, field_class='form-select') }}
+            </div>
+            <!--   Discounts         -->
+            <div class="form-group">
+                {{ macros.render_form_field(form.discount, field_class='form-select') }}
+            </div>
+            <!--   Image uploading         -->
+            <div class="my-2" id="uploadedImage">
+
+            </div>
+            {% if form.image.description %}
+            <span class="d-inline form-text">{{ form.image.description }}</span>
+            {% endif %}
+            {% if form.image.errors %}
+            <span class="btn btn-primary btn-block btn-lg btn-file is-invalid">
+                    Browse image {{ form.image }}
+                </span>
+            <div class="invalid-feedback">
+                {% for error in form.image.errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% else %}
+            <span class="btn btn-primary btn-block btn-lg btn-file">
+                    Browse image {{ form.image }}
+                </span>
+            {% endif %}
+            <!--   Submit button         -->
+            {{ form.submit(class='btn btn-primary w-100 my-2') }}
+
+        </form>
+
+    </div>
 </div>
 {% endblock %}
 {% block extra_footer %}
+<script src="{{ url_for('.static', filename='js/cashier/menu_items/add_item.js') }}"></script>
 {% endblock %}
 
