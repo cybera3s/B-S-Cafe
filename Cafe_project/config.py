@@ -6,7 +6,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
-    pass
+    CSRF_SESSION_KEY = urandom(24)
+
+    # Secret key for signing cookies
+    SECRET_KEY = urandom(24)
 
 
 class ProdConfig(Config):
@@ -27,10 +30,10 @@ class DevConfig(Config):
     THREADS_PER_PAGE = 2
     CSRF_ENABLED = True
     SQLALCHEMY_ECHO = False
-    CSRF_SESSION_KEY = urandom(24)
+    CSRF_SESSION_KEY = '12345678987654321'
 
     # Secret key for signing cookies
-    SECRET_KEY = urandom(24)
+    SECRET_KEY = '12345678987654321'
     # email configuration
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_USERNAME = 'cybera.3s@gmail.com'
