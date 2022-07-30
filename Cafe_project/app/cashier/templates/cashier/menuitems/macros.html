@@ -1,0 +1,26 @@
+{% macro render_form_field(form_field, field_class='form-control', description=False) %}
+{# render a bootstrap form field with corresponding field, class, description and its errors  #}
+
+<div class="form-group">
+    {% if form_field.errors %}
+    {{ form_field.label(class='form-label') }}
+    {% if form_field.description %}
+    <span class="d-inline form-text">{{ form_field.description }}</span>
+    {% endif %}
+    {{ form_field(class=field_class~' is-invalid') }}
+
+    <div class="invalid-feedback">
+        {% for error in form_field.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+
+    {% else %}
+    {{ form_field.label(class='form-label') }}
+    {{ form_field(class=field_class) }}
+    {% endif %}
+</div>
+
+{% endmacro %}
+
+
