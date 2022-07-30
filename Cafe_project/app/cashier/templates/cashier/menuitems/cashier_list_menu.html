@@ -1,12 +1,10 @@
 {% extends "cashier/_base.html" %}
-{% block title %}item{% endblock %}
-
+{% block title %}{{ page_title }}{% endblock %}
 {% block extra_head %}
 {% endblock %}
-{% block content_title %}Item menu{% endblock %}
+{% block content_title %}{{ page_title }}{% endblock %}
 {% block content_body %}
-
-<div class="table-responsive">
+<div class="table-responsive text-capitalize">
     <table class="table">
         <thead>
         <tr>
@@ -16,16 +14,17 @@
         </tr>
         </thead>
         <tbody>
-        {% for i in menuitems %}
-        <tr id="{{ i.id }}">
+        {% for item in menuitems %}
+        <tr id="{{ item.id }}">
             <td>{{ loop.index }}</td>
-            <td>{{ i.name}}</td>
-            <td>{{ i.price }}</td>
+            <td>{{ item.name}}</td>
+            <td>{{ item.price }}</td>
+            <!--  Remove and Edit buttons      -->
             <td>
                 <div class="d-flex">
-                    <a href="#" id="{{ i.id }}" class="edit btn btn-primary shadow btn-xs sharp mr-1"
+                    <a href="#" id="{{ item.id }}" class="edit btn btn-primary shadow btn-xs sharp mr-1"
                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-pencil"></i></a>
-                    <a href="#" id="{{ i.id }}" class="btn btn-danger shadow btn-xs sharp delete-item"><i
+                    <a href="#" id="{{ item.id }}" class="btn btn-danger shadow btn-xs sharp delete-item"><i
                             class="fa fa-trash"></i></a>
                 </div>
             </td>
@@ -33,66 +32,11 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Items</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="item_modal">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Menu Item Modal   -->
+    {% include 'cashier/menuitems/includes/menu_item_modal.html' %}
 </div>
 
 {% endblock %}
 {% block extra_footer %}
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    $('.edit').on('click', function () {
-
-        let menuItemId = Number(this.id);
-
-        let url = "{{ url_for('.cashier_list_menu') }}" + `?menuItemId=${menuItemId}`;
-        $("#item_modal").empty();
-        $.ajax({
-            url: `${url}`,
-            type: "GET",
-            success: function (response) {
-                $('#item_modal').append(response)
-            }
-        });
-    })
-    $('.delete-item').on('click', function () {
-        let id = Number(this.id)
-        let url = "{{ url_for('.cashier_list_menu') }}" + `?menuItemId=${id}`
-
-        $.ajax({
-            url: `${url}`,
-            type: "DELETE",
-            success: function (response) {
-                console.log(response)
-                Swal.fire(
-                    'Successful',
-                    'Item Deleted Successfully!',
-                    'success'
-                )
-                $(`tr#${id}`).remove();
-
-            },
-            error: function (err) {
-                console.log(err)
-            },
-        });
-    })
-
-</script>
+    <script src="{{ url_for('.static', filename='js/cashier/menu_items/menu_item_index.js') }}"></script>
 {% endblock %}
