@@ -12,35 +12,11 @@ from .forms import AddNewTableForm, AboutSettingForm, LoginForm, CashierProfile,
 from .models import AboutSetting
 from sqlalchemy.ext import baked
 from sqlalchemy.orm import Session
+from flask_wtf.file import FileRequired
 
 base_variables = {
     "page": {"lang": "en-US", "title": ""},
 }
-
-
-def save_and_validate_file(req: Request, key: str):
-    """
-        Takes request and a string key and look for key in
-        request.files if found and be valid then save it to UPLOAD_FOLDER
-        and returns filename
-    """
-    if key not in req.files:
-        raise KeyError('No File Part')
-
-    file = req.files[key]
-
-    if file.filename == "":
-        raise FileNotFoundError('No image selected for uploading!')
-
-    # check if uploaded file has correct extensions and file is not none -> app.config['ALLOWED_EXTENSIONS']
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        # check if upload folder not exists make it
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return filename
 
 
 def get_current_user() -> Cashier:
@@ -221,7 +197,7 @@ def cashier_add_item(user):
     if request.method == "POST":
         if form.validate_on_submit():
             file = form.image.data
-            filename = secure_filename(file.filename)   # remove unsafe characters from image name
+            filename = secure_filename(file.filename)  # remove unsafe characters from image name
             # check if upload folder exists else make it
             upload_folder = app.config['UPLOAD_FOLDER']
             if not os.path.exists(upload_folder):
@@ -257,56 +233,73 @@ def cashier_list_menu(user):
         "user": user,
     }
     menuitems = MenuItem.query.all()
-    discounts = Discount.query.all()
-    categories = Category.query.all()
+
     context = {
         'data': data,
         'page_title': 'Menu Items',
     }
+    form = MenuItemForm()
+    # set discount and category choices => <option value="model_id">model_value</option>
+    form.discount.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+    form.category.choices += ([(c.id, c.category_name) for c in Category.query.all()])
+
     if request.method == "GET":
+
         # get menu item by id
         if menu_item_id := request.args.get('menuItemId'):
             item = MenuItem.query.get(int(menu_item_id))
-            context.update({
+            form = MenuItemForm(obj=item)
+            # set discount and category choices => <option value="model_id">model_value</option>
+            form.discount.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+            form.category.choices += ([(c.id, c.category_name) for c in Category.query.all()])
+            # set initial category and discount
+            form.category.data = item.category_id
+            form.discount.data = item.discount_id
+            form.image.data = item.picture_link
+            context |= {
                 'item': item,
-                'categories': categories,
-                'discounts': discounts
-
-            })
+                'form': form
+            }
             return render_template("cashier/menuitems/menu_item_modify_modal.html", **context)
 
         context['menuitems'] = menuitems
         return render_template("cashier/menuitems/cashier_list_menu.html", **context)
 
     if request.method == "POST":
-        data = request.get_json()
+        # remove required validator from image field of form
+        if isinstance(form.image.validators[0], FileRequired):
+            form.image.validators.pop(0)
 
-        if request.files.get('file'):
-            try:
-                filename = save_and_validate_file(request, 'file')
-            except Exception as e:
-                print(e)
-                return Response("{'msg':'something went wrong'}", status=400)
+        if form.validate_on_submit():
+            file = form.image.data
+            filename = None
 
-            return Response(filename, status=200)
+            if file:
+                filename = secure_filename(file.filename)  # remove unsafe characters from image name
+                # check if upload folder exists else make it
+                upload_folder = app.config['UPLOAD_FOLDER']
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder, exist_ok=True)
 
-        # edit menu item
-        elif data["view"] == "edit_item":
-            del data['view']
-            print(data)
-            data = {**data}
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            modified_item = MenuItem.query.get(int(data['id']))
-            modified_item.name = data['name']
-            modified_item.price = int(data['price'])
-            modified_item.serving_time_period = data['serving_time']
-            modified_item.estimated_cooking_time = int(data['estimated'])
-            modified_item.picture_link = data['image']
-            modified_item.discount_id = int(data['discount'])
-            modified_item.category_id = int(data['category'])
+            menu_item = MenuItem.query.get(form.id.data)
+
+            menu_item.name = form.name.data
+            menu_item.price = form.price.data
+            menu_item.category_id = form.category.data
+            menu_item.serving_time_period = form.serving_time_period.data
+            menu_item.estimated_cooking_time = form.estimated_cooking_time.data
+            menu_item.picture_link = filename or menu_item.picture_link
+            menu_item.discount_id = form.discount.data
             db.session.commit()
+            return Response("Updated", status=200)
 
-            return Response("updated", status=200)
+        else:
+
+            response = make_response(jsonify(form.errors))
+            response.status_code = 400
+            return response
 
     if request.method == "DELETE":
         id = request.args.get('menuItemId')
