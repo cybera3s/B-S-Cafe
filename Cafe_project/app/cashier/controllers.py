@@ -220,12 +220,12 @@ def cashier_add_item(user):
 
     if request.method == "POST":
         if form.validate_on_submit():
-
             file = form.image.data
             filename = secure_filename(file.filename)   # remove unsafe characters from image name
             # check if upload folder exists else make it
-            if not os.path.exists(app.config['UPLOAD_FOLDER']):
-                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+            upload_folder = app.config['UPLOAD_FOLDER']
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder, exist_ok=True)
 
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
