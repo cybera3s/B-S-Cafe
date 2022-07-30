@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, TextAreaField, URLField, EmailField, PasswordField, FloatField, \
-    SelectField, SubmitField
+    SelectField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, NumberRange, Length
 from wtforms.widgets import HiddenInput
 from flask_wtf.file import FileField, FileRequired, FileAllowed, FileSize
@@ -91,14 +91,13 @@ class MenuItemForm(FlaskForm):
     CATEGORIES = [(0, "Choose Your Category...")]
     id = IntegerField(widget=HiddenInput())
     name = StringField('Name', validators=[DataRequired(), Length(max=150)])
-    price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)],)
+    price = FloatField('Price', validators=[DataRequired(), NumberRange(min=0)], )
 
     serving_time_period = StringField('Serving Time', validators=[DataRequired(), Length(min=3)],
-                                      description=' e.g: Always, Morning...',)
+                                      description=' e.g: Always, Morning...', )
 
     estimated_cooking_time = IntegerField('Estimated Cooking Time', validators=[DataRequired(), NumberRange(min=1)],
-                                          description='in Minutes',)
-
+                                          description='in Minutes', )
 
     discount = SelectField('Discount', choices=DISCOUNTS, coerce=int, description="(Optional)")
     category = SelectField('Category', choices=CATEGORIES, validators=[DataRequired()], coerce=int)
@@ -118,5 +117,29 @@ class MenuItemForm(FlaskForm):
 
         if self.discount.data == 0:
             self.discount.data = None
+
+        return True
+
+
+class AddCategoryForm(FlaskForm):
+    ROOTS = [(0, "Choose Your Category Root...")]
+    DISCOUNTS = [(0, "Choose Your Discount...")]
+
+    category_name = StringField('Name', validators=[DataRequired(), Length(max=150)])
+    category_root = SelectField('Root', choices=ROOTS, coerce=int)
+    discount_id = SelectField('Discount', choices=DISCOUNTS, coerce=int)
+    is_root = BooleanField('Is Root?', default=False)
+
+    def validate(self):
+        check_validate = super(AddCategoryForm, self).validate()
+        # if our validators do not pass
+        if not check_validate:
+            return False
+
+        if self.category_root.data == 0:
+            self.category_root.data = None
+
+        if self.discount_id.data == 0:
+            self.discount_id.data = None
 
         return True
