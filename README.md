@@ -29,6 +29,7 @@ Challenges that I faced in this project:
 <h1 align="center">Admin Panel Page</h1>
 
 ![admin_dashboard](https://user-images.githubusercontent.com/74768669/182035017-b5755ae5-d7e5-406e-a77d-6f220f98cb88.png)
+![admin_menu](https://user-images.githubusercontent.com/74768669/182035298-947966d1-d530-42de-ba79-5af6e127d8f9.png)
 
 
 
