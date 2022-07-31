@@ -15,6 +15,9 @@ def create_app(object_name="config.DevConfig", register_blueprints=True):
     app = Flask(__name__)
     app.config.from_object(object_name)
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
+
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     mail.init_app(app)
