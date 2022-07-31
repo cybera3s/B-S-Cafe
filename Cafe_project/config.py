@@ -6,6 +6,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
+    SITE_NAME = 'Cafe Bitter & Sweet'
     CSRF_SESSION_KEY = urandom(24)
 
     # Secret key for signing cookies
