@@ -93,4 +93,11 @@ $(document).ready(function () {
 
     // remove category btn click event
     $('tr .delete-btn').click(deleteCategory);
+
+    // remove category btn click event
+    $('tr .edit-btn').click(getCategoryModalForm);
+
+    // submit event modify category form
+    $(".content").on('submit', "form", submitModifyCategory)
+
 });
