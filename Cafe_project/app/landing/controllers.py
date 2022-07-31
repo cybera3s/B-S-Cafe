@@ -67,7 +67,7 @@ def menu():
     data = base_variables
     data["current_page"] = "menu"
     items = MenuItem.query.all()
-    modified_items = map(set_final_price, items)
+    modified_items = list(map(set_final_price, items))
 
     if request.method == "GET":
         data["title"] = "menu"
