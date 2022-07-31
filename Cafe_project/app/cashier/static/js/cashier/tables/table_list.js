@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    <!-- Enable bootstrap Popovers -->
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+
     const BASE_URL = 'admin/cashier_panel/tables';
 
     // show change state button on mouse hover to busy tables
