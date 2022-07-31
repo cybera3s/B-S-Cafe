@@ -349,7 +349,25 @@ class CategoryView(MethodView):
             print(e)
             return Response('Something Went Wrong on Deleting', status=400)
 
+    def put(self, user, category_id=None):
+        category = Category.query.get(category_id)
+        form = AddCategoryForm(obj=category)
+        form.discount_id.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+        form.category_root.choices += ([(c.id, c.category_name) for c in Category.query.all()])
 
+        if form.validate_on_submit():
+
+
+            category.category_name = form.category_name.data
+            category.category_root = form.category_root.data
+            category.discount_id = form.discount_id.data
+            db.session.commit()
+            return Response("Updated", status=200)
+
+        else:
+            response = make_response(jsonify(form.errors))
+            response.status_code = 400
+            return response
 
 
 @login_required
