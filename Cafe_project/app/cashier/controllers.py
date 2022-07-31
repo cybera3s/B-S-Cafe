@@ -325,6 +325,19 @@ class CategoryView(MethodView):
         }
         return render_template(self.template_name, data=self.data)
 
+    def delete(self, user):
+        category_id = request.args.get('category_id')
+        category = Category.query.get(category_id)
+
+        try:
+            category.delete()
+            return Response(f'Category {category.id} Deleted!', status=200)
+
+        except Exception as e:
+            print(e)
+            return Response('Something Went Wrong on Deleting', status=400)
+
+
 
 
 @login_required
