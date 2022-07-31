@@ -6,7 +6,7 @@ from wtforms.widgets import HiddenInput
 from flask_wtf.file import FileField, FileRequired, FileAllowed, FileSize
 from wtforms.validators import ValidationError
 
-from app.models import Cashier
+from app.models import Cashier, Category
 
 
 class LoginForm(FlaskForm):
@@ -124,7 +124,7 @@ class MenuItemForm(FlaskForm):
 class AddCategoryForm(FlaskForm):
     ROOTS = [(0, "Choose Your Category Root...")]
     DISCOUNTS = [(0, "Choose Your Discount...")]
-
+    id = IntegerField(widget=HiddenInput())
     category_name = StringField('Name', validators=[DataRequired(), Length(max=150)])
     category_root = SelectField('Root', choices=ROOTS, coerce=int)
     discount_id = SelectField('Discount', choices=DISCOUNTS, coerce=int)
