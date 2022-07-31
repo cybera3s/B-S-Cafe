@@ -3,3 +3,4 @@
 **/.idea/
 **/.idea
 **/.pytest_cache
+.env
