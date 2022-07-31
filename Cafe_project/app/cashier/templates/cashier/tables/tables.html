@@ -25,7 +25,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
 {% block content_title %}{{ data.page.title }}{% endblock %}
@@ -81,79 +80,5 @@
 
 
 {% block extra_footer %}
-<!-- Enable bootstrap Popovers -->
-<script>
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-    })
-</script>
-
-<script>
-    // show change state button on mouse hover to busy tables
-    $('.tables').on('mouseenter', function () {
-
-        $state = $(this).find(".state")
-
-        if ($state.html() === 'Busy') {
-            $(this).find(".change_state").fadeIn(600);
-            $(this).find(".show-info").fadeIn(600);
-        }
-    }).on('mouseleave', function () {
-        $(this).css("opacity", '1.0').find(".change_state").fadeOut(100);
-        $(this).css("opacity", '1.0').find(".show-info").fadeOut(100);
-    });
-
-    // animate opacity of table image on mouse hover on Change State Button
-    $('.change_state,.show-info').on('mouseenter', function () {
-
-        $(this).parent().find('img').css("opacity", '0.5')
-
-    }).on('mouseleave', function () {
-
-        $(this).parent().find('img').css("opacity", '1.0')
-
-    });
-
-    // Send AJAX request on click on change state btn
-    $(".change_state").on('click', (event) => {
-        var id = event.target.id
-        $.ajax({
-            url: "{{ url_for('.cashier_table') }}",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({get_info: false, id: +id}),
-            success: function (response) {
-                // show beautiful alert by Sweetalert lib
-                Swal.fire({
-                    position: 'top',
-                    icon: 'success',
-                    title: `The Table #${id} is Free Now!`,
-                    showConfirmButton: true,
-
-                })
-                $(`span#${id}`).text('Free')
-            }
-        })
-
-    });
-    // Send AJAX request on click on show info btn
-    $(".show-info").on('click', (event) => {
-        var id = event.target.id
-        $.ajax({
-            url: "{{ url_for('.cashier_table') }}",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({get_info: true, id: +id}),
-            success: function (response) {
-                // show beautiful alert by Sweetalert lib
-                $(".modal-body").empty()
-                $(".modal-body").append(response)
-            }
-        })
-
-    });
-
-</script>
-
+<script src="{{ url_for('.static', filename='js/cashier/tables/table_list.js') }}"></script>
 {% endblock %}
