@@ -150,7 +150,7 @@ def add_to_cart(request: Request) -> Response:
     """
     data = request.get_json()  # 1
     if not data:
-        abort(400, description="Request Body is not provided")
+        return Response("Request Body is not provided", status=400)
     # 2
     menu_item_id = data.get('itemId')
     item_count = data.get('itemCount')
