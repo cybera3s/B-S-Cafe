@@ -62,12 +62,11 @@
                     has_children=True) }}
 
                     <ul class="nav nav-treeview">
-                        {{ macros.sidebar_child(url_for('.cashier_add_category'), "fas fa-plus mr-1",
-                        "New category", active=True) }}
-                        <!--   TODO: Add category index Page      -->
-                        {# macros.sidebar_child(url_for('.cashier_list_category'), "far fa-list nav-icon",
-                        "Category Index") #}
+                        {{ macros.sidebar_child(url_for('.cashier_category_index'), "far fa-list nav-icon",
+                        "Category Index", active=True) }}
 
+                        {{ macros.sidebar_child(url_for('.cashier_add_category'), "fas fa-plus mr-1",
+                        "New category") }}
                     </ul>
                 </li>
                 <!-- Tables -->
