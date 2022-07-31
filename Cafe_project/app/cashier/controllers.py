@@ -371,7 +371,7 @@ def cashier_table(user):
     data = {
         "user": user,
         "page": {
-            "title": "tables",
+            "title": "Tables",
         },
         "content": {
             "tables": tables,
