@@ -1,11 +1,13 @@
 import os
 from os import urandom
+from dotenv import load_dotenv
 
-# Define the application directory
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv('.env')
 
 
 class Config(object):
+    # Define the application directory
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     SITE_NAME = 'Cafe Bitter & Sweet'
     CSRF_SESSION_KEY = urandom(24)
 
@@ -35,17 +37,18 @@ class DevConfig(Config):
 
     # Secret key for signing cookies
     SECRET_KEY = '12345678987654321'
-    # email configuration
-    MAIL_SERVER = "smtp.gmail.com"
-    MAIL_USERNAME = 'cybera.3s@gmail.com'
-    MAIL_PASSWORD = 'cbxjmongmfbrqdxl'
-    MAIL_PORT = 465
+    # Email configuration
+    MAIL_SERVER = os.getenv('MAIL_SERVER')
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_PORT = os.getenv('MAIL_PORT')
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
-    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+    MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
+
     # Celery configuration
-    CELERY_BROKER_URL = "redis://default:06029842@localhost:6379"
-    CELERY_RESULT_BACKEND = "redis://default:06029842@localhost:6379"
+    CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+    CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
     CELERY_IMPORTS = ("app.landing.tasks",)
 
 
