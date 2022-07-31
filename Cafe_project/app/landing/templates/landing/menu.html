@@ -14,7 +14,7 @@
                         class="position-absolute translate-middle badge rounded-pill bg-danger"
                         style="font-size:1rem;"
                     >
-                        {{ item.discount.value }}%
+                        {{ item.discount.value + item.category.discount.value|default(0) }}%
                     </span>
                     {% endif %}
                     <img class="card-img-top mt-2 img-thumbnail border-none"
