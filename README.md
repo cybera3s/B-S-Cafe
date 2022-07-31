@@ -1,1 +1,1 @@
-# bitter and sweet Cafe
+# Bitter & Sweet Cafe
