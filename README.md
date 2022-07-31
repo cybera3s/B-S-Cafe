@@ -23,9 +23,13 @@ Challenges that I faced in this project:
 </div>
 <h1 align="center">Landing Page</h1>
 
-
+![Landing_home](https://user-images.githubusercontent.com/74768669/182034911-e72b6cf7-1eb0-40d9-93a5-c109606e0909.png)
+![Landing_menu](https://user-images.githubusercontent.com/74768669/182034938-65688959-d51c-41c5-be4d-0fcb443ac2b6.png)
 
 <h1 align="center">Admin Panel Page</h1>
+
+![admin_dashboard](https://user-images.githubusercontent.com/74768669/182035017-b5755ae5-d7e5-406e-a77d-6f220f98cb88.png)
+
 
 
 
