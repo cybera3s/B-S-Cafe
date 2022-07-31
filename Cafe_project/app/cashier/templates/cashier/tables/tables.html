@@ -22,7 +22,8 @@
          data-bs-content="<b>Position: {{ table.position }}</b><br>" data-bs-trigger="hover focus">
         <h5 class="text-dark fw-bold">Capacity: <span id="capacity">{{ table.capacity }}</span></h5>
         <h6 class="text-dark fw-bold">State: <span class="badge bg-success state" style="font-size: 3vh;"
-                                                   id="{{ table.id }}">{{ "Busy" if table.status else 'Free' }}</span></h6>
+                                                   id="{{ table.id }}">{{ "Busy" if table.status else 'Free' }}</span>
+        </h6>
         <!-- table image -->
         <img width="200" src="{{ url_for('.static', filename='images/cashier/tables/cafe-table-II.jpg') }}"
              alt="cafe table">
