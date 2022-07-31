@@ -23,7 +23,7 @@ def create_app(object_name="config.DevConfig", register_blueprints=True):
     app.add_template_filter(format_datetime, "format_date")
 
     # Configurations
-    CORS(app, origins=["http://localhost*", "http://127.0.0.1"], expose_headers=['receipt_id'])
+    CORS(app, origins=["http://localhost*", "http://127.0.0.1"])
 
     app.register_error_handler(404, page_not_found)
     # Register blueprint(s)
