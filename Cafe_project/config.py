@@ -7,8 +7,8 @@ load_dotenv('.env')
 # Define the application directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-class Config(object):
 
+class Config(object):
     SITE_NAME = 'Cafe Bitter & Sweet'
     CSRF_SESSION_KEY = urandom(24)
 
