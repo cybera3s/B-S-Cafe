@@ -33,6 +33,12 @@ cashier.add_url_rule(
     methods=["POST", "GET", 'DELETE'],
 )
 cashier.add_url_rule(
+    "/cashier_panel/categories",
+    "cashier_category_index",
+    cashier_category_index,
+    methods=["GET", "POST", 'DELETE', 'PUT'],
+)
+cashier.add_url_rule(
     "/cashier_panel/add_category",
     "cashier_add_category",
     cashier_add_category,
