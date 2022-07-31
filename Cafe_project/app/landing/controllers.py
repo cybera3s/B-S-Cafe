@@ -54,7 +54,10 @@ def home():
         return render_template("landing/home/home.html", **context)
 
 
-def set_final_price(item):
+def set_final_price(item: MenuItem):
+    """
+        get menu item and bind final price to it then return it
+    """
     item.final_price = item.final_price()
     return item
 
@@ -131,58 +134,46 @@ def table_select(table_id: int, table: Table) -> Response:
 
 def add_to_cart(request: Request) -> Response:
     """
+        Add to cart using cookies
         :param request : a flask request object\n
         :returns a Response object\n
-        #1 : check request json body then get json data\n
-        #2 : get menu item id and count of that from data -> int, int\n
-        #3 : if menu item id and count is None returns Bad Request Response\n
-        #4 : set default response json -> Response, 200 OK\n
-        #5 : get receipt id from cookies -> str\n
-        #6 : if receipt id from cookies is none then return Bad Request response\n
-        #7 : get orders of corresponding receipt id from cookies -> json or None\n
-        #8 : check if orders of receipt id exist in cookies then -> #9 , #10, #11\n
-        #9 : deserialize json orders from receipt -> orders: dict\n
-        #10 : if menu item id exist in orders then add count of existing item with item_count in orders\n
-        #11 : create new menu item id key with item_count as value in orders\n
-        #12 : orders of receipt id does NOT exist in cookies then create new orders -> dict\n
-        #13 : json serialize orders
-        #14 : set receipt_id as key in cookies with serialized orders as value
     """
-    data = request.get_json()  # 1
+    data = request.get_json()
     if not data:
         return Response("Request Body is not provided", status=400)
-    # 2
+    # unpack data from request data payload
     menu_item_id = data.get('itemId')
     item_count = data.get('itemCount')
     item_name = data.get('itemName')
     item_price = data.get('itemPrice')
     item_final_price = data.get('finalPrice')
-    # 3
+    # Check Payload data for 0 or None type
     if not all(i for i in [item_count, menu_item_id, item_name, item_price]):
         err_msg = "one of the (menu item id,count,name,price) is not provided!"
         return Response(err_msg, status=400)
 
-    response = make_response({'msg': 'ok'})  # 4
-    receipt = request.cookies.get('receipt')  # 5
-    # 6
+    response = make_response({'msg': 'ok'})
+    #  get receipt from cookies and check if its pending
+    receipt = request.cookies.get('receipt')
+
     if not receipt:
         return Response("You have no Receipt yet!", status=400)
 
-    cookie_orders = request.cookies.get('orders')  # 7
-    # 8
+    cookie_orders = request.cookies.get('orders')
+    # check if orders exist in cookies
     if cookie_orders:
         orders = json.loads(cookie_orders)  # 9
-        # 10
+        # menu item already exist in cookies orders
         if orders.get(str(menu_item_id)):
             orders[str(menu_item_id)]['count'] += item_count
-        else:  # 11
+        else:  # menu item is new in cookies orders
             orders[str(menu_item_id)] = {
                 "count": item_count,
                 "name": item_name,
                 "price": item_price,
                 "item_final_price": item_final_price
             }
-    # 12
+    # new order
     else:
 
         orders = {
@@ -194,8 +185,8 @@ def add_to_cart(request: Request) -> Response:
             }
         }
 
-    dumped_orders = json.dumps(orders)  # 13
-    response.set_cookie('orders', dumped_orders)  # 14
+    dumped_orders = json.dumps(orders)  # serialize orders as json
+    response.set_cookie('orders', dumped_orders)
     return response
 
 
@@ -222,7 +213,7 @@ def cart():
 
         total_price = 0
         final_price = 0
-
+        # calculate total and final price
         for o in orders:
             total_price += o['count'] * o['price']
             final_price += o['count'] * (o['item_final_price'] or o['price'])
@@ -306,14 +297,21 @@ def cart():
 
 
 def about_us():
+    """
+        About Us page
+    """
     data = base_variables
     data["current_page"] = "about_us"
     about_setting = AboutSetting.query.get(1)
+
     if request.method == "GET":
         return render_template("landing/about_us/about_us.html", data=data, about_setting=about_setting)
 
 
 def contact_us():
+    """
+        Contact us page
+    """
     data = base_variables
     form = ContactUsForm()
     data["current_page"] = "contact_us"
@@ -328,7 +326,7 @@ def contact_us():
                 'feedback': form.feedback.data
             }
             try:
-
+                # send email using celery task
                 send_email.delay(data)
                 return Response("Thanks for your Feedback", status=200)
             except Exception as e:
