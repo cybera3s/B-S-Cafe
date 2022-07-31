@@ -47,18 +47,6 @@ def login_required(view):
     return wrapper
 
 
-def user_required(f):
-    """Checks whether user is logged in or raises error 401."""
-
-    def decorator(*args, **kwargs):
-        user = get_current_user()
-        if not user:
-            abort(401)
-        return f(*args, **kwargs)
-
-    return decorator
-
-
 def login():
     """login view"""
     form = LoginForm()
