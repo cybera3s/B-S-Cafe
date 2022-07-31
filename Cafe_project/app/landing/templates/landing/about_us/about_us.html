@@ -23,9 +23,15 @@
     </div>
     <div class="col-12 col-lg-5 mt-3">
         <div class="rounded text-light h-75" style="box-shadow: 3px 2px 13px black;">
-            <img src="{{ about_setting.banner_url }}" alt="CAFE"
-                 class="rounded float-start"
-                 width="100%" height="100%">
+            <img
+                    src="{% if about_setting.banner_url %}
+                            {{ about_setting.banner_url }}
+                        {% else %}
+                        {{ url_for('.static', filename='images/about_page_pic/about_banner.jpg') }}"
+                    {% endif %}
+                    alt="CAFE"
+                    class="rounded float-start"
+                    width="100%" height="100%">
         </div>
     </div>
 
