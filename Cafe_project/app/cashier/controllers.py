@@ -13,6 +13,7 @@ from .models import AboutSetting
 from sqlalchemy.ext import baked
 from sqlalchemy.orm import Session
 from flask_wtf.file import FileRequired
+from flask.views import MethodView
 
 base_variables = {
     "page": {"lang": "en-US", "title": ""},
@@ -44,6 +45,18 @@ def login_required(view):
         return view(user, *args, **kwargs)
 
     return wrapper
+
+
+def user_required(f):
+    """Checks whether user is logged in or raises error 401."""
+
+    def decorator(*args, **kwargs):
+        user = get_current_user()
+        if not user:
+            abort(401)
+        return f(*args, **kwargs)
+
+    return decorator
 
 
 def login():
@@ -306,6 +319,24 @@ def cashier_list_menu(user):
         menu_item = MenuItem.query.get_or_404(int(id), description='Menu item Not Found!')
         menu_item.delete()
         return "200"
+
+
+
+class CategoryView(MethodView):
+    decorators = [login_required]
+    template_name = "cashier/categories/category_index.html"
+    data = {
+        "page_title": "Category Index",
+    }
+
+    def get(self, user):
+        categories = Category.query.all()
+        self.data |= {
+            'categories': categories,
+            'user': user
+        }
+        return render_template(self.template_name, data=self.data)
+
 
 
 @login_required
