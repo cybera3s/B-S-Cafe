@@ -84,7 +84,9 @@ def order(table_id: int):
         select table on GET request
         add to cart on POST request
     """
-    table = Table.query.get_or_404(table_id, description="Table Not Found!")
+    table = Table.query.get(table_id)
+    if not table:
+        return Response("Table Not Found!", status=404)
     # table selecting
     if request.method == "GET":
         return table_select(table_id, table)
