@@ -69,6 +69,7 @@ $(document).ready(function () {
         */
         event.preventDefault();
         // get order data
+        let tableId = $.cookie('table_id');
         let itemId = $(this).data('itemid');
         let itemCount = $(this).siblings(".itemCount").val();
         let itemName = $(this).siblings(".itemName").text();
@@ -83,7 +84,7 @@ $(document).ready(function () {
             price = priceData.replace("$", '');
         }
 
-        const url = BASE_URL + "/order/" + itemId
+        const url = BASE_URL + "/order/" + tableId
         // define data for post request
         let data = {
             itemId: +itemId,
