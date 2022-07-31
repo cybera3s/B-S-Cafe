@@ -59,6 +59,8 @@ class Category(BaseModel):
         backref='category'
     )
 
+    discount = db.relationship('Discount', back_populates='categories')
+
     def __repr__(self):
         return f"<Class {self.__class__.__name__} : {self.category_name}>"
 
