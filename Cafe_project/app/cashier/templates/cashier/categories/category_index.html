@@ -28,8 +28,8 @@
                 <td>
                     <div class="d-flex justify-content-center">
 
-                        <a href="#" class="edit btn btn-primary shadow btn-xs sharp mr-1"
-                           data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <a href="#" class="edit-btn btn btn-primary shadow btn-xs sharp mr-1"
+                           data-bs-toggle="modal" data-bs-target="#editCategory">
                             <i class="fa fa-pencil"></i>
                         </a>
 
@@ -52,6 +52,7 @@
         </table>
     </div>
 </div>
+{% include 'cashier/categories/edit_category_modal.html' %}
 {% endblock %}
 {% block extra_footer %}
 <script src="{{ url_for('.static', filename='js/cashier/category/category_index.js') }}"></script>
