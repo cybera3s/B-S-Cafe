@@ -135,6 +135,10 @@ class AddCategoryForm(FlaskForm):
         # if our validators do not pass
         if not check_validate:
             return False
+        category = Category.query.filter_by(category_name=self.category_name.data).one()
+        if category and category.id != self.id.data:
+            self.category_name.errors.append('Category name must be Unique!')
+            return False
 
         if self.category_root.data == 0:
             self.category_root.data = None
