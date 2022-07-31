@@ -6,7 +6,7 @@
         <!--   menu item image         -->
         <div class="m-0 p-0 item-image">
 
-            <a href="{{ url_for('.static', filename='images/menu_items/') }}{{ item.picture_link }}"
+            <a href="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
                target="_blank"
                class="position-relative"
             >
@@ -20,7 +20,7 @@
                 {% endif %}
                 <img
                         class="card-img-top mt-2 img-thumbnail border-none"
-                        src="{{ url_for('.static', filename='images/menu_items/') }}{{ item.picture_link }}"
+                        src="{{ url_for('static', filename='images/menu_items/') }}{{ item.picture_link }}"
                         alt="{{ item.name }}"
                         style="height: 200px;"
                 >
@@ -31,7 +31,6 @@
         <!--   menu item detail        -->
         <div class="card-block text-center mt-3 detail-item">
             <h4 class="text-center text-warning itemName">{{ item.name }}</h4>
-            <!--                <p class="text-center text-light itemPrice">${{ item.price }}</p>-->
             {% if item.discount %}
 
                 <p class="text-center text-light itemPrice" data-price="{{ item.price }}"
@@ -51,7 +50,7 @@
             >
 
             <button class="btn btn-warning w-100 my-2 add-to-cart-btn" data-itemId="{{ item.id }}">
-                Add to cart
+                Add to Cart
             </button>
         </div>
 
