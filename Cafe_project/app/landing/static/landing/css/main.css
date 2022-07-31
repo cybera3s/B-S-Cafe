@@ -190,3 +190,7 @@
     width: 36px;
     height: 40px;
 }
+
+#page-loader{
+    min-height: 27rem;
+}
