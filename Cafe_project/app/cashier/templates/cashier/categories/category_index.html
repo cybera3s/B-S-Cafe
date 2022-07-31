@@ -1,0 +1,61 @@
+{% extends "cashier/_base.html" %}
+{% block title %}{{ data.page_title }}{% endblock %}
+{% block extra_head %}
+{% endblock %}
+{% block content_title %}{{ data.page_title }}{% endblock %}
+{% block content_body %}
+<div class="row justify-content-center text-capitalize">
+    <div class="col-12 col-sm-10 col-md-8">
+        <table class="table table-primary table-hover table-responsive-md text-center">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>name</th>
+                <th>root</th>
+                <th>discount</th>
+                <th>Modify</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if data.categories|length > 0 %}
+            {% for category in data.categories %}
+            <tr id="{{ category.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ category.category_name }}</td>
+                <td>{{ category.category_root if category.category_root is not none else '-' }}</td>
+                <td>{{ category.discount.value~'%' if category.discount_id is not none else '-' }}</td>
+                <!--  Remove and Edit buttons      -->
+                <td>
+                    <div class="d-flex justify-content-center">
+
+                        <a href="#" class="edit btn btn-primary shadow btn-xs sharp mr-1"
+                           data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete-item">
+                            <i class="fa fa-trash"></i>
+                        </a>
+
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr class="alert alert-warning">
+                <p class="m-0">
+                    There is no Category yet!
+                </p>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block extra_footer %}
+
+{% endblock %}
+
+
+
