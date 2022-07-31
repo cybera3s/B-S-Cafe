@@ -83,7 +83,8 @@ class MenuItem(BaseModel):
             calculate final price for items that has discount or category discount
         """
         percent = 0
-        if category_discount := self.category.discount.value:
+        if self.category.discount and self.category.discount.value:
+            category_discount = self.category.discount.value
             percent += category_discount
 
         if self.discount:
