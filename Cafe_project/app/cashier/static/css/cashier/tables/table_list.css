@@ -1,0 +1,16 @@
+.tables {
+    box-shadow: 1px 1px 5px gray;
+    transition: ease 500ms;
+}
+
+img {
+    transition: ease 700ms;
+}
+
+.change_state, .show-info {
+    display: none;
+}
+
+.change_state:hover img {
+    opacity: 5.0 !important;
+}
