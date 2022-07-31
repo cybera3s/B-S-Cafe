@@ -33,7 +33,10 @@ cashier.add_url_rule(
     methods=["POST", "GET", 'DELETE'],
 )
 
-cashier.add_url_rule("/cashier_panel/categories", view_func=CategoryView.as_view('cashier_category_index'))
+cashier.add_url_rule("/cashier_panel/categories/",
+                     view_func=CategoryView.as_view('cashier_category_index'), defaults={'category_id': None})
+cashier.add_url_rule("/cashier_panel/categories/<category_id>",
+                     view_func=CategoryView.as_view('get_cashier_category'))
 
 cashier.add_url_rule(
     "/cashier_panel/add_category",
