@@ -396,18 +396,18 @@ def cashier_table(user):
             return "200"
 
 
-# TODO: ADD flask-wtf here
 @login_required
 def cashier_new_discount(user):
     data = {
         "user": user,
+        "page_title": "Add New Discount"
     }
 
     if request.method == "GET":
         return render_template("cashier/discounts/cashier_add_discount.html", data=data)
 
     elif request.method == "POST":
-        discount_value = request.form["persentDiscount"]
+        discount_value = request.form["discountValue"]
         new_discount = Discount(value=int(discount_value))
         try:
             new_discount.create()
