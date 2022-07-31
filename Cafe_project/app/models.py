@@ -6,7 +6,6 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
 
 
-
 class BaseModel(db.Model):
     __abstract__ = True
 
@@ -79,13 +78,17 @@ class MenuItem(BaseModel):
         nullable=True,
     )
 
-
     def final_price(self):
         """
-            calculate final price for items that has discount
+            calculate final price for items that has discount or category discount
         """
+        percent = 0
+        if category_discount := self.category.discount.value:
+            percent += category_discount
+
         if self.discount:
-            return self.price - (self.discount.value * self.price) / 100
+            percent += self.discount.value
+            return self.price - (percent * self.price) / 100
         return self.price
 
     order = db.relationship(
@@ -135,9 +138,9 @@ class Table(BaseModel):
         """
 
         # list of tables receipts filter by table id
-        sorted_table_receipts = Receipt.query\
-            .filter((Receipt.table_id == table_id) & (Receipt.is_paid == True))\
-            .order_by(desc(Receipt.date_created))\
+        sorted_table_receipts = Receipt.query \
+            .filter((Receipt.table_id == table_id) & (Receipt.is_paid == True)) \
+            .order_by(desc(Receipt.date_created)) \
             .first()
 
         orders_list = sorted_table_receipts.orders  # list of orders id of corresponding table
@@ -184,10 +187,9 @@ class Receipt(BaseModel):
 
     @classmethod
     def calculate_earnings_of_day(cls, date=datetime.today().day):
-        return cls.query.with_entities(db.func.sum(cls.final_price))\
-            .filter(extract('day', Receipt.date_created) == date)\
+        return cls.query.with_entities(db.func.sum(cls.final_price)) \
+            .filter(extract('day', Receipt.date_created) == date) \
             .first()[0]
-
 
     @staticmethod
     def last_week_report() -> list:
