@@ -309,7 +309,6 @@ def cashier_list_menu(user):
         return "200"
 
 
-
 class CategoryView(MethodView):
     decorators = [login_required]
     template_name = "cashier/categories/category_index.html"
@@ -317,7 +316,20 @@ class CategoryView(MethodView):
         "page_title": "Category Index",
     }
 
-    def get(self, user):
+    def get(self, user, category_id=None):
+        if category_id:
+            category = Category.query.get_or_404(category_id)
+            form = AddCategoryForm(obj=category)
+
+            form.discount_id.choices += ([(d.id, str(d.value) + '%') for d in Discount.query.all()])
+            form.category_root.choices += ([(c.id, c.category_name) for c in Category.query.all()])
+
+            context = {
+                'category': category,
+                'form': form
+            }
+            return render_template("cashier/categories/category_modify_form.html", **context)
+
         categories = Category.query.all()
         self.data |= {
             'categories': categories,
