@@ -1,0 +1,38 @@
+<form novalidate>
+    {{ form.csrf_token }}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {{ form.id }}
+    <!--  Category name  -->
+    <div class="mb-3 mt-3">
+        {{ form.category_name.label }}
+        {{ form.category_name(class='form-control', placeholder='Name Here...') }}
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!--  Category Root      -->
+    <div class="mb-3" id="root-category">
+        {{ form.category_root.label }}
+        {{ form.category_root(class='form-select mb-3') }}
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!--  Discount id   -->
+    <div class="mb-3" id="discount">
+        {{ form.discount_id.label }}
+        {{ form.discount_id(class='form-select mb-3') }}
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Edit Category</button>
+
+</form>
