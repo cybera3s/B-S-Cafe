@@ -222,5 +222,10 @@ class Discount(BaseModel):
         lazy=True
     )
 
+    categories = db.relationship(
+        'Category',
+        back_populates='discount'
+    )
+
     def __repr__(self):
         return f"<Class {self.__class__.__name__} : {self.id}>"
