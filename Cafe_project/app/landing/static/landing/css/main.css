@@ -51,7 +51,7 @@
 .nav-logo{
     color: #d78c02 !important;
     font-family: Byekan;
-    text-shadow: 0px 0px 2px orange;
+    text-shadow: 0 0 2px orange;
 }
 .nav-link{
     font-size: 14px;
