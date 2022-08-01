@@ -138,7 +138,7 @@ def test_post_request_order_with_bad_body_should_fail(client, init_db):
     }
     response = client.post(url_for('landing.order', table_id=new_table.id), json=body)
     assert response.status_code == 400
-    assert response.data == b'one of the (menu item id,count,name,price,final price) is not provided!'
+    assert b'one of the (menu item id,count,name,price) is not provided!' in response.data
 
 
 @pytest.mark.skip
@@ -436,9 +436,9 @@ def test_post_cart_with_correct_parameters_should_succeed(client, init_db):
     assert order.count == orders[str(new_menuitem.id)]['count']
     assert order.menu_item_id == new_menuitem.id
     assert order.receipt_id == receipt.id
-    assert order.status_code_id == 2
+    assert order.status_code_id == 1
     # check cookies after redirect
     cookies = response.request.cookies
-    assert cookies.get('receipt') == 'paid'
+    assert cookies.get('receipt') is None
     assert cookies.get('receipt_id') == str(receipt.id)
     assert 'orders' not in cookies
