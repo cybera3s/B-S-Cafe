@@ -325,12 +325,8 @@ def contact_us():
                 'email': form.email.data,
                 'feedback': form.feedback.data
             }
-            try:
-                # send email using celery task
-                send_email.delay(data)
-                return Response("Thanks for your Feedback", status=200)
-            except Exception as e:
-                print(e)
-                return Response("Something Went Wrong on Sending Feedback, Try again later", status=400)
+            # send email using celery task
+            send_email.delay(data)
+            return Response("Thanks for your Feedback", status=200)
 
         return Response("Invalid Submission of Form", status=400)
