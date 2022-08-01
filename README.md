@@ -51,6 +51,7 @@ Challenges that I faced in this project:
 * [flask-migrate](https://flask-migrate.readthedocs.io/en/latest/)
 * [flask-wtf](https://flask-wtf.readthedocs.io/en/1.0.x/)
 * [Celery](https://docs.celeryq.dev/en/stable/index.html)
+* [pytest](https://docs.pytest.org/en/7.1.x/)
 * ...
 
 
@@ -66,96 +67,96 @@ Challenges that I faced in this project:
 [comment]: <> (</h3>)
 
 
-[comment]: <> (### Prerequisites)
+### Prerequisites
 
 
-[comment]: <> (* python &#40;Debian&#41;)
-  
-[comment]: <> (```sh)
-
-[comment]: <> (sudo apt install python)
-
-[comment]: <> (  ```)
-
-[comment]: <> (for other platforms go to  [this link]&#40;https://www.python.org/downloads/&#41;)
-
-[comment]: <> (### Installation)
-
-[comment]: <> (Clone the repo)
-
-[comment]: <> (   ```sh)
-
-[comment]: <> (  git clone https://github.com/cybera3s/Ecommerce.git)
-
-[comment]: <> (   ```)
-
-[comment]: <> (change to root folder  )
-
-[comment]: <> (    cd Ecommerce/)
-
-[comment]: <> (create virtual environment )
-
-[comment]: <> (    python -m virtualenv venv)
-
-[comment]: <> (  activate venv)
+* [Python](https://www.python.org/) +3.10
+* [Redis](https://redis.io/)
+* PIP
+* virtualenv 
+  ```sh
+  pip install virtualenv
+   ```
   
 
-[comment]: <> (    source venv/bin/activate)
 
-[comment]: <> (install required packages)
+### Usage
 
-[comment]: <> (    pip install -r requirements.txt)
+Clone the repo
 
-[comment]: <> (change to Project folder  )
+   ```sh
 
-[comment]: <> (    cd ecommerce/)
+  git clone https://github.com/cybera3s/B-S-Cafe
 
-[comment]: <> (extract static and media folder and remove archive file)
+   ```
 
-[comment]: <> (    tar -xf media-static.tar.xz && rm media-static.tar.xz)
+change to root folder  
 
-[comment]: <> (create migrations)
+    cd B-S-Cafe
 
-[comment]: <> (    python manage.py makemigrations )
+create virtual environment 
 
+    python -m virtualenv venv
 
-[comment]: <> (create database tables)
+  activate venv
+  
+    source venv/bin/activate
 
-[comment]: <> (    python manage.py migrate)
+install required packages
 
-[comment]: <> (create a super user)
+    pip install -r requirements.txt
 
-[comment]: <> (    python manage.py createsuperuser)
+change to Project folder  
 
-[comment]: <> (load prepared data)
-
-[comment]: <> (    python manage.py loaddata data.json)
-
-[comment]: <> (compile translated messages)
-
-[comment]: <> (    python manage.py compilemessages)
-
-[comment]: <> (start Django development server)
-
-[comment]: <> (    python manage.py runserver)
-
-[comment]: <> (if everything goes well go to:  http://localhost:8000)
- 
+    cd Cafe_project/
 
 
-[comment]: <> (<!-- USAGE EXAMPLES -->)
+add and Open .env file to add Required Configurations:
+```sh
+nano .env
+   ```
+Add threse required Configurations to .env file:
+```sh
+MAIL_USERNAME=<your username>
+MAIL_PASSWORD=<your email host password>
+# redis://<username:<password>>@<host>:<port>
+CELERY_BROKER_URL=<your Celery Broker Url>
+CELERY_RESULT_BACKEND=<your celery reult backend url>
+   ```
+Save Your changes with CTRL+X then in the level of manage.py:
 
-[comment]: <> (## Usage)
+Run Celery Server: 
+```sh
+celery -A celery_runner.celery worker --loglevel=info
+   ```
 
-[comment]: <> (if both development servers or up go to home page by)
+Start development Server
 
-[comment]: <> ( http://localhost:8000)
+    python run.py 
 
-[comment]: <> (You can log in with the username and password you created for your superuser)
+if everything goes well visit site at: http://127.0.0.1:5000/
 
-[comment]: <> (after log in you redirect to [students]&#40;http://localhost:8080/students&#41; table page you can add or delete any row of table)
+###CLI Management
+You can access and manage project through command line:
 
-[comment]: <> (Any other usage and information served API will find in http://127.0.0.1:8000/swagger/)
+set manage.py as flask application environment:
+
+    export FLASK_APP=manage.py 
+run flask shell:
+
+    flask shell
+in flask shell you have access to db, and all registered models in database
+
+###Create New Cashier To Access Admin Panel:
+run below command:
+
+    flask create_new_cashier
+Enter your personal information then you can visit [Login Page](http://127.0.0.1:5000/admin/login)
+loggin with your newly created Email Address and Password
+
+### Run Unit Tests
+    flask tests
+
 
 <!-- LICENSE -->
 
