@@ -117,7 +117,7 @@ def test_post_request_order_without_body_should_fail(client, init_db):
    """
     new_table = Table(capacity=4, position='any', status=True)
     new_table.create()
-    response = client.post(url_for('landing.order', table_id=new_table.id))
+    response = client.post(url_for('landing.order', table_id=new_table.id), json={})
     assert response.status_code == 400
     assert b"Request Body is not provided" in response.data
 
