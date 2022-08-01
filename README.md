@@ -136,7 +136,8 @@ Start development Server
 
 if everything goes well visit site at: http://127.0.0.1:5000/
 
-###CLI Management
+<h4>CLI Management</h3>
+
 You can access and manage project through command line:
 
 set manage.py as flask application environment:
@@ -147,7 +148,7 @@ run flask shell:
     flask shell
 in flask shell you have access to db, and all registered models in database
 
-###Create New Cashier To Access Admin Panel:
+<h3>Create New Cashier To Access Admin Panel:</h3>
 run below command:
 
     flask create_new_cashier
