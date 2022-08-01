@@ -137,6 +137,7 @@ Start development Server
 if everything goes well visit site at: http://127.0.0.1:5000/
 
 ###CLI Management
+
 You can access and manage project through command line:
 
 set manage.py as flask application environment:
