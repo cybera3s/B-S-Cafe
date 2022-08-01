@@ -1,5 +1,6 @@
 import click
 from getpass import getpass
+import pytest
 
 from .models import Cashier
 from .extensions import db
@@ -37,3 +38,10 @@ def register(app):
 
         except Exception as e:
             print(e)
+
+    @app.cli.command()
+    def tests():
+        """
+            Run tests.
+        """
+        pytest.main(['--rootdir', 'app/tests'])
